@@ -9,7 +9,7 @@
 import Foundation
 
 protocol StoreSuscriptor {
-    var identifier: String { get set }
+    var identifier: String { get }
 
     func update(state: State)
 }

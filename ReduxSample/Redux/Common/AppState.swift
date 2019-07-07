@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct AppState {}
-
-extension AppState: State {
-    // TODO: Create application state
+struct AppState {
+    let taskList: [ToDoTask]
 }
+
+extension AppState: State {}

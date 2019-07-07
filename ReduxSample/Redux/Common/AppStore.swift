@@ -43,6 +43,9 @@ extension AppStore: Store {
     }
 
     func dispatch(action: Action) {
-        // TODO: Implement!
+        queue.async {
+            // TODO: Implement! depending on the action the store should perform an action or other by creating an ActionFactory
+            
+        }
     }
 }

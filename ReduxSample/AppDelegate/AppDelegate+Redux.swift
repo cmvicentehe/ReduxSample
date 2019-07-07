@@ -23,7 +23,8 @@ extension AppDelegate: Redux {
     }
 
     func createState() -> State {
-        return AppState()
+        let taskList = [ToDoTask]()
+        return AppState(taskList: taskList)
     }
 
     func createSuscriptors() -> [StoreSuscriptor] {
@@ -35,6 +36,6 @@ extension AppDelegate: Redux {
     }
 
     func createStore(reducers: [Reducer], state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) -> Store {
-        return AppStore(reducers: [], state: AppState(), suscriptors: suscriptors, queue: queue)
+        return AppStore(reducers: [], state: state, suscriptors: suscriptors, queue: queue)
     }
 }
