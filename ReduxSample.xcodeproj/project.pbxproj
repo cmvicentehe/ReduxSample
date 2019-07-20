@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D43688C822E2367800F72199 /* ShowToDoListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43688C722E2367800F72199 /* ShowToDoListReducer.swift */; };
 		D437311C22C7D3DC00D1524D /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D437311B22C7D3DC00D1524D /* AppStore.swift */; };
 		D437311E22C7D3FC00D1524D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D437311D22C7D3FC00D1524D /* AppState.swift */; };
 		D46B2F0C22D260B4003F53AE /* AppDelegate+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B2F0B22D260B4003F53AE /* AppDelegate+Utils.swift */; };
+		D46D4CAD22DE481E00DD3E03 /* ShowToDoListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D4CAC22DE481E00DD3E03 /* ShowToDoListAction.swift */; };
 		D4F0D4EA22B5023200DB136F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4F0D4E422B5023200DB136F /* Assets.xcassets */; };
 		D4F0D4EB22B5023200DB136F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4F0D4E522B5023200DB136F /* LaunchScreen.storyboard */; };
 		D4F0D4F022B502DE00DB136F /* ToDoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0D4EE22B502DE00DB136F /* ToDoListVC.swift */; };
@@ -24,9 +26,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D43688C722E2367800F72199 /* ShowToDoListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShowToDoListReducer.swift; path = "../../../../../../../System/Volumes/Data/Users/cmvicentehe/Proyectos iOS/ReduxSample/ReduxSample/Redux/Reducers/ShowToDoListReducer.swift"; sourceTree = "<group>"; };
 		D437311B22C7D3DC00D1524D /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		D437311D22C7D3FC00D1524D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		D46B2F0B22D260B4003F53AE /* AppDelegate+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Utils.swift"; sourceTree = "<group>"; };
+		D46D4CAC22DE481E00DD3E03 /* ShowToDoListAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowToDoListAction.swift; sourceTree = "<group>"; };
 		D4F0D4CE22B4FCF900DB136F /* ReduxSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReduxSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F0D4E422B5023200DB136F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D4F0D4E622B5023200DB136F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -53,6 +57,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D46D4CAB22DE46DA00DD3E03 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				D46D4CAC22DE481E00DD3E03 /* ShowToDoListAction.swift */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+		D46D4CAE22DE496A00DD3E03 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				D4F0D4F522B504AC00DB136F /* Action.swift */,
+				D4F0D4F322B5048F00DB136F /* State.swift */,
+				D4F0D4F722B50F4B00DB136F /* Store.swift */,
+				D4F0D4F922B5128400DB136F /* Reducer.swift */,
+			);
+			path = Global;
+			sourceTree = "<group>";
+		};
+		D46D4CAF22DE498800DD3E03 /* Reducers */ = {
+			isa = PBXGroup;
+			children = (
+				D43688C722E2367800F72199 /* ShowToDoListReducer.swift */,
+			);
+			path = Reducers;
+			sourceTree = "<group>";
+		};
 		D486D89D22CBC65500C03DCA /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -63,13 +94,13 @@
 			path = AppDelegate;
 			sourceTree = "<group>";
 		};
-		D486D89E22CBC6CA00C03DCA /* Common */ = {
+		D486D89E22CBC6CA00C03DCA /* Application */ = {
 			isa = PBXGroup;
 			children = (
 				D437311B22C7D3DC00D1524D /* AppStore.swift */,
 				D437311D22C7D3FC00D1524D /* AppState.swift */,
 			);
-			path = Common;
+			path = Application;
 			sourceTree = "<group>";
 		};
 		D4F0D4C522B4FCF900DB136F = {
@@ -113,11 +144,10 @@
 		D4F0D4F222B5046600DB136F /* Redux */ = {
 			isa = PBXGroup;
 			children = (
-				D486D89E22CBC6CA00C03DCA /* Common */,
-				D4F0D4F522B504AC00DB136F /* Action.swift */,
-				D4F0D4F322B5048F00DB136F /* State.swift */,
-				D4F0D4F722B50F4B00DB136F /* Store.swift */,
-				D4F0D4F922B5128400DB136F /* Reducer.swift */,
+				D46D4CAB22DE46DA00DD3E03 /* Actions */,
+				D486D89E22CBC6CA00C03DCA /* Application */,
+				D46D4CAE22DE496A00DD3E03 /* Global */,
+				D46D4CAF22DE498800DD3E03 /* Reducers */,
 			);
 			path = Redux;
 			sourceTree = "<group>";
@@ -241,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4F0D4F822B50F4B00DB136F /* Store.swift in Sources */,
+				D43688C822E2367800F72199 /* ShowToDoListReducer.swift in Sources */,
 				D4FE273F22D1227B00C51EBF /* ToDoListDataSource.swift in Sources */,
 				D4F0D4F122B502DE00DB136F /* AppDelegate.swift in Sources */,
 				D4FE273B22D11F2900C51EBF /* ToDoTask.swift in Sources */,
@@ -252,6 +283,7 @@
 				D4F0D4FC22B6BD4000DB136F /* AppDelegate+Redux.swift in Sources */,
 				D46B2F0C22D260B4003F53AE /* AppDelegate+Utils.swift in Sources */,
 				D437311C22C7D3DC00D1524D /* AppStore.swift in Sources */,
+				D46D4CAD22DE481E00DD3E03 /* ShowToDoListAction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

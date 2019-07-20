@@ -22,4 +22,5 @@ protocol Store {
     func unsuscribe(_ suscriptor: StoreSuscriptor)
     func getState() -> State
     func dispatch(action: Action)
+    func replaceReducer(reducer: @escaping Reducer)
 }

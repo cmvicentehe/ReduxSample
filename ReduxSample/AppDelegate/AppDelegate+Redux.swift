@@ -9,22 +9,22 @@
 import Foundation
 
 protocol Redux {
-    func createReducer() -> [Reducer]
+    func createReducer() -> Reducer
     func createState() -> State
     func createSuscriptors() -> [StoreSuscriptor]
     func createQueue() -> DispatchQueue
-    func createStore(reducers: [Reducer], state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) -> Store
+    func createStore(reducer: @escaping Reducer, state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) -> Store
 }
 
 extension AppDelegate: Redux {
 
-    func createReducer() -> [Reducer] {
-        return [Reducer]()
+    func createReducer() -> Reducer {
+        return showToDoListReducer
     }
 
     func createState() -> State {
         let taskList = [ToDoTask]()
-        return AppState(taskList: taskList)
+        return AppStateImpl(taskList: taskList)
     }
 
     func createSuscriptors() -> [StoreSuscriptor] {
@@ -35,7 +35,7 @@ extension AppDelegate: Redux {
         return DispatchQueue(label: "com.cmvicentehe.redux")
     }
 
-    func createStore(reducers: [Reducer], state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) -> Store {
-        return AppStore(reducers: [], state: state, suscriptors: suscriptors, queue: queue)
+    func createStore(reducer: @escaping Reducer, state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) -> Store {
+        return AppStore(reducer: reducer, state: state, suscriptors: suscriptors, queue: queue)
     }
 }

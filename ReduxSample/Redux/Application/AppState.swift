@@ -8,8 +8,12 @@
 
 import Foundation
 
-struct AppState {
-    let taskList: [ToDoTask]
+protocol AppState: State {
+    var taskList: [ToDoTask] { get }
 }
 
-extension AppState: State {}
+struct AppStateImpl {
+    var taskList: [ToDoTask]
+}
+
+extension AppStateImpl: AppState {}

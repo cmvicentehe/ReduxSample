@@ -19,10 +19,10 @@ protocol ToDoListDataSource {
 }
 
 class ToDoListDataSourceImpl: NSObject {
-    var state: State
+    var state: AppState
     var tableView: UITableView?
 
-    init(state: State) {
+    init(state: AppState) {
         self.state = state
         super.init()
     }
@@ -31,14 +31,14 @@ class ToDoListDataSourceImpl: NSObject {
 extension ToDoListDataSourceImpl: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return state.taskList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = ToDoListDataSourceConstants.cellIdentifier
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-
-        cell.textLabel?.text = "Cell \(indexPath.row)"
+        let task = state.taskList[indexPath.row]
+        cell.textLabel?.text = "\(task.name)"
         return cell
     }
 }
@@ -82,7 +82,13 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
     }
 
     func update(state: State) {
-        self.state = state
-        tableView?.reloadData()
+        guard let newState = state as? AppState else {
+            fatalError("There is no a valid state")
+        }
+        self.state = newState
+
+        DispatchQueue.main.async { [unowned self] in
+            self.tableView?.reloadData()
+        }
     }
 }

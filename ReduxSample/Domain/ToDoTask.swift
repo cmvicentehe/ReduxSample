@@ -16,7 +16,8 @@ enum TaskState {
 
 struct ToDoTask {
     let identifier: String
-    let dateToBeDone: Date
-    let notes: String
+    let name: String
+    let dateToBeDone: Date?
+    let notes: String?
     let state: TaskState
 }

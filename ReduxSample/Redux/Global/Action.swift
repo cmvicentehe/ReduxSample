@@ -8,4 +8,6 @@
 
 import Foundation
 
-protocol Action {}
+protocol Action {
+    func execute(for reducer: @escaping Reducer) -> State
+}

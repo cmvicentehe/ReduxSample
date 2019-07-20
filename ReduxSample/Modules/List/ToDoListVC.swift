@@ -14,15 +14,19 @@ class ToDoListVC: UIViewController {
         return ToDoListDataSourceImpl(state: state)
     }()
 
-    var state: State
+    var state: AppState
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(state: State) {
+    init(state: AppState) {
         self.state = state
         super.init(nibName: nil, bundle: nil)
+    }
+
+    deinit {
+        unsuscribe()
     }
 }
 
@@ -31,7 +35,15 @@ extension ToDoListVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpToDoList()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         suscribe()
+
+        let showListAction = ShowToDoListAction()
+        dispatch(action: showListAction)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,6 +72,14 @@ private extension ToDoListVC {
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+}
+
+// MARK: REDUX methods
+private extension ToDoListVC {
+
+    func dispatch(action: Action) {
+        AppDelegateUtils.appDelegate?.store?.dispatch(action: action)
     }
 
     func suscribe() {

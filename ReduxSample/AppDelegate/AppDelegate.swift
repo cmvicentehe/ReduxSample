@@ -39,12 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     func initializeRedux() {
-        let reducers = createReducer()
+        let reducer = createReducer()
         let state = createState()
         let suscriptors = createSuscriptors()
-        let queue =  createQueue()
+        let queue = createQueue()
 
-        store = createStore(reducers: reducers, state: state, suscriptors: suscriptors, queue: queue)
+        store = createStore(reducer: reducer, state: state, suscriptors: suscriptors, queue: queue)
     }
 
     func suscribe(_ suscriptor: StoreSuscriptor) {
@@ -63,7 +63,7 @@ extension AppDelegate {
 private extension AppDelegate {
 
     func showInitialVC() {
-        guard let state = store?.getState() else {
+        guard let state = store?.getState() as? AppState else {
             print("There is no state created")
             return
         }

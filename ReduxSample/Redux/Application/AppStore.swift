@@ -9,13 +9,17 @@
 import Foundation
 
 class AppStore {
-    private(set) var reducers: [Reducer]
-    private var state: State // TODO: What to do withState? create a global state with substates?
     var suscriptors: [StoreSuscriptor]
     let queue: DispatchQueue
+    private(set) var reducer: Reducer
+    private var state: State {
+        didSet {
+            notify(newState: state)
+        }
+    }
 
-    init(reducers: [Reducer], state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) {
-        self.reducers = reducers
+    init(reducer: @escaping Reducer, state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) {
+        self.reducer = reducer
         self.state = state
         self.suscriptors = suscriptors
         self.queue = queue
@@ -43,9 +47,27 @@ extension AppStore: Store {
     }
 
     func dispatch(action: Action) {
-        queue.async {
-            // TODO: Implement! depending on the action the store should perform an action or other by creating an ActionFactory
-            
+        queue.async { [weak self] in
+            guard let reducerNotNil = self?.reducer else {
+                fatalError("Reducer can´t be nil")
+            }
+
+            let newState = action.execute(for: reducerNotNil)
+            self?.state = newState
+        }
+    }
+
+    func replaceReducer(reducer: @escaping Reducer) {
+        queue.async { [weak self] in
+            self?.reducer = reducer
+        }
+    }
+}
+
+private extension AppStore {
+    func notify(newState: State) {
+        queue.async { [weak self] in
+            self?.suscriptors.forEach { $0.update(state: newState)}
         }
     }
 }
