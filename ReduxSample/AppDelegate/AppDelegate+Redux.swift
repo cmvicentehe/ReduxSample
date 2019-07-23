@@ -19,12 +19,12 @@ protocol Redux {
 extension AppDelegate: Redux {
 
     func createReducer() -> Reducer {
-        return showToDoListReducer
+        return updateNavigationStateReducer
     }
 
     func createState() -> State {
         let taskList = [ToDoTask]()
-        return AppStateImpl(taskList: taskList)
+        return AppStateImpl(taskList: taskList, navigationState: nil)
     }
 
     func createSuscriptors() -> [StoreSuscriptor] {

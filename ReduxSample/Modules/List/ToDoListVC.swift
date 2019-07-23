@@ -41,9 +41,6 @@ extension ToDoListVC {
         super.viewWillAppear(animated)
 
         suscribe()
-
-        let showListAction = ShowToDoListAction()
-        dispatch(action: showListAction)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

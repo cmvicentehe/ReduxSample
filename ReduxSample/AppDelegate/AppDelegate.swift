@@ -67,9 +67,36 @@ private extension AppDelegate {
             print("There is no state created")
             return
         }
-        
+
         let toDoListVC = ToDoListVC(state: state)
         let navigationController = UINavigationController(rootViewController: toDoListVC)
         window?.rootViewController = navigationController
+
+        initializeNavigationState()
+
+    }
+
+    func initializeNavigationState() {
+        suscribe(self)
+        let updateNavigationStateAction = UpdateNavigationStateAction()
+        dispatch(action: updateNavigationStateAction)
+    }
+
+    func showList() {
+        store?.replaceReducer(reducer: showToDoListReducer)
+        let showListAction = ShowToDoListAction()
+        dispatch(action: showListAction)
+    }
+}
+
+extension AppDelegate: StoreSuscriptor {
+    var identifier: String {
+        let type = AppDelegate.self
+        return String(describing: type)
+    }
+
+    func update(state: State) {
+        unsuscribe(self)
+        showList()
     }
 }

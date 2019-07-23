@@ -9,7 +9,24 @@
 import UIKit
 
 struct AppDelegateUtils {
-    static var appDelegate: AppDelegate? = {
+    static var appDelegate: AppDelegate? {
+
+        if Thread.isMainThread {
+            return AppDelegateUtils.getAppDelegate()
+        }
+
+        var appDelegate: AppDelegate?
+        
+        DispatchQueue.main.sync {
+            appDelegate = AppDelegateUtils.getAppDelegate()
+        }
+
+        return appDelegate
+    }
+}
+
+private extension AppDelegateUtils {
+    static func getAppDelegate() -> AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
-    }()
+    }
 }

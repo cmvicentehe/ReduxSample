@@ -12,6 +12,9 @@
 		D437311E22C7D3FC00D1524D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D437311D22C7D3FC00D1524D /* AppState.swift */; };
 		D46B2F0C22D260B4003F53AE /* AppDelegate+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B2F0B22D260B4003F53AE /* AppDelegate+Utils.swift */; };
 		D46D4CAD22DE481E00DD3E03 /* ShowToDoListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D4CAC22DE481E00DD3E03 /* ShowToDoListAction.swift */; };
+		D4972E3B22E4D57E00B52533 /* NavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4972E3A22E4D57E00B52533 /* NavigationState.swift */; };
+		D4972E3D22E4EA0C00B52533 /* UpdateNavigationStateReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4972E3C22E4EA0C00B52533 /* UpdateNavigationStateReducer.swift */; };
+		D4972E3F22E4EB8E00B52533 /* UpdateNavigationStateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4972E3E22E4EB8E00B52533 /* UpdateNavigationStateAction.swift */; };
 		D4F0D4EA22B5023200DB136F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4F0D4E422B5023200DB136F /* Assets.xcassets */; };
 		D4F0D4EB22B5023200DB136F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4F0D4E522B5023200DB136F /* LaunchScreen.storyboard */; };
 		D4F0D4F022B502DE00DB136F /* ToDoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0D4EE22B502DE00DB136F /* ToDoListVC.swift */; };
@@ -31,6 +34,9 @@
 		D437311D22C7D3FC00D1524D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		D46B2F0B22D260B4003F53AE /* AppDelegate+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Utils.swift"; sourceTree = "<group>"; };
 		D46D4CAC22DE481E00DD3E03 /* ShowToDoListAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowToDoListAction.swift; sourceTree = "<group>"; };
+		D4972E3A22E4D57E00B52533 /* NavigationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NavigationState.swift; path = "../../../../../../../System/Volumes/Data/Users/cmvicentehe/Proyectos iOS/ReduxSample/ReduxSample/Redux/Application/NavigationState.swift"; sourceTree = "<group>"; };
+		D4972E3C22E4EA0C00B52533 /* UpdateNavigationStateReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateNavigationStateReducer.swift; path = "../../../../../../../System/Volumes/Data/Users/cmvicentehe/Proyectos iOS/ReduxSample/ReduxSample/Redux/Reducers/UpdateNavigationStateReducer.swift"; sourceTree = "<group>"; };
+		D4972E3E22E4EB8E00B52533 /* UpdateNavigationStateAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdateNavigationStateAction.swift; path = "../../../../../../../System/Volumes/Data/Users/cmvicentehe/Proyectos iOS/ReduxSample/ReduxSample/Redux/Actions/UpdateNavigationStateAction.swift"; sourceTree = "<group>"; };
 		D4F0D4CE22B4FCF900DB136F /* ReduxSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReduxSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F0D4E422B5023200DB136F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D4F0D4E622B5023200DB136F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -61,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				D46D4CAC22DE481E00DD3E03 /* ShowToDoListAction.swift */,
+				D4972E3E22E4EB8E00B52533 /* UpdateNavigationStateAction.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -80,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				D43688C722E2367800F72199 /* ShowToDoListReducer.swift */,
+				D4972E3C22E4EA0C00B52533 /* UpdateNavigationStateReducer.swift */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -97,8 +105,9 @@
 		D486D89E22CBC6CA00C03DCA /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				D437311B22C7D3DC00D1524D /* AppStore.swift */,
 				D437311D22C7D3FC00D1524D /* AppState.swift */,
+				D437311B22C7D3DC00D1524D /* AppStore.swift */,
+				D4972E3A22E4D57E00B52533 /* NavigationState.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -274,8 +283,10 @@
 				D43688C822E2367800F72199 /* ShowToDoListReducer.swift in Sources */,
 				D4FE273F22D1227B00C51EBF /* ToDoListDataSource.swift in Sources */,
 				D4F0D4F122B502DE00DB136F /* AppDelegate.swift in Sources */,
+				D4972E3B22E4D57E00B52533 /* NavigationState.swift in Sources */,
 				D4FE273B22D11F2900C51EBF /* ToDoTask.swift in Sources */,
 				D4F0D4FA22B5128400DB136F /* Reducer.swift in Sources */,
+				D4972E3D22E4EA0C00B52533 /* UpdateNavigationStateReducer.swift in Sources */,
 				D437311E22C7D3FC00D1524D /* AppState.swift in Sources */,
 				D4F0D4F622B504AC00DB136F /* Action.swift in Sources */,
 				D4F0D4F022B502DE00DB136F /* ToDoListVC.swift in Sources */,
@@ -283,6 +294,7 @@
 				D4F0D4FC22B6BD4000DB136F /* AppDelegate+Redux.swift in Sources */,
 				D46B2F0C22D260B4003F53AE /* AppDelegate+Utils.swift in Sources */,
 				D437311C22C7D3DC00D1524D /* AppStore.swift in Sources */,
+				D4972E3F22E4EB8E00B52533 /* UpdateNavigationStateAction.swift in Sources */,
 				D46D4CAD22DE481E00DD3E03 /* ShowToDoListAction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

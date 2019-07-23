@@ -9,9 +9,14 @@
 import Foundation
 
 func showToDoListReducer(_ action: Action, _ state: State?) -> State {
+
+    guard let currentState = AppDelegateUtils.appDelegate?.store?.getState() as? AppState else {
+        fatalError("Invalid state")
+    }
+
     // TODO: retrieve list from somewhere API/CoreData...
     let task1 = ToDoTask(identifier: "1", name: "task 1", dateToBeDone: nil, notes: nil, state: .toDo)
     let task2 = ToDoTask(identifier: "2", name: "task 2", dateToBeDone: nil, notes: nil, state: .toDo)
     let task3 = ToDoTask(identifier: "3", name: "task 3", dateToBeDone: nil, notes: nil, state: .toDo)
-    return AppStateImpl(taskList: [task1, task2, task3])
+    return AppStateImpl(taskList: [task1, task2, task3], navigationState: currentState.navigationState)
 }

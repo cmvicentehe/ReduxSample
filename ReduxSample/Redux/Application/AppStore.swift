@@ -24,15 +24,20 @@ class AppStore {
         self.suscriptors = suscriptors
         self.queue = queue
     }
+
+    deinit {
+        suscriptors.forEach { unsuscribe($0) }
+    }
 }
 
 extension AppStore: Store {
 
     func suscribe(_ suscriptor: StoreSuscriptor) {
         queue.async { [unowned self] in
-            let result = self.suscriptors.compactMap { $0.identifier == suscriptor.identifier }
+            let result = self.suscriptors.filter { $0.identifier == suscriptor.identifier }
             let alreadyAdded = result.count > 0 ? true : false
-            if !alreadyAdded { self.suscriptors.append(suscriptor) }
+            if !alreadyAdded {
+                self.suscriptors.append(suscriptor) }
         }
     }
 
@@ -43,31 +48,44 @@ extension AppStore: Store {
     }
 
     func getState() -> State {
+        // TODO: Implement get state doing it thread safe
+//        var state: State?
+//        let dispatchGroup = DispatchGroup()
+//        dispatchGroup.enter()
+//        queue.async { [unowned self] in
+//            state = self.state
+//            dispatchGroup.leave()
+//        }
+//
+//        dispatchGroup.wait()
+//
+//        guard let stateNotNil = state else {
+//            fatalError("Invalid state")
+//        }
+//
+//        return stateNotNil
+
         return state
     }
 
     func dispatch(action: Action) {
-        queue.async { [weak self] in
-            guard let reducerNotNil = self?.reducer else {
-                fatalError("Reducer can´t be nil")
-            }
-
-            let newState = action.execute(for: reducerNotNil)
-            self?.state = newState
+        queue.async { [unowned self] in
+            let newState = action.execute(for: self.reducer)
+            self.state = newState
         }
     }
 
     func replaceReducer(reducer: @escaping Reducer) {
-        queue.async { [weak self] in
-            self?.reducer = reducer
+        queue.async { [unowned self] in
+            self.reducer = reducer
         }
     }
 }
 
 private extension AppStore {
     func notify(newState: State) {
-        queue.async { [weak self] in
-            self?.suscriptors.forEach { $0.update(state: newState)}
+        queue.async { [unowned self] in
+            self.suscriptors.forEach { $0.update(state: newState)}
         }
     }
 }
