@@ -15,18 +15,27 @@ func updateNavigationStateReducer(_ action: Action, _ state: State?) -> State {
             fatalError("Invalid AppDelegate or State")
     }
 
-    var rootViewController: UIViewController?
-
-    DispatchQueue.main.sync {
-        rootViewController = appDelegate.window?.rootViewController
-    }
+    let viewController: UIViewController? = rootViewController(appDelegate: appDelegate)
 
     guard let window = appDelegate.window,
-        let rootViewControllerNotNil = rootViewController else {
+        let rootViewControllerNotNil = viewController else {
             fatalError("No window or root view controller active")
     }
 
     let navigationState = NavigationStateImpl(rootViewController: rootViewControllerNotNil, window: window)
 
     return AppStateImpl(taskList: currentState.taskList, navigationState: navigationState)
+}
+
+private func rootViewController(appDelegate: AppDelegate) -> UIViewController? {
+    var rootViewController: UIViewController?
+    if Thread.isMainThread {
+        rootViewController = appDelegate.window?.rootViewController
+    } else {
+        DispatchQueue.main.sync {
+            rootViewController = appDelegate.window?.rootViewController
+        }
+    }
+
+    return rootViewController
 }

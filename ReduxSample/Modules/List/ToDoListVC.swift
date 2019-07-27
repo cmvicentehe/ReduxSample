@@ -39,7 +39,6 @@ extension ToDoListVC {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         suscribe()
     }
 

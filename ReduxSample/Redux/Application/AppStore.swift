@@ -48,24 +48,16 @@ extension AppStore: Store {
     }
 
     func getState() -> State {
-        // TODO: Implement get state doing it thread safe
-//        var state: State?
-//        let dispatchGroup = DispatchGroup()
-//        dispatchGroup.enter()
-//        queue.async { [unowned self] in
-//            state = self.state
-//            dispatchGroup.leave()
-//        }
-//
-//        dispatchGroup.wait()
-//
-//        guard let stateNotNil = state else {
-//            fatalError("Invalid state")
-//        }
-//
-//        return stateNotNil
+        var state: State?
+        DispatchQueue.global().sync { [unowned self] in
+            state = self.state
+        }
 
-        return state
+        guard let stateNotNil = state else {
+            fatalError("Invalid state")
+        }
+
+        return stateNotNil
     }
 
     func dispatch(action: Action) {
