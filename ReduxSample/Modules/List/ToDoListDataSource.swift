@@ -8,10 +8,6 @@
 
 import UIKit
 
-struct ToDoListDataSourceConstants {
-    static let cellIdentifier = "ToDoCell"
-}
-
 protocol ToDoListDataSource {
     func setUp(tableView: UITableView)
     func suscribe()
@@ -35,10 +31,14 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = ToDoListDataSourceConstants.cellIdentifier
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ?? UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
+        let cellIdentifier = ToDoCellConstants.cellIdentifier
+        let cell = (tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ToDoCell) ?? ToDoCell(style: .default, reuseIdentifier: cellIdentifier)
+
         let task = state.taskList[indexPath.row]
-        cell.textLabel?.text = "\(task.name)"
+        let isSelected = task.state == .done ? true : false
+        let viewModel = ToDoViewModel(identifier: task.identifier, title: task.name, subtitle: "", isSelected: isSelected)
+        cell.bind(viewModel: viewModel)
+
         return cell
     }
 }
@@ -46,6 +46,8 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
 extension ToDoListDataSourceImpl: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Cell selected at index path \(indexPath.row)")
+
+        // TODO: Go to detail View (dispatch an action that launches DetailView) Detail View will allow to edit task name, mark it as completed or return back without saving
     }
 }
 
@@ -55,6 +57,8 @@ extension ToDoListDataSourceImpl: ToDoListDataSource {
     func setUp(tableView: UITableView) {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = CGFloat(ToDoCellConstants.estimatedRowHeight)
         self.tableView = tableView
     }
     
@@ -85,6 +89,7 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
         guard let newState = state as? AppState else {
             fatalError("There is no a valid state")
         }
+        
         self.state = newState
 
         DispatchQueue.main.async { [unowned self] in
