@@ -13,7 +13,7 @@ struct ToDoCellConstants {
     static let estimatedRowHeight = 44.0
 }
 
-struct ToDoCellVisualConstants {
+private struct ToDoCellVisualConstants {
     static let margin12: CGFloat = 12.0
     static let margin6: CGFloat = 6.0
     static let buttonHeight: CGFloat = 44.0
@@ -75,6 +75,7 @@ extension ToDoCell {
 private extension ToDoCell {
     func setUpViews() {
         contentView.addSubview(title)
+        // TODO: Add subtitle
 //      contentView.addSubview(subtitle)
         contentView.addSubview(completeButton)
 
@@ -88,7 +89,7 @@ private extension ToDoCell {
     }
 }
 
-//MARK: Action methods
+// MARK: Action methods
 private extension ToDoCell {
     @objc func completeButtonTapped() {
 

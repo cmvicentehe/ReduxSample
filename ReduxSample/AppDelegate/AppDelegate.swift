@@ -67,8 +67,8 @@ private extension AppDelegate {
             print("There is no state created")
             return
         }
-
-        let toDoListVC = ToDoListVC(state: state)
+        let toDoListDataSource = ToDoListDataSourceImpl(state: state)
+        let toDoListVC = ToDoListVC(state: state, toDoListDataSource: toDoListDataSource, suscriber: toDoListDataSource)
         let navigationController = UINavigationController(rootViewController: toDoListVC)
         window?.rootViewController = navigationController
 

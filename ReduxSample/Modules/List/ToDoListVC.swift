@@ -8,25 +8,17 @@
 
 import UIKit
 
-class ToDoListVC: UIViewController {
+class ToDoListVC: ReduxSampleVC {
 
-    lazy var toDoListDataSource: ToDoListDataSource = {
-        return ToDoListDataSourceImpl(state: state)
-    }()
+    let toDoListDataSource: ToDoListDataSource
 
-    var state: AppState
+    init(state: AppState, toDoListDataSource: ToDoListDataSource, suscriber: Suscriber? = nil) {
+        self.toDoListDataSource = toDoListDataSource
+        super.init(state: state, suscriber: suscriber)
+    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    init(state: AppState) {
-        self.state = state
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    deinit {
-        unsuscribe()
     }
 }
 
@@ -35,21 +27,6 @@ extension ToDoListVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpToDoList()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        suscribe()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unsuscribe()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        unsuscribe()
     }
 }
 
@@ -72,17 +49,4 @@ private extension ToDoListVC {
 }
 
 // MARK: REDUX methods
-private extension ToDoListVC {
-
-    func dispatch(action: Action) {
-        AppDelegateUtils.appDelegate?.store?.dispatch(action: action)
-    }
-
-    func suscribe() {
-        toDoListDataSource.suscribe()
-    }
-
-    func unsuscribe() {
-        toDoListDataSource.unsuscribe()
-    }
-}
+extension ToDoListVC: ActionDispatcher {}

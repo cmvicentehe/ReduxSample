@@ -10,8 +10,6 @@ import UIKit
 
 protocol ToDoListDataSource {
     func setUp(tableView: UITableView)
-    func suscribe()
-    func unsuscribe()
 }
 
 class ToDoListDataSourceImpl: NSObject {
@@ -61,7 +59,9 @@ extension ToDoListDataSourceImpl: ToDoListDataSource {
         tableView.estimatedRowHeight = CGFloat(ToDoCellConstants.estimatedRowHeight)
         self.tableView = tableView
     }
-    
+}
+
+extension ToDoListDataSourceImpl: Suscriber {
     func suscribe() {
         guard let appDelegate = AppDelegateUtils.appDelegate else {
             return
@@ -69,7 +69,7 @@ extension ToDoListDataSourceImpl: ToDoListDataSource {
 
         appDelegate.suscribe(self)
     }
-    
+
     func unsuscribe() {
         guard let appDelegate = AppDelegateUtils.appDelegate else {
             return
