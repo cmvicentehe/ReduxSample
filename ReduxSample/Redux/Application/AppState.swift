@@ -10,11 +10,13 @@ import Foundation
 
 protocol AppState: State {
     var taskList: [ToDoTask] { get }
+    var selectedTask: ToDoTask? { get }
     var navigationState: NavigationState? { get }
 }
 
 struct AppStateImpl {
     private(set) var taskList: [ToDoTask]
+    private(set) var selectedTask: ToDoTask?
     private(set) var navigationState: NavigationState?
 }
 

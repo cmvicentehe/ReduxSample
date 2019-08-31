@@ -43,9 +43,11 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
 
 extension ToDoListDataSourceImpl: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Cell selected at index path \(indexPath.row)")
-
-        // TODO: Go to detail View (dispatch an action that launches DetailView) Detail View will allow to edit task name, mark it as completed or return back without saving
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: showToDoDetailReducer)
+        let task = state.taskList[indexPath.row]
+        let showToDoDetailAction = ShowToDoDetailAction(task: task)
+        store?.dispatch(action: showToDoDetailAction)
     }
 }
 

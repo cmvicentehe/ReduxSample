@@ -14,6 +14,30 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
             fatalError("Invalid AppDelegate or State")
     }
 
-    // TODO: Implement!!
-    return currentState
+    guard let showToDoDetailAction = action as? ShowToDoDetailAction else {
+        fatalError("Invalid associated action")
+    }
+
+    let selectedTask = showToDoDetailAction.task
+    let navigationState = currentState.navigationState
+
+    let newState = AppStateImpl(taskList: currentState.taskList,
+                                selectedTask: selectedTask,
+                                navigationState: navigationState)
+
+    if Thread.isMainThread {
+        showToDoDetailVC(for: newState)
+    } else {
+        DispatchQueue.main.async {
+            showToDoDetailVC(for: newState)
+        }
+    }
+
+    return newState
+}
+
+private func showToDoDetailVC(for state: AppState) {
+    let navigationState = state.navigationState
+    let toDoDetailVC = ToDoDetailVC(state: state)
+    navigationState?.show(viewController: toDoDetailVC, navigationStyle: .push)
 }

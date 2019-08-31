@@ -27,7 +27,7 @@ func changeTaskStateReducer(_ action: Action, _ state: State?) -> State {
     let task = changeTaskState(for: taskToBeModified)
     let updatedTaskList = currentState.taskList.compactMap { $0.identifier == task.identifier ? task : $0}
 
-    return AppStateImpl(taskList: updatedTaskList, navigationState: currentState.navigationState)
+    return AppStateImpl(taskList: updatedTaskList, selectedTask: nil, navigationState: currentState.navigationState)
 }
 
 private func task(for identifier: String, currentState: AppState) -> ToDoTask? {

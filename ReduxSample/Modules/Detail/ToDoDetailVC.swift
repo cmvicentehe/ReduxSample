@@ -14,6 +14,16 @@ class ToDoDetailVC: ReduxSampleVC {
         super.viewDidLoad()
         view.backgroundColor = .blue
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: updateNavigationStateReducer)
+        
+        let updateNavigationStateAction = UpdateNavigationStateAction()
+        dispatch(action: updateNavigationStateAction)
+    }
 }
 
 extension ToDoDetailVC: ActionDispatcher {}

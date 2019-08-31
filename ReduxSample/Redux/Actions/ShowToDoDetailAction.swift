@@ -8,6 +8,8 @@
 
 import Foundation
 
-struct ShowToDoDetailAction {}
+struct ShowToDoDetailAction {
+    let task: ToDoTask
+}
 
 extension ShowToDoDetailAction: Action {}

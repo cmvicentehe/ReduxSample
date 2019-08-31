@@ -24,7 +24,7 @@ extension AppDelegate: Redux {
 
     func createState() -> State {
         let taskList = [ToDoTask]()
-        return AppStateImpl(taskList: taskList, navigationState: nil)
+        return AppStateImpl(taskList: taskList, selectedTask: nil, navigationState: nil)
     }
 
     func createSuscriptors() -> [StoreSuscriptor] {
