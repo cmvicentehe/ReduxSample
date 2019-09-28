@@ -34,7 +34,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
 
         let task = state.taskList[indexPath.row]
         let isSelected = task.state == .done ? true : false
-        let viewModel = ToDoViewModel(identifier: task.identifier, title: task.name, subtitle: "", isSelected: isSelected)
+        let viewModel = ToDoViewModel(identifier: task.identifier, title: task.name, notes: "", isSelected: isSelected)
         cell.bind(viewModel: viewModel)
 
         return cell

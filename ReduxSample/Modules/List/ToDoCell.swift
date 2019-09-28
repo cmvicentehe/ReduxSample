@@ -8,17 +8,6 @@
 
 import UIKit
 
-struct ToDoCellConstants {
-    static let cellIdentifier = "ToDoCell"
-    static let estimatedRowHeight = 44.0
-}
-
-private struct ToDoCellVisualConstants {
-    static let margin12: CGFloat = 12.0
-    static let margin6: CGFloat = 6.0
-    static let buttonHeight: CGFloat = 44.0
-}
-
 class ToDoCell: UITableViewCell {
 
     var viewModel: ToDoViewModel?
@@ -57,7 +46,7 @@ class ToDoCell: UITableViewCell {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("Invalid init method use (init(state: , suscriber:)) instead")
     }
 }
 
@@ -66,7 +55,7 @@ extension ToDoCell {
     func bind(viewModel: ToDoViewModel) {
         self.viewModel = viewModel
         title.text = viewModel.title
-        subtitle.text = viewModel.subtitle
+        subtitle.text = viewModel.notes
         completeButton.isSelected = viewModel.isSelected
     }
 }
@@ -75,7 +64,7 @@ extension ToDoCell {
 private extension ToDoCell {
     func setUpViews() {
         contentView.addSubview(title)
-        // TODO: Add subtitle
+        // TODO: Add subtitle (Date)
 //      contentView.addSubview(subtitle)
         contentView.addSubview(completeButton)
 
@@ -106,4 +95,15 @@ private extension ToDoCell {
         let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.identifier)
         store.dispatch(action: action)
     }
+}
+
+struct ToDoCellConstants {
+    static let cellIdentifier = "ToDoCell"
+    static let estimatedRowHeight = 44.0
+}
+
+private struct ToDoCellVisualConstants {
+    static let margin12: CGFloat = 12.0
+    static let margin6: CGFloat = 6.0
+    static let buttonHeight: CGFloat = 44.0
 }
