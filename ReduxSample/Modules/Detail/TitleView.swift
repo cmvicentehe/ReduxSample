@@ -82,7 +82,7 @@ private extension TitleView {
         titleTextfield.leadingAnchor.constraint(equalTo: completeButton.trailingAnchor, constant: ToDoDetailVCVisualConstants.margin6).isActive = true
         titleTextfield.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -ToDoDetailVCVisualConstants.margin12).isActive = true
         titleTextfield.topAnchor.constraint(equalTo: completeButton.topAnchor).isActive = true
-        titleTextfield.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -ToDoDetailVCVisualConstants.margin12)
+        titleTextfield.bottomAnchor.constraint(equalTo: bottomAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
 
         titleTextView.leadingAnchor.constraint(equalTo: titleTextfield.leadingAnchor).isActive = true
         titleTextView.trailingAnchor.constraint(equalTo: titleTextfield.trailingAnchor).isActive = true

@@ -38,7 +38,7 @@ extension ToDoDetailVC {
                                                                   metrics: metrics,
                                                                   views: views))
         
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[titleView]-margin12-[notesView]-margin12-[sendButtonView]-(>=margin12)-|",
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[titleView]-margin12-[notesView]-(>=margin12)-[sendButtonView]-margin12-|",
                                                                   options: .alignAllCenterX,
                                                                   metrics: metrics,
                                                                   views: views))
