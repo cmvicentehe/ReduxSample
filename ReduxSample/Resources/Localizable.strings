@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  ReduxSample
+
+  Created by Carlos Manuel Vicente Herrero on 29/09/2019.
+  Copyright © 2019 Carlos Manuel Vicente Herrero. All rights reserved.
+*/
+
+"send" = "Send";
+"due_date" = "Due date";

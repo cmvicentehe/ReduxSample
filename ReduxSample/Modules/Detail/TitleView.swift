@@ -49,8 +49,7 @@ class TitleView: UIView {
         completeButton.setImage(notSelectedImage, for: .normal)
         completeButton.setImage(selectedImage, for: .selected)
         completeButton.isSelected = viewModel?.isSelected ?? false
-
-        //        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside) // TODO: Uncomment this method to allow select/deselect task
+        completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
 
         return completeButton
     }()
@@ -91,4 +90,20 @@ private extension TitleView {
 
         heightAnchor.constraint(equalTo: titleTextView.heightAnchor).isActive = true
     }
+
+    @objc func completeButtonTapped() {
+
+           guard let viewModelNotNil = viewModel else {
+               fatalError("View model is nil")
+           }
+
+           guard let store = AppDelegateUtils.appDelegate?.store else {
+               fatalError("Store is nil")
+           }
+
+           store.replaceReducer(reducer: changeTaskStateReducer)
+
+           let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.identifier)
+           store.dispatch(action: action)
+       }
 }

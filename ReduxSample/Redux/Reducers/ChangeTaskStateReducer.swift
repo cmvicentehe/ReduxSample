@@ -54,7 +54,7 @@ private func changeTaskState(for task: ToDoTask) -> ToDoTask {
 
     return ToDoTask(identifier: task.identifier,
                     name: task.name,
-                    dateToBeDone: task.dateToBeDone,
+                    dueDate: task.dueDate,
                     notes: task.notes,
                     state: newState)
 }

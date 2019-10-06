@@ -11,6 +11,7 @@ import Foundation
 struct ToDoViewModel {
     let identifier: String
     let title: String
-    let notes: String
+    let date: String?
+    let notes: String?
     let isSelected: Bool
 }

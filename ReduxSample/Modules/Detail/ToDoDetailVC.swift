@@ -30,6 +30,13 @@ class ToDoDetailVC: ReduxSampleVC {
         
         return titleView
     }()
+
+    lazy var dateView: DateView = {
+        let dateView = DateView(frame: .zero, viewModel: viewModel)
+        dateView.translatesAutoresizingMaskIntoConstraints = false
+
+        return dateView
+    }()
     
     lazy var notesView: NotesView = {
         let notesView = NotesView(frame: .zero, viewModel: viewModel)
@@ -37,12 +44,18 @@ class ToDoDetailVC: ReduxSampleVC {
         
         return notesView
     }()
+
+    lazy var sendButtonView: UIView = {
+        let sendButtonView = createContainerView()
+        return sendButtonView
+    }()
     
     lazy var sendButton: UIButton = {
         let sendButton = UIButton.init(type: .custom)
+        let buttonTitle = NSLocalizedString("send", comment: "")
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.setTitle("#SEND#", for: .normal) // TODO: Localize text
-        sendButton.setTitleColor(UIColor.blue, for: .normal)
+        sendButton.setTitle(buttonTitle, for: .normal)
+        sendButton.setTitleColor(.systemBlue, for: .normal)
         
         return sendButton
     }()
@@ -83,8 +96,11 @@ private extension ToDoDetailVC {
         }
         
         let isCompleted = (selectedTask.state == .done) ? true : false
+        let formatterType = FormatterType.default
+        let date = CustomDateFormatter.convertDateToString(date: selectedTask.dueDate, with: formatterType)
         viewModel = ToDoViewModel(identifier: selectedTask.identifier,
                                   title: selectedTask.name,
+                                  date: date,
                                   notes: selectedTask.notes ?? "",
                                   isSelected: isCompleted)
     }

@@ -28,6 +28,7 @@ class ToDoCell: UITableViewCell {
         let title = UILabel(frame: .zero)
         title.translatesAutoresizingMaskIntoConstraints = false
         title.numberOfLines = 0
+        title.font = UIFont.systemFont(ofSize: ToDoCellFontConstants.titleSize, weight: .bold)
 
         return title
     }()
@@ -36,6 +37,7 @@ class ToDoCell: UITableViewCell {
         let subtitle = UILabel(frame: .zero)
         subtitle.translatesAutoresizingMaskIntoConstraints = false
         subtitle.numberOfLines = 0
+        subtitle.font = UIFont.systemFont(ofSize: ToDoCellFontConstants.subtitleSize, weight: .light)
         
         return subtitle
     }()
@@ -46,7 +48,7 @@ class ToDoCell: UITableViewCell {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        fatalError("Invalid init method use (init(state: , suscriber:)) instead")
+        fatalError("Invalid init method use (init(style: , reuseIdentifier:)) instead")
     }
 }
 
@@ -73,7 +75,7 @@ private extension ToDoCell {
         title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
         title.leftAnchor.constraint(equalTo: completeButton.rightAnchor, constant: ToDoCellVisualConstants.margin6).isActive = true
         completeButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
-        completeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        completeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         completeButton.heightAnchor.constraint(equalToConstant: ToDoCellVisualConstants.buttonHeight).isActive = true
     }
 }
@@ -106,4 +108,9 @@ private struct ToDoCellVisualConstants {
     static let margin12: CGFloat = 12.0
     static let margin6: CGFloat = 6.0
     static let buttonHeight: CGFloat = 44.0
+}
+
+private struct ToDoCellFontConstants {
+    static let titleSize: CGFloat = 16.0
+    static let subtitleSize: CGFloat = 12.0
 }
