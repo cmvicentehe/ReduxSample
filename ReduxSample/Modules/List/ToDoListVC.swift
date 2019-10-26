@@ -47,6 +47,3 @@ private extension ToDoListVC {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
-
-// MARK: REDUX methods
-extension ToDoListVC: ActionDispatcher {}

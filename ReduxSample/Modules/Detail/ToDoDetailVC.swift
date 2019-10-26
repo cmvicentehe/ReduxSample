@@ -32,9 +32,12 @@ class ToDoDetailVC: ReduxSampleVC {
         return titleView
     }()
 
-    lazy var dateView: DateView = {
+    lazy var dateView: DateView = { [weak self] in
         let dateView = DateView(frame: .zero, viewModel: viewModel)
         dateView.translatesAutoresizingMaskIntoConstraints = false
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(userDidTapDateView))
+
+        dateView.addGestureRecognizer(tapGestureRecognizer)
 
         return dateView
     }()
@@ -84,7 +87,6 @@ extension ToDoDetailVC {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterToKeyboardEvents()
-        updateNavigationStack()
     }
 }
 
@@ -105,21 +107,21 @@ private extension ToDoDetailVC {
                                   notes: selectedTask.notes ?? "",
                                   isSelected: isCompleted)
     }
-    
-    func updateNavigationStack() {
-        replaceReducerByUpdateNavigationStateReducer()
-        dispatchUpdateNavigationStateAction()
+
+    @objc func userDidTapDateView() {
+        replaceReducerByShowDateSelectorReducer()
+        dispatchShowDateSelectorAction()
     }
-    
-    func replaceReducerByUpdateNavigationStateReducer() {
-        let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: updateNavigationStateReducer)
+
+    func replaceReducerByShowDateSelectorReducer() {
+       let store = AppDelegateUtils.appDelegate?.store
+       store?.replaceReducer(reducer: showDateSelectorReducer)
     }
-    
-    func dispatchUpdateNavigationStateAction() {
-        let updateNavigationStateAction = UpdateNavigationStateAction()
-        dispatch(action: updateNavigationStateAction)
-    }
+
+   func dispatchShowDateSelectorAction() {
+       let showDateSelectorAction = ShowDateSelectorAction()
+       dispatch(action: showDateSelectorAction)
+   }
 }
 
 // MARK: Keyboard methods
@@ -182,6 +184,3 @@ private extension ToDoDetailVC {
         view.addGestureRecognizer(tapGestureRecognizer)
     }
 }
-
-// MARK: REDUX methods
-extension ToDoDetailVC: ActionDispatcher {}

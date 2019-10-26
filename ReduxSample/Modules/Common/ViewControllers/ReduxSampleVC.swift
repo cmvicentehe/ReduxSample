@@ -38,7 +38,8 @@ extension ReduxSampleVC {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-         suscriber?.unsuscribe()
+        updateNavigationStack()
+        suscriber?.unsuscribe()
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,3 +47,25 @@ extension ReduxSampleVC {
          suscriber?.unsuscribe()
     }
 }
+
+// MARK: Navigation state
+extension ReduxSampleVC {
+
+    func updateNavigationStack() {
+        replaceReducerByUpdateNavigationStateReducer()
+        dispatchUpdateNavigationStateAction()
+    }
+
+    func replaceReducerByUpdateNavigationStateReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: updateNavigationStateReducer)
+    }
+
+    func dispatchUpdateNavigationStateAction() {
+        let updateNavigationStateAction = UpdateNavigationStateAction()
+        dispatch(action: updateNavigationStateAction)
+    }
+}
+
+// MARK: REDUX methods
+extension ReduxSampleVC: ActionDispatcher {}
