@@ -11,6 +11,7 @@ import UIKit
 class ToDoDetailVC: ReduxSampleVC {
     
     var viewModel: ToDoViewModel?
+    var scrollViewBottomConstraint: NSLayoutConstraint?
     
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
@@ -143,17 +144,31 @@ private extension ToDoDetailVC {
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
         let keyboardHeight = keyboardViewEndFrame.height
 
-        UIView.animate(withDuration: 0.3) {
-            self.scrollView.contentInset = UIEdgeInsets(top: 0,
-                                                   left: 0.0,
-                                                   bottom: keyboardHeight,
-                                                   right: 0.0)
+        if keyboardScreenEndFrame.intersects(titleView.frame) ||
+            keyboardScreenEndFrame.intersects(notesView.frame) {
+
+            UIView.animate(withDuration: 0.3) { [weak self] in
+
+                guard let viewHeight = self?.view.frame.height,
+                    let contentViewHeight = self?.contentView.frame.height else {
+                    print("View or scroll content view height is nil")
+                    return
+                }
+                
+                let availableSpace = viewHeight - keyboardHeight
+                let yposition = contentViewHeight - availableSpace
+                self?.scrollView.setContentOffset(CGPoint(x: 0, y: yposition), animated: false)
+                self?.scrollViewBottomConstraint?.constant = -keyboardHeight
+                self?.view.layoutIfNeeded()
+            }
         }
     }
 
     @objc func keyboardWillHide(notification: Notification) {
-        UIView.animate(withDuration: 0.3) {
-            self.scrollView.contentInset = .zero
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            self?.scrollView.setContentOffset(.zero, animated: false)
+            self?.scrollViewBottomConstraint?.constant = 0
+            self?.view.layoutIfNeeded()
         }
     }
 

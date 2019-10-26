@@ -87,6 +87,7 @@ private extension TitleView {
         titleTextView.trailingAnchor.constraint(equalTo: titleTextfield.trailingAnchor).isActive = true
         titleTextView.topAnchor.constraint(equalTo: titleTextfield.topAnchor).isActive = true
         titleTextView.bottomAnchor.constraint(equalTo: titleTextfield.bottomAnchor).isActive = true
+        titleTextView.heightAnchor.constraint(equalTo: titleTextfield.heightAnchor).isActive = true
 
         heightAnchor.constraint(equalTo: titleTextView.heightAnchor).isActive = true
     }

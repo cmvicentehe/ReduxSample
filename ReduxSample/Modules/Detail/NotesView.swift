@@ -68,6 +68,7 @@ private extension NotesView {
         notesTextView.trailingAnchor.constraint(equalTo: notesTextfield.trailingAnchor).isActive = true
         notesTextView.topAnchor.constraint(equalTo: notesTextfield.topAnchor).isActive = true
         notesTextView.bottomAnchor.constraint(equalTo: notesTextfield.bottomAnchor).isActive = true
+        notesTextView.heightAnchor.constraint(equalTo: notesTextfield.heightAnchor).isActive = true
 
         heightAnchor.constraint(equalTo: notesTextView.heightAnchor).isActive = true
     }
