@@ -113,7 +113,7 @@ private extension ToDoDetailVC {
         viewModel = ToDoViewModel(taskIdentifier: selectedTask.identifier,
                                   title: selectedTask.name,
                                   date: date,
-                                  notes: selectedTask.notes ?? "",
+                                  notes: selectedTask.notes ?? "--",
                                   isSelected: isCompleted)
     }
 

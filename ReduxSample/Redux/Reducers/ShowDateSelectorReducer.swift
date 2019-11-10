@@ -32,5 +32,6 @@ func showDateSelectorReducer(_ action: Action, _ state: State?) -> State {
 private func showDateSelectorVC(for state: AppState) {
     let navigationState = state.navigationState
     let dateSelectorVC = DateSelectorVC(state: state)
+    dateSelectorVC.modalPresentationStyle = .overCurrentContext
     navigationState?.show(viewController: dateSelectorVC, navigationStyle: .modal)
 }

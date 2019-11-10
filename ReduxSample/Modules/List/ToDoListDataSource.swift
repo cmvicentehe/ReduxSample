@@ -36,7 +36,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
         let isSelected = task.state == .done ? true : false
         let formatterType = FormatterType.default
         let date = CustomDateFormatter.convertDateToString(date: task.dueDate, with: formatterType)
-        let viewModel = ToDoViewModel(taskIdentifier: task.identifier, title: task.name, date: date, notes: "", isSelected: isSelected)
+        let viewModel = ToDoViewModel(taskIdentifier: task.identifier, title: task.name, date: date, notes: "--", isSelected: isSelected)
         cell.bind(viewModel: viewModel)
 
         return cell

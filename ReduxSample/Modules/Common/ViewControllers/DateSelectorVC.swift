@@ -50,6 +50,7 @@ class DateSelectorVC: ReduxSampleVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpViews()
+        dismissDateSelectorWhenUserTouchedAround()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,6 +61,7 @@ class DateSelectorVC: ReduxSampleVC {
 
 // MARK: Actions
 private extension DateSelectorVC {
+
     @objc func acceptButtonTouchedUpInside() {
         dismissDateSelector(completion: updateDate)
     }
@@ -76,6 +78,10 @@ private extension DateSelectorVC {
 
 // MARK: Redux methods
 private extension DateSelectorVC {
+
+    @objc func dismissDateSelectorBytouchingOutside() {
+        dismissDateSelector(completion: nil)
+    }
 
     func dismissDateSelector(completion: (() -> Void)?) {
         dismiss(animated: true) {
@@ -100,7 +106,7 @@ private extension DateSelectorVC {
     func setUpViews() {
         view.addSubview(picker)
         view.addSubview(toolbar)
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
 
         picker.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         picker.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -112,6 +118,12 @@ private extension DateSelectorVC {
         toolbar.bottomAnchor.constraint(equalTo: picker.topAnchor).isActive = true
         toolbar.widthAnchor.constraint(equalTo: picker.widthAnchor).isActive = true
         toolbar.heightAnchor.constraint(equalToConstant: DateSelectorVisualConstants.toolbarHeight).isActive = true
+    }
+
+    func dismissDateSelectorWhenUserTouchedAround() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissDateSelectorBytouchingOutside))
+        tapGestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGestureRecognizer)
     }
 }
 

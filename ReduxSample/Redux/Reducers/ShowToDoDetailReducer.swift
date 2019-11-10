@@ -56,6 +56,6 @@ private func toDoViewModel(for state: AppState) -> ToDoViewModel? {
     return ToDoViewModel(taskIdentifier: selectedTask.identifier,
                          title: selectedTask.name,
                          date: date,
-                         notes: selectedTask.notes ?? "",
+                         notes: selectedTask.notes ?? "--",
                          isSelected: isCompleted)
 }
