@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol DetailUpdater {
+    func update(with state: AppState)
+}
+
 class ToDoDetailVC: ReduxSampleVC {
     
     var viewModel: ToDoViewModel?
@@ -64,9 +68,9 @@ class ToDoDetailVC: ReduxSampleVC {
         return sendButton
     }()
     
-    override init(state: AppState, suscriber: Suscriber? = nil) {
+    init(state: AppState, viewModel: ToDoViewModel?, suscriber: Suscriber? = nil) {
+        self.viewModel = viewModel
         super.init(state: state, suscriber: suscriber)
-        bindViewModelIfNeeded()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,9 +83,14 @@ extension ToDoDetailVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpViews()
+        viewModel?.detailUpdater = self
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         hideKeyboardWhenTappedAround()
         registerToKeyboardEvents()
-        setUpViews()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -97,15 +106,24 @@ private extension ToDoDetailVC {
             print("There is no seleceted task. Adding task state")
             return
         }
-        
+
         let isCompleted = (selectedTask.state == .done) ? true : false
         let formatterType = FormatterType.default
         let date = CustomDateFormatter.convertDateToString(date: selectedTask.dueDate, with: formatterType)
-        viewModel = ToDoViewModel(identifier: selectedTask.identifier,
+        viewModel = ToDoViewModel(taskIdentifier: selectedTask.identifier,
                                   title: selectedTask.name,
                                   date: date,
                                   notes: selectedTask.notes ?? "",
                                   isSelected: isCompleted)
+    }
+
+    func reloadDetailView() {
+        guard let viewModelNotNil = viewModel else {
+            return
+        }
+        titleView.update(viewModel: viewModelNotNil)
+        notesView.update(viewModel: viewModelNotNil)
+        dateView.update(viewModel: viewModelNotNil)
     }
 
     @objc func userDidTapDateView() {
@@ -114,14 +132,23 @@ private extension ToDoDetailVC {
     }
 
     func replaceReducerByShowDateSelectorReducer() {
-       let store = AppDelegateUtils.appDelegate?.store
-       store?.replaceReducer(reducer: showDateSelectorReducer)
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: showDateSelectorReducer)
     }
 
-   func dispatchShowDateSelectorAction() {
-       let showDateSelectorAction = ShowDateSelectorAction()
-       dispatch(action: showDateSelectorAction)
-   }
+    func dispatchShowDateSelectorAction() {
+        let showDateSelectorAction = ShowDateSelectorAction()
+        dispatch(action: showDateSelectorAction)
+    }
+}
+
+// MARK: Detail Updater
+extension ToDoDetailVC: DetailUpdater {
+    func update(with state: AppState) {
+        self.state = state
+        bindViewModelIfNeeded()
+        reloadDetailView()
+    }
 }
 
 // MARK: Keyboard methods
@@ -153,8 +180,8 @@ private extension ToDoDetailVC {
 
                 guard let viewHeight = self?.view.frame.height,
                     let contentViewHeight = self?.contentView.frame.height else {
-                    print("View or scroll content view height is nil")
-                    return
+                        print("View or scroll content view height is nil")
+                        return
                 }
                 
                 let availableSpace = viewHeight - keyboardHeight

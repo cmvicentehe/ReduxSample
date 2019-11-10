@@ -39,6 +39,16 @@ class DateView: UIView {
     }
 }
 
+// MARK: DateView update methods
+extension DateView {
+    func update(viewModel: ToDoViewModel) {
+        self.viewModel = viewModel
+        DispatchQueue.main.async { [weak self] in
+            self?.date.text = viewModel.date ?? "--"
+        }
+    }
+}
+
 private extension DateView {
 
     func createLabel() -> UILabel {

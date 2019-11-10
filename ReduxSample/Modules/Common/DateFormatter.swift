@@ -9,11 +9,10 @@
 import Foundation
 
 enum FormatterType: String {
-    case `default` = "dd/MM/yyyy"
+    case `default` = "dd/MMM/yyyy"
 }
 
  struct CustomDateFormatter {
-
     static func convertDateToString(date: Date?, with format: FormatterType) -> String? {
         guard let dateNotNil = date else {
             return nil

@@ -24,7 +24,7 @@ func updateNavigationStateReducer(_ action: Action, _ state: State?) -> State {
 
     let navigationState = NavigationStateImpl(rootViewController: rootViewControllerNotNil, window: window)
 
-    return AppStateImpl(taskList: currentState.taskList, selectedTask: nil, navigationState: navigationState)
+    return AppStateImpl(taskList: currentState.taskList, selectedTask: currentState.selectedTask, navigationState: navigationState)
 }
 
 private func rootViewController(appDelegate: AppDelegate) -> UIViewController? {

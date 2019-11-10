@@ -67,5 +67,5 @@ extension ReduxSampleVC {
     }
 }
 
-// MARK: REDUX methods
+// MARK: Redux methods
 extension ReduxSampleVC: ActionDispatcher {}

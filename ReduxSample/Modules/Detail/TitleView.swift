@@ -33,8 +33,7 @@ class TitleView: UIView {
         titleTextView.textColor = UIColor.lightGray
         titleTextView.backgroundColor = .clear
         titleTextView.isUserInteractionEnabled = viewModel != nil ? true : false
-        // TODO: Delete this hardcoded text
-        titleTextView.text = /*viewModel?.notes ?? */"# Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda. #"
+        titleTextView.text = viewModel?.title ?? "--"
         titleTextView.sizeToFit()
         titleTextView.setNeedsDisplay()
 
@@ -65,10 +64,20 @@ class TitleView: UIView {
     }
 }
 
+// MARK: TitleView update methods
+extension TitleView {
+    func update(viewModel: ToDoViewModel) {
+        self.viewModel = viewModel
+        DispatchQueue.main.async { [weak self] in
+            self?.titleTextView.text = self?.viewModel?.title
+            self?.completeButton.isSelected = self?.viewModel?.isSelected ?? false
+        }
+    }
+}
+
 private extension TitleView {
 
     func setUpTitleView() {
-
         addSubview(titleTextfield)
         addSubview(titleTextView)
         addSubview(completeButton)
@@ -93,7 +102,6 @@ private extension TitleView {
     }
 
     @objc func completeButtonTapped() {
-
            guard let viewModelNotNil = viewModel else {
                fatalError("View model is nil")
            }

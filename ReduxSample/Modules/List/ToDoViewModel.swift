@@ -8,10 +8,51 @@
 
 import Foundation
 
-struct ToDoViewModel {
-    let identifier: String
+class ToDoViewModel {
+    let taskIdentifier: String
     let title: String
     let date: String?
     let notes: String?
     let isSelected: Bool
+    var detailUpdater: DetailUpdater?
+
+    init(taskIdentifier: String, title: String, date: String?, notes: String?, isSelected: Bool) {
+        self.taskIdentifier = taskIdentifier
+        self.title = title
+        self.date = date
+        self.notes = notes
+        self.isSelected = isSelected
+    }
+}
+
+extension ToDoViewModel: StoreSuscriptor {
+    var identifier: String {
+        let type = ToDoViewModel.self
+        return String(describing: type)
+    }
+
+    func update(state: State) {
+        guard let appState = state as? AppState else {
+            fatalError("There is no a valid state")
+        }
+        detailUpdater?.update(with: appState)
+    }
+}
+
+extension ToDoViewModel: Suscriber {
+    func suscribe() {
+        guard let appDelegate = AppDelegateUtils.appDelegate else {
+            return
+        }
+
+        appDelegate.suscribe(self)
+    }
+
+    func unsuscribe() {
+        guard let appDelegate = AppDelegateUtils.appDelegate else {
+            return
+        }
+
+        appDelegate.unsuscribe(self)
+    }
 }

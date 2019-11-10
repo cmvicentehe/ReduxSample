@@ -38,6 +38,24 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
 
 private func showToDoDetailVC(for state: AppState) {
     let navigationState = state.navigationState
-    let toDoDetailVC = ToDoDetailVC(state: state)
+    let viewModel = toDoViewModel(for: state)
+    let toDoDetailVC = ToDoDetailVC(state: state, viewModel: viewModel, suscriber: viewModel)
     navigationState?.show(viewController: toDoDetailVC, navigationStyle: .push)
+}
+
+private func toDoViewModel(for state: AppState) -> ToDoViewModel? {
+    guard let selectedTask = state.selectedTask else {
+        print("There is no seleceted task. Adding task state")
+        return nil
+    }
+
+    let isCompleted = (selectedTask.state == .done) ? true : false
+    let formatterType = FormatterType.default
+    let date = CustomDateFormatter.convertDateToString(date: selectedTask.dueDate, with: formatterType)
+
+    return ToDoViewModel(taskIdentifier: selectedTask.identifier,
+                         title: selectedTask.name,
+                         date: date,
+                         notes: selectedTask.notes ?? "",
+                         isSelected: isCompleted)
 }

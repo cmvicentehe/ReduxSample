@@ -12,12 +12,4 @@ struct ChangeTaskStateAction {
     let taskIdentifier: String
 }
 
-extension ChangeTaskStateAction: Action {
-    func execute(for reducer: @escaping Reducer) -> State {
-        guard let state = AppDelegateUtils.appDelegate?.store?.getState() else {
-            fatalError("State can´t be nil")
-        }
-
-        return reducer(self, state)
-    }
-}
+extension ChangeTaskStateAction: Action {}
