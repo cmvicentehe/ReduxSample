@@ -23,7 +23,8 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
 
     let newState = AppStateImpl(taskList: currentState.taskList,
                                 selectedTask: selectedTask,
-                                navigationState: navigationState)
+                                navigationState: navigationState,
+                                taskSelectionState: .editing)
 
     if Thread.isMainThread {
         showToDoDetailVC(for: newState)

@@ -12,12 +12,21 @@ protocol AppState: State {
     var taskList: [ToDoTask] { get }
     var selectedTask: ToDoTask? { get }
     var navigationState: NavigationState? { get }
+    var taskSelectionState: TaskSelectionState { get }
+}
+
+enum TaskSelectionState {
+    case notSelected
+    case editing
+    case adding
+    case deleting
 }
 
 struct AppStateImpl {
     private(set) var taskList: [ToDoTask]
     private(set) var selectedTask: ToDoTask?
     private(set) var navigationState: NavigationState?
+    private(set) var taskSelectionState: TaskSelectionState = .notSelected
 }
 
 extension AppStateImpl: AppState {}

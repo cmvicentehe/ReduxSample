@@ -15,7 +15,10 @@ enum NavigationStyle {
 }
 
 protocol NavigationState {
+    var rootViewController: UIViewController { get }
+    var window: UIWindow { get }
     func show(viewController: UIViewController, navigationStyle: NavigationStyle)
+    func updateRootViewController(with viewController: UIViewController)
 }
 
 class NavigationStateImpl {
@@ -39,6 +42,10 @@ extension NavigationStateImpl: NavigationState {
             updateWindow(with: viewController)
         }
     }
+
+    func updateRootViewController(with viewController: UIViewController) {
+        rootViewController = viewController
+    }
 }
 
 private extension NavigationStateImpl {
@@ -55,9 +62,5 @@ private extension NavigationStateImpl {
     func updateWindow(with viewController: UIViewController) {
         window.rootViewController = viewController
         updateRootViewController(with: viewController)
-    }
-
-    func updateRootViewController(with viewController: UIViewController) {
-        rootViewController = viewController
     }
 }

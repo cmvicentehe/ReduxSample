@@ -53,19 +53,20 @@ class ToDoDetailVC: ReduxSampleVC {
         return notesView
     }()
 
-    lazy var sendButtonView: UIView = {
-        let sendButtonView = createContainerView()
-        return sendButtonView
+    lazy var deleteButtonView: UIView = {
+        let deleteButtonView = createContainerView()
+        return deleteButtonView
     }()
     
-    lazy var sendButton: UIButton = {
-        let sendButton = UIButton.init(type: .custom)
-        let buttonTitle = NSLocalizedString("send", comment: "")
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.setTitle(buttonTitle, for: .normal)
-        sendButton.setTitleColor(.systemBlue, for: .normal)
+    lazy var deleteButton: UIButton = { [weak self] in
+        let deleteButton = UIButton.init(type: .custom)
+        let buttonTitle = NSLocalizedString("delete", comment: "")
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.setTitle(buttonTitle, for: .normal)
+        deleteButton.setTitleColor(.systemRed, for: .normal)
+        deleteButton.addTarget(self, action: #selector(userDidTapDeleteButton), for: .touchUpInside)
         
-        return sendButton
+        return deleteButton
     }()
     
     init(state: AppState, viewModel: ToDoViewModel?, suscriber: Suscriber? = nil) {
@@ -136,18 +137,55 @@ private extension ToDoDetailVC {
         store?.replaceReducer(reducer: showDateSelectorReducer)
     }
 
+    func replaceReducerByDeleteTaskReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: deleteTaskReducer)
+    }
+
+    func replaceReducerByPopViewControllerReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: popViewControllerReducer)
+    }
+
     func dispatchShowDateSelectorAction() {
+        dismissKeyboard()
         let showDateSelectorAction = ShowDateSelectorAction()
         dispatch(action: showDateSelectorAction)
+    }
+
+    func dispatchDeleteTaskActionAction() {
+        guard let identifier = state.selectedTask?.identifier else {
+            fatalError("Invalid task identifier to be deleted")
+        }
+        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier)
+        dispatch(action: deleteTaskAction)
+    }
+
+    func dispatchPopViewControllerAction() {
+        let popViewControllerAction = PopViewControllerAction()
+        dispatch(action: popViewControllerAction)
+    }
+
+    func manageTaskSelectionState() {
+        switch state.taskSelectionState {
+        case .notSelected: print("State not managed yet")
+        case .editing:
+            bindViewModelIfNeeded()
+            reloadDetailView()
+        case .adding: print("State not managed yet")
+        case .deleting:
+            replaceReducerByPopViewControllerReducer()
+            dispatchPopViewControllerAction()
+        }
     }
 }
 
 // MARK: Detail Updater
 extension ToDoDetailVC: DetailUpdater {
+    
     func update(with state: AppState) {
         self.state = state
-        bindViewModelIfNeeded()
-        reloadDetailView()
+        manageTaskSelectionState()
     }
 }
 
@@ -209,5 +247,17 @@ private extension ToDoDetailVC {
         let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureRecognizer)
+    }
+}
+
+// MARK: User interaction
+extension ToDoDetailVC {
+    @objc func userDidTapDeleteButton() {
+        replaceReducerByDeleteTaskReducer()
+        dispatchDeleteTaskActionAction()
+    }
+
+    @objc func userDidTapSaveButton() {
+        // TODO: Implement!
     }
 }

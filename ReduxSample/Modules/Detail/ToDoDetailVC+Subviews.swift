@@ -12,14 +12,15 @@ extension ToDoDetailVC {
     
     func setUpViews() {
         view.backgroundColor = .white
+        setUpNavigationRightButton()
         setUpScrollView()
         setUpContentView()
 
         contentView.addSubview(titleView)
         contentView.addSubview(dateView)
         contentView.addSubview(notesView)
-        sendButtonView.addSubview(sendButton)
-        contentView.addSubview(sendButtonView)
+        deleteButtonView.addSubview(deleteButton)
+        contentView.addSubview(deleteButtonView)
 
         setUpConstraints()
     }
@@ -34,6 +35,11 @@ extension ToDoDetailVC {
 }
 
 private extension ToDoDetailVC {
+
+    func setUpNavigationRightButton() {
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(userDidTapSaveButton))
+        navigationItem.setRightBarButton(saveButton, animated: true)
+    }
 
     func setUpScrollView() {
         view.addSubview(scrollView)
@@ -63,16 +69,16 @@ private extension ToDoDetailVC {
         contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
 
-    func setUpSendButtonView() {
-        let sendButtonView = createContainerView()
+    func setUpDeleteButtonView() {
+        let deleteButtonView = createContainerView()
 
-        sendButtonView.addSubview(sendButton)
-        scrollView.addSubview(sendButtonView)
+        deleteButtonView.addSubview(deleteButton)
+        scrollView.addSubview(deleteButtonView)
 
-        sendButton.leadingAnchor.constraint(equalTo: sendButtonView.leadingAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
-        sendButton.trailingAnchor.constraint(equalTo: sendButtonView.trailingAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
-        sendButton.topAnchor.constraint(equalTo: sendButtonView.topAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
-        sendButton.bottomAnchor.constraint(equalTo: sendButtonView.bottomAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
+        deleteButton.leadingAnchor.constraint(equalTo: deleteButtonView.leadingAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
+        deleteButton.trailingAnchor.constraint(equalTo: deleteButtonView.trailingAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
+        deleteButton.topAnchor.constraint(equalTo: deleteButtonView.topAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
+        deleteButton.bottomAnchor.constraint(equalTo: deleteButtonView.bottomAnchor, constant: ToDoDetailVCVisualConstants.margin12).isActive = true
     }
 
     func setUpConstraints() {
@@ -80,20 +86,20 @@ private extension ToDoDetailVC {
            let views = ["titleView": titleView,
                         "dateView": dateView,
                         "notesView": notesView,
-                        "sendButtonView": sendButtonView]
+                        "deleteButtonView": deleteButtonView]
            let metrics = ["margin12": margin12]
 
-           sendButton.leadingAnchor.constraint(equalTo: sendButtonView.leadingAnchor, constant: margin12).isActive = true
-           sendButton.trailingAnchor.constraint(equalTo: sendButtonView.trailingAnchor, constant: -margin12).isActive = true
-           sendButton.topAnchor.constraint(equalTo: sendButtonView.topAnchor, constant: margin12).isActive = true
-           sendButton.bottomAnchor.constraint(equalTo: sendButtonView.bottomAnchor, constant: -margin12).isActive = true
+           deleteButton.leadingAnchor.constraint(equalTo: deleteButtonView.leadingAnchor, constant: margin12).isActive = true
+           deleteButton.trailingAnchor.constraint(equalTo: deleteButtonView.trailingAnchor, constant: -margin12).isActive = true
+           deleteButton.topAnchor.constraint(equalTo: deleteButtonView.topAnchor, constant: margin12).isActive = true
+           deleteButton.bottomAnchor.constraint(equalTo: deleteButtonView.bottomAnchor, constant: -margin12).isActive = true
 
            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[titleView]|",
                                                                      options: .alignAllCenterY,
                                                                      metrics: metrics,
                                                                      views: views))
 
-           contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[titleView]-margin12-[dateView]-margin12-[notesView]-margin12-[sendButtonView]-margin12-|",
+           contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[titleView]-margin12-[dateView]-margin12-[notesView]-margin12-[deleteButtonView]-margin12-|",
                                                                      options: .alignAllCenterX,
                                                                      metrics: metrics,
                                                                      views: views))
@@ -114,7 +120,7 @@ private extension ToDoDetailVC {
                                                         multiplier: 1.0,
                                                         constant: 0.0))
 
-           contentView.addConstraint(NSLayoutConstraint(item: sendButtonView,
+           contentView.addConstraint(NSLayoutConstraint(item: deleteButtonView,
                                                         attribute: .width,
                                                         relatedBy: .equal,
                                                         toItem: titleView,
@@ -122,7 +128,6 @@ private extension ToDoDetailVC {
                                                         multiplier: 1.0,
                                                         constant: 0.0))
        }
-
 }
 
 struct ToDoDetailVCVisualConstants {
