@@ -168,11 +168,11 @@ private extension ToDoDetailVC {
 
     func manageTaskSelectionState() {
         switch state.taskSelectionState {
-        case .notSelected: print("State not managed yet")
+        case .notSelected: break
         case .editing:
             bindViewModelIfNeeded()
             reloadDetailView()
-        case .adding: print("State not managed yet")
+        case .adding: break
         case .deleting:
             replaceReducerByPopViewControllerReducer()
             dispatchPopViewControllerAction()
