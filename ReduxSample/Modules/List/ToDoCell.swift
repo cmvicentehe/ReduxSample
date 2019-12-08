@@ -73,6 +73,7 @@ private extension ToDoCell {
         completeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         completeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         completeButton.heightAnchor.constraint(equalToConstant: ToDoCellVisualConstants.buttonHeight).isActive = true
+
         title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
         title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         title.leadingAnchor.constraint(equalTo: completeButton.trailingAnchor, constant: ToDoCellVisualConstants.margin6).isActive = true

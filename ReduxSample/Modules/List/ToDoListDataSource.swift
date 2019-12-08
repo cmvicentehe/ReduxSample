@@ -42,6 +42,14 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
         
         return cell
     }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let task = state.taskList[indexPath.row]
+            let taskIdentifier = task.identifier
+            dispatchDeleteTaskAction(with: taskIdentifier)
+        }
+    }
 }
 
 extension ToDoListDataSourceImpl: UITableViewDelegate {
@@ -105,5 +113,20 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
         DispatchQueue.main.async { [unowned self] in
             self.tableView?.reloadData()
         }
+    }
+}
+
+private extension ToDoListDataSourceImpl {
+
+    func dispatchDeleteTaskAction(with identifier: String) {
+        replaceDeleteTaskReducer()
+        let store = AppDelegateUtils.appDelegate?.store
+        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier)
+        store?.dispatch(action: deleteTaskAction)
+    }
+
+    func replaceDeleteTaskReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: deleteTaskReducer)
     }
 }
