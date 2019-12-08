@@ -63,16 +63,14 @@ class DateSelectorVC: ReduxSampleVC {
 private extension DateSelectorVC {
 
     @objc func acceptButtonTouchedUpInside() {
-        dismissDateSelector(completion: updateDate)
+        dismissDateSelector { [weak self] in
+            self?.replaceReducer()
+            self?.dispatchChangeTaskDateAction()
+        }
     }
 
     @objc func cancelButtonTouchedUpInside() {
         dismissDateSelector(completion: nil)
-    }
-
-    func updateDate() {
-        replaceReducer()
-        dispatchChangeTaskDateAction()
     }
 }
 
@@ -123,7 +121,16 @@ private extension DateSelectorVC {
     func dismissDateSelectorWhenUserTouchedAround() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissDateSelectorBytouchingOutside))
         tapGestureRecognizer.cancelsTouchesInView = false
+        tapGestureRecognizer.delegate = self
         view.addGestureRecognizer(tapGestureRecognizer)
+    }
+}
+
+// MARK: UIGestureRecognizerDelegate methods
+extension DateSelectorVC: UIGestureRecognizerDelegate {
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return gestureRecognizer.view == touch.view
     }
 }
 

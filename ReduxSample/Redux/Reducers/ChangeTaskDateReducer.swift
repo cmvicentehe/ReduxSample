@@ -9,37 +9,38 @@
 import Foundation
 
 func changeTaskDateReducer(_ action: Action, _ state: State?) -> State {
-
+    
     guard let appDelegate = AppDelegateUtils.appDelegate,
         let currentState = appDelegate.store?.getState() as? AppState else {
             fatalError("Invalid AppDelegate or State")
     }
-
+    
     guard let changeTaskAction = action as? ChangeTaskDateAction else {
         fatalError("Invalid associated action")
     }
-
+    
     let date = changeTaskAction.date
     guard let taskIdentifier = currentState.selectedTask?.identifier,
         let taskToBeModified = task(for: taskIdentifier, currentState: currentState) else {
-        fatalError("Task is nil")
+            fatalError("Task is nil")
     }
-
+    
     let task = changeTaskDate(for: taskToBeModified, date: date)
     let updatedTaskList = currentState.taskList.compactMap { $0.identifier == task.identifier ? task : $0}
-
+    
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: task,
-                        navigationState: currentState.navigationState)
+                        navigationState: currentState.navigationState,
+                        taskSelectionState: currentState.taskSelectionState)
 }
 
 private func task(for identifier: String, currentState: AppState) -> ToDoTask? {
-
+    
     let task = currentState.taskList
         .filter { $0.identifier == identifier }
         .reduce(nil) { _, task in
             return task
-        }
+    }
     return task
 }
 

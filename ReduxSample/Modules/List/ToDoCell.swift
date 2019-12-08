@@ -22,7 +22,7 @@ class ToDoCell: UITableViewCell {
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
 
         return completeButton
-    }()
+        }()
 
     lazy var title: UILabel = {
         let title = UILabel(frame: .zero)
@@ -37,6 +37,7 @@ class ToDoCell: UITableViewCell {
         let subtitle = UILabel(frame: .zero)
         subtitle.translatesAutoresizingMaskIntoConstraints = false
         subtitle.numberOfLines = 0
+        subtitle.textColor = .lightGray
         subtitle.font = UIFont.systemFont(ofSize: ToDoCellFontConstants.subtitleSize, weight: .light)
         
         return subtitle
@@ -57,7 +58,7 @@ extension ToDoCell {
     func bind(viewModel: ToDoViewModel) {
         self.viewModel = viewModel
         title.text = viewModel.title
-        subtitle.text = viewModel.notes
+        subtitle.text = viewModel.date ?? "--"
         completeButton.isSelected = viewModel.isSelected
     }
 }
@@ -66,17 +67,20 @@ extension ToDoCell {
 private extension ToDoCell {
     func setUpViews() {
         contentView.addSubview(title)
-        // TODO: Add subtitle (Date)
-//      contentView.addSubview(subtitle)
+        contentView.addSubview(subtitle)
         contentView.addSubview(completeButton)
 
-        title.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
-        title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
-        title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
-        title.leftAnchor.constraint(equalTo: completeButton.rightAnchor, constant: ToDoCellVisualConstants.margin6).isActive = true
-        completeButton.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
+        completeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         completeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         completeButton.heightAnchor.constraint(equalToConstant: ToDoCellVisualConstants.buttonHeight).isActive = true
+        title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
+        title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
+        title.leadingAnchor.constraint(equalTo: completeButton.trailingAnchor, constant: ToDoCellVisualConstants.margin6).isActive = true
+
+        subtitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
+        subtitle.topAnchor.constraint(equalTo: title.bottomAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
+        subtitle.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
+        subtitle.leadingAnchor.constraint(equalTo: title.leadingAnchor).isActive = true
     }
 }
 

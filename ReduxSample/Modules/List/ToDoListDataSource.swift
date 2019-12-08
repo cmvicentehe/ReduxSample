@@ -10,6 +10,7 @@ import UIKit
 
 protocol ToDoListDataSource {
     func setUp(tableView: UITableView)
+    func resetTableView()
 }
 
 class ToDoListDataSourceImpl: NSObject {
@@ -38,7 +39,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
         let date = CustomDateFormatter.convertDateToString(date: task.dueDate, with: formatterType)
         let viewModel = ToDoViewModel(taskIdentifier: task.identifier, title: task.name, date: date, notes: "--", isSelected: isSelected)
         cell.bind(viewModel: viewModel)
-
+        
         return cell
     }
 }
@@ -56,12 +57,17 @@ extension ToDoListDataSourceImpl: UITableViewDelegate {
 // MARK: Redux
 extension ToDoListDataSourceImpl: ToDoListDataSource {
 
+    func resetTableView() {
+        tableView?.dataSource = self
+        tableView?.delegate = self
+        tableView?.register(ToDoCell.self, forCellReuseIdentifier: ToDoCellConstants.cellIdentifier)
+        tableView?.estimatedRowHeight = CGFloat(ToDoCellConstants.estimatedRowHeight)
+        tableView?.rowHeight = UITableView.automaticDimension
+    }
+
     func setUp(tableView: UITableView) {
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = CGFloat(ToDoCellConstants.estimatedRowHeight)
         self.tableView = tableView
+        resetTableView()
     }
 }
 
