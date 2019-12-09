@@ -153,11 +153,6 @@ private extension ToDoDetailVC {
         store?.replaceReducer(reducer: updateTaskReducer)
     }
 
-    func replaceReducerByUpdateSelectedTaskReducer() {
-        let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: updateSelectedTaskReducer)
-    }
-
     func dispatchShowDateSelectorAction() {
         dismissKeyboard()
         let showDateSelectorAction = ShowDateSelectorAction()
@@ -193,24 +188,6 @@ private extension ToDoDetailVC {
                                    state: taskState)
         let updateTaskAction = UpdateTaskAction(task: updatedTask)
         store?.dispatch(action: updateTaskAction)
-    }
-
-    func dispatchUpdateSelectedTaskAction() {
-        guard let taskIdentifier = viewModel?.taskIdentifier else {
-            fatalError("There is no valid information for view model")
-        }
-
-        let date = CustomDateFormatter.convertDateStringToDate(dateString: dateView.dateString, with: FormatterType.default)
-        let taskState = titleView.completeButton.isSelected ? TaskState.done : .toDo
-        let store = AppDelegateUtils.appDelegate?.store
-        let task = ToDoTask(identifier: taskIdentifier,
-                            name: titleView.title,
-                            dueDate: date,
-                            notes: notesView.notes,
-                            state: taskState)
-
-        let updateSelectedTaskAction = UpdateSelectedTaskAction(task: task)
-        store?.dispatch(action: updateSelectedTaskAction)
     }
 
     func refreshDetailInfo() {

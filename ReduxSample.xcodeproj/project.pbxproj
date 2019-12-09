@@ -12,12 +12,12 @@
 		D4645470239D6459005E6DBE /* UpdateTaskAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D464546F239D6458005E6DBE /* UpdateTaskAction.swift */; };
 		D4645472239D6487005E6DBE /* UpdateTaskReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4645471239D6487005E6DBE /* UpdateTaskReducer.swift */; };
 		D46562802317013100F542B3 /* ReduxSampleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465627F2317013100F542B3 /* ReduxSampleVC.swift */; };
-		D465F639239E574100AAC29D /* UpdateSelectedTaskAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F638239E574100AAC29D /* UpdateSelectedTaskAction.swift */; };
-		D465F63B239E577C00AAC29D /* UpdateSelectedTaskReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F63A239E577C00AAC29D /* UpdateSelectedTaskReducer.swift */; };
 		D465F63D239E9D6F00AAC29D /* ChangeSelectedTaskTitleAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F63C239E9D6F00AAC29D /* ChangeSelectedTaskTitleAction.swift */; };
 		D465F63F239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F63E239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift */; };
 		D465F641239E9EEC00AAC29D /* ChangeSelectedTaskTitleReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F640239E9EEC00AAC29D /* ChangeSelectedTaskTitleReducer.swift */; };
 		D465F643239E9F0800AAC29D /* ChangeSelectedTaskNotesReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F642239E9F0800AAC29D /* ChangeSelectedTaskNotesReducer.swift */; };
+		D465F645239EA88C00AAC29D /* ChangeSelectedTaskStateReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F644239EA88C00AAC29D /* ChangeSelectedTaskStateReducer.swift */; };
+		D465F647239EA90D00AAC29D /* ChangeSelectedTaskStateAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465F646239EA90D00AAC29D /* ChangeSelectedTaskStateAction.swift */; };
 		D46B2F0C22D260B4003F53AE /* AppDelegate+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46B2F0B22D260B4003F53AE /* AppDelegate+Utils.swift */; };
 		D4782C0B2340B02700A1DD79 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4782C0A2340B02700A1DD79 /* DateView.swift */; };
 		D4782C0E2340BAEA00A1DD79 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D4782C0D2340BAEA00A1DD79 /* Localizable.strings */; };
@@ -68,12 +68,12 @@
 		D464546F239D6458005E6DBE /* UpdateTaskAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTaskAction.swift; sourceTree = "<group>"; };
 		D4645471239D6487005E6DBE /* UpdateTaskReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTaskReducer.swift; sourceTree = "<group>"; };
 		D465627F2317013100F542B3 /* ReduxSampleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReduxSampleVC.swift; sourceTree = "<group>"; };
-		D465F638239E574100AAC29D /* UpdateSelectedTaskAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSelectedTaskAction.swift; sourceTree = "<group>"; };
-		D465F63A239E577C00AAC29D /* UpdateSelectedTaskReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSelectedTaskReducer.swift; sourceTree = "<group>"; };
 		D465F63C239E9D6F00AAC29D /* ChangeSelectedTaskTitleAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSelectedTaskTitleAction.swift; sourceTree = "<group>"; };
 		D465F63E239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSelectedTaskNotesAction.swift; sourceTree = "<group>"; };
 		D465F640239E9EEC00AAC29D /* ChangeSelectedTaskTitleReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSelectedTaskTitleReducer.swift; sourceTree = "<group>"; };
 		D465F642239E9F0800AAC29D /* ChangeSelectedTaskNotesReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSelectedTaskNotesReducer.swift; sourceTree = "<group>"; };
+		D465F644239EA88C00AAC29D /* ChangeSelectedTaskStateReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSelectedTaskStateReducer.swift; sourceTree = "<group>"; };
+		D465F646239EA90D00AAC29D /* ChangeSelectedTaskStateAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeSelectedTaskStateAction.swift; sourceTree = "<group>"; };
 		D46B2F0B22D260B4003F53AE /* AppDelegate+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Utils.swift"; sourceTree = "<group>"; };
 		D4782C0A2340B02700A1DD79 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		D4782C0D2340BAEA00A1DD79 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -174,6 +174,9 @@
 		D488FC3723950F21009785F3 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				D465F63E239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift */,
+				D465F646239EA90D00AAC29D /* ChangeSelectedTaskStateAction.swift */,
+				D465F63C239E9D6F00AAC29D /* ChangeSelectedTaskTitleAction.swift */,
 				D488FC3923950F21009785F3 /* ChangeTaskDateAction.swift */,
 				D488FC3B23950F21009785F3 /* ChangeTaskStateAction.swift */,
 				D488FC3E23950F21009785F3 /* DeleteTaskAction.swift */,
@@ -182,10 +185,7 @@
 				D488FC3A23950F21009785F3 /* ShowToDoDetailAction.swift */,
 				D488FC3823950F21009785F3 /* ShowToDoListAction.swift */,
 				D488FC3D23950F21009785F3 /* UpdateNavigationStateAction.swift */,
-				D465F638239E574100AAC29D /* UpdateSelectedTaskAction.swift */,
 				D464546F239D6458005E6DBE /* UpdateTaskAction.swift */,
-				D465F63C239E9D6F00AAC29D /* ChangeSelectedTaskTitleAction.swift */,
-				D465F63E239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -217,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				D465F642239E9F0800AAC29D /* ChangeSelectedTaskNotesReducer.swift */,
+				D465F644239EA88C00AAC29D /* ChangeSelectedTaskStateReducer.swift */,
 				D465F640239E9EEC00AAC29D /* ChangeSelectedTaskTitleReducer.swift */,
 				D488FC4D23950F21009785F3 /* ChangeTaskDateReducer.swift */,
 				D488FC5223950F21009785F3 /* ChangeTaskStateReducer.swift */,
@@ -226,7 +227,6 @@
 				D488FC5323950F21009785F3 /* ShowToDoDetailReducer.swift */,
 				D488FC4C23950F21009785F3 /* ShowToDoListReducer.swift */,
 				D488FC5023950F21009785F3 /* UpdateNavigationStateReducer.swift */,
-				D465F63A239E577C00AAC29D /* UpdateSelectedTaskReducer.swift */,
 				D4645471239D6487005E6DBE /* UpdateTaskReducer.swift */,
 			);
 			path = Reducers;
@@ -412,13 +412,13 @@
 				D488FC5723950F21009785F3 /* ChangeTaskStateAction.swift in Sources */,
 				D41C939E23242D1D008D5CF2 /* ToDoDetailVC+Subviews.swift in Sources */,
 				D488FC6323950F21009785F3 /* Action.swift in Sources */,
+				D465F647239EA90D00AAC29D /* ChangeSelectedTaskStateAction.swift in Sources */,
 				D488FC5B23950F21009785F3 /* ShowDateSelectorAction.swift in Sources */,
 				D488FC5E23950F21009785F3 /* AppStore.swift in Sources */,
 				D488FC5623950F21009785F3 /* ShowToDoDetailAction.swift in Sources */,
 				D488FC6523950F21009785F3 /* ShowToDoListReducer.swift in Sources */,
 				D488FC6C23950F21009785F3 /* ShowToDoDetailReducer.swift in Sources */,
 				D4FE273F22D1227B00C51EBF /* ToDoListDataSource.swift in Sources */,
-				D465F639239E574100AAC29D /* UpdateSelectedTaskAction.swift in Sources */,
 				D488FC7023950F59009785F3 /* ToDoViewModel.swift in Sources */,
 				D488FC5823950F21009785F3 /* PopViewControllerAction.swift in Sources */,
 				D488FC6623950F21009785F3 /* ChangeTaskDateReducer.swift in Sources */,
@@ -427,6 +427,7 @@
 				D488FC6923950F21009785F3 /* UpdateNavigationStateReducer.swift in Sources */,
 				D488FC5423950F21009785F3 /* ShowToDoListAction.swift in Sources */,
 				D488FC6423950F21009785F3 /* Suscriber.swift in Sources */,
+				D465F645239EA88C00AAC29D /* ChangeSelectedTaskStateReducer.swift in Sources */,
 				D465F63F239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift in Sources */,
 				D488FC6A23950F21009785F3 /* ShowDateSelectorReducer.swift in Sources */,
 				D488FC6123950F21009785F3 /* ActionDispatcher.swift in Sources */,
@@ -442,7 +443,6 @@
 				D488FC6723950F21009785F3 /* DeleteTaskReducer.swift in Sources */,
 				D465F63D239E9D6F00AAC29D /* ChangeSelectedTaskTitleAction.swift in Sources */,
 				D4F0D4F022B502DE00DB136F /* ToDoListVC.swift in Sources */,
-				D465F63B239E577C00AAC29D /* UpdateSelectedTaskReducer.swift in Sources */,
 				D4782C0B2340B02700A1DD79 /* DateView.swift in Sources */,
 				D4F0D4FC22B6BD4000DB136F /* AppDelegate+Redux.swift in Sources */,
 				D46B2F0C22D260B4003F53AE /* AppDelegate+Utils.swift in Sources */,

@@ -39,7 +39,7 @@ class TitleView: UIView {
         titleTextView.setNeedsDisplay()
 
         return titleTextView
-    }()
+        }()
 
     lazy var completeButton: UIButton = { [unowned self] in
         let completeButton = UIButton(type: .custom)
@@ -108,18 +108,8 @@ private extension TitleView {
     }
 
     @objc func completeButtonTapped() {
-        guard let viewModelNotNil = viewModel else {
-            fatalError("View model is nil")
-        }
-
-        guard let store = AppDelegateUtils.appDelegate?.store else {
-            fatalError("Store is nil")
-        }
-
-        store.replaceReducer(reducer: changeTaskStateReducer)
-
-        let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.taskIdentifier)
-        store.dispatch(action: action)
+        replaceReducerByChangeSelectedTaskStateReducer()
+        dispatchChangeSelectedTaskStateAction()
     }
 }
 
@@ -139,6 +129,22 @@ private extension TitleView {
         let changeSelectedTaskAction = ChangeSelectedTaskTitleAction(taskIdentifier: taskIdentifier,
                                                                      taskTitle: title)
         store?.dispatch(action: changeSelectedTaskAction)
+    }
+
+    func replaceReducerByChangeSelectedTaskStateReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: changeSelectedTaskStateReducer)
+    }
+
+    func dispatchChangeSelectedTaskStateAction() {
+        let store = AppDelegateUtils.appDelegate?.store
+        guard let taskIdentifier = viewModel?.taskIdentifier else {
+            fatalError("Invalid task identifier")
+        }
+        let taskState: TaskState = completeButton.isSelected ? .toDo : .done
+        let changeSelectedTaskStateAction = ChangeSelectedTaskStateAction(taskIdentifier: taskIdentifier,
+                                                                          taskState: taskState)
+        store?.dispatch(action: changeSelectedTaskStateAction)
     }
 }
 
