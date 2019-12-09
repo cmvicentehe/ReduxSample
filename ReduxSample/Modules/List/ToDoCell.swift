@@ -99,7 +99,7 @@ private extension ToDoCell {
 
         store.replaceReducer(reducer: changeTaskStateReducer)
 
-        let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.identifier)
+        let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.taskIdentifier)
         store.dispatch(action: action)
     }
 }

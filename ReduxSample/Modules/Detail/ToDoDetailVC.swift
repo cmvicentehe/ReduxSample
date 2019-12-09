@@ -44,7 +44,7 @@ class ToDoDetailVC: ReduxSampleVC {
         dateView.addGestureRecognizer(tapGestureRecognizer)
 
         return dateView
-    }()
+        }()
     
     lazy var notesView: NotesView = {
         let notesView = NotesView(frame: .zero, viewModel: viewModel)
@@ -67,7 +67,7 @@ class ToDoDetailVC: ReduxSampleVC {
         deleteButton.addTarget(self, action: #selector(userDidTapDeleteButton), for: .touchUpInside)
         
         return deleteButton
-    }()
+        }()
     
     init(state: AppState, viewModel: ToDoViewModel?, suscriber: Suscriber? = nil) {
         self.viewModel = viewModel
@@ -100,6 +100,7 @@ extension ToDoDetailVC {
     }
 }
 
+// MARK: Private methods
 private extension ToDoDetailVC {
     
     func bindViewModelIfNeeded() {
@@ -127,9 +128,14 @@ private extension ToDoDetailVC {
         dateView.update(viewModel: viewModelNotNil)
     }
 
-    @objc func userDidTapDateView() {
+    func showDateView() {
         replaceReducerByShowDateSelectorReducer()
         dispatchShowDateSelectorAction()
+    }
+
+    @objc func userDidTapDateView() {
+        replaceReducerByUpdateSelectedTaskReducer()
+        dispatchUpdateSelectedTaskAction()
     }
 
     func replaceReducerByShowDateSelectorReducer() {
@@ -145,6 +151,16 @@ private extension ToDoDetailVC {
     func replaceReducerByPopViewControllerReducer() {
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: popViewControllerReducer)
+    }
+
+    func replaceReducerByUpdateTaskReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: updateTaskReducer)
+    }
+
+    func replaceReducerByUpdateSelectedTaskReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: updateSelectedTaskReducer)
     }
 
     func dispatchShowDateSelectorAction() {
@@ -166,14 +182,57 @@ private extension ToDoDetailVC {
         dispatch(action: popViewControllerAction)
     }
 
-    func manageTaskSelectionState() {
+    func dispatchUpdateTaskAction() {
+        let store = AppDelegateUtils.appDelegate?.store
+
+        guard let selectedTask = state.selectedTask else {
+            fatalError("Invalid selected task")
+        }
+
+        let date = CustomDateFormatter.convertDateStringToDate(dateString: dateView.dateString, with: FormatterType.default)
+        let taskState = titleView.completeButton.isSelected ? TaskState.done : .toDo
+        let updatedTask = ToDoTask(identifier: selectedTask.identifier,
+                                   name: titleView.title,
+                                   dueDate: date,
+                                   notes: notesView.notesTextView.text,
+                                   state: taskState)
+        let updateTaskAction = UpdateTaskAction(task: updatedTask)
+        store?.dispatch(action: updateTaskAction)
+    }
+
+    func dispatchUpdateSelectedTaskAction() {
+        guard let taskIdentifier = viewModel?.taskIdentifier else {
+            fatalError("There is no valid information for view model")
+        }
+
+        let date = CustomDateFormatter.convertDateStringToDate(dateString: dateView.dateString, with: FormatterType.default)
+        let taskState = titleView.completeButton.isSelected ? TaskState.done : .toDo
+        let store = AppDelegateUtils.appDelegate?.store
+        let task = ToDoTask(identifier: taskIdentifier,
+                            name: titleView.title,
+                            dueDate: date,
+                            notes: notesView.notes,
+                            state: taskState)
+
+        let updateSelectedTaskAction = UpdateSelectedTaskAction(task: task)
+        store?.dispatch(action: updateSelectedTaskAction)
+    }
+
+    func refreshDetailInfo() {
+        bindViewModelIfNeeded()
+        reloadDetailView()
+    }
+
+    func updateTaskInfo() {
         switch state.taskSelectionState {
         case .notSelected: break
-        case .editing:
-            bindViewModelIfNeeded()
-            reloadDetailView()
-        case .adding: break
-        case .deleting:
+        case .editingTask:
+            refreshDetailInfo()
+        case .updatingSelectedTask:
+            showDateView()
+            refreshDetailInfo()
+        case .addingTask: break
+        case .deletingTask, .savingTask:
             replaceReducerByPopViewControllerReducer()
             dispatchPopViewControllerAction()
         }
@@ -185,7 +244,7 @@ extension ToDoDetailVC: DetailUpdater {
     
     func update(with state: AppState) {
         self.state = state
-        manageTaskSelectionState()
+        updateTaskInfo()
     }
 }
 
@@ -240,7 +299,9 @@ private extension ToDoDetailVC {
     }
 
     @objc func dismissKeyboard() {
-        view.endEditing(true)
+        DispatchQueue.main.async { [weak self] in
+            self?.view.endEditing(true)
+        }
     }
 
     func hideKeyboardWhenTappedAround() {
@@ -258,6 +319,7 @@ extension ToDoDetailVC {
     }
 
     @objc func userDidTapSaveButton() {
-        // TODO: Implement!
+        replaceReducerByUpdateTaskReducer()
+        dispatchUpdateTaskAction()
     }
 }

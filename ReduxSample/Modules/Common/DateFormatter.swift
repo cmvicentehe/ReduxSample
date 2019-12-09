@@ -23,4 +23,16 @@ enum FormatterType: String {
         let dateString = dateFormatter.string(from: dateNotNil)
         return dateString
     }
+
+    static func convertDateStringToDate(dateString: String?, with format: FormatterType) -> Date? {
+        guard let dateStringNotNil = dateString else {
+            return nil
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en")
+        dateFormatter.dateFormat = format.rawValue
+        let date = dateFormatter.date(from: dateStringNotNil)
+        return date
+    }
 }

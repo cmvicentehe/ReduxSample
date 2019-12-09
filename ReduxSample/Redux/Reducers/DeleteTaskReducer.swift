@@ -22,5 +22,5 @@ func deleteTaskReducer(_ action: Action, _ state: State?) -> State {
     let taskIdentifier = deleteTaskAction.taskIdentifier
     let updatedTaskList = currentState.taskList.filter { $0.identifier != taskIdentifier }
 
-    return AppStateImpl(taskList: updatedTaskList, selectedTask: nil, navigationState: currentState.navigationState, taskSelectionState: .deleting)
+    return AppStateImpl(taskList: updatedTaskList, selectedTask: nil, navigationState: currentState.navigationState, taskSelectionState: .deletingTask)
 }

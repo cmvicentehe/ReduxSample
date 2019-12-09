@@ -40,6 +40,10 @@ class NotesView: UIView {
         return notesTextView
     }()
 
+    var notes: String {
+        return notesTextView.text
+    }
+
     init(frame: CGRect, viewModel: ToDoViewModel? = nil) {
         super.init(frame: .zero)
         self.viewModel = viewModel

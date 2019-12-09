@@ -20,8 +20,7 @@ func changeTaskDateReducer(_ action: Action, _ state: State?) -> State {
     }
     
     let date = changeTaskAction.date
-    guard let taskIdentifier = currentState.selectedTask?.identifier,
-        let taskToBeModified = task(for: taskIdentifier, currentState: currentState) else {
+    guard let taskToBeModified = currentState.selectedTask else {
             fatalError("Task is nil")
     }
     
@@ -31,11 +30,10 @@ func changeTaskDateReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: task,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: currentState.taskSelectionState)
+                        taskSelectionState: .editingTask)
 }
 
 private func task(for identifier: String, currentState: AppState) -> ToDoTask? {
-    
     let task = currentState.taskList
         .filter { $0.identifier == identifier }
         .reduce(nil) { _, task in

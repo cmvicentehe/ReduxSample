@@ -51,7 +51,11 @@ class TitleView: UIView {
         completeButton.addTarget(self, action: #selector(completeButtonTapped), for: .touchUpInside)
 
         return completeButton
-    }()
+        }()
+
+    var title: String {
+        return titleTextView.text
+    }
 
     init(frame: CGRect, viewModel: ToDoViewModel? = nil) {
         super.init(frame: .zero)
@@ -102,17 +106,17 @@ private extension TitleView {
     }
 
     @objc func completeButtonTapped() {
-           guard let viewModelNotNil = viewModel else {
-               fatalError("View model is nil")
-           }
+        guard let viewModelNotNil = viewModel else {
+            fatalError("View model is nil")
+        }
 
-           guard let store = AppDelegateUtils.appDelegate?.store else {
-               fatalError("Store is nil")
-           }
+        guard let store = AppDelegateUtils.appDelegate?.store else {
+            fatalError("Store is nil")
+        }
 
-           store.replaceReducer(reducer: changeTaskStateReducer)
+        store.replaceReducer(reducer: changeTaskStateReducer)
 
-           let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.identifier)
-           store.dispatch(action: action)
-       }
+        let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.taskIdentifier)
+        store.dispatch(action: action)
+    }
 }

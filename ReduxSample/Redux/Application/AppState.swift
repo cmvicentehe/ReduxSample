@@ -17,9 +17,11 @@ protocol AppState: State {
 
 enum TaskSelectionState {
     case notSelected
-    case editing
-    case adding
-    case deleting
+    case editingTask
+    case updatingSelectedTask
+    case addingTask
+    case deletingTask
+    case savingTask
 }
 
 struct AppStateImpl {

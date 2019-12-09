@@ -28,6 +28,10 @@ class DateView: UIView {
         return date
     }()
 
+    var dateString: String {
+        return date.text ?? "--"
+    }
+
     init(frame: CGRect, viewModel: ToDoViewModel? = nil) {
         super.init(frame: frame)
         self.viewModel = viewModel

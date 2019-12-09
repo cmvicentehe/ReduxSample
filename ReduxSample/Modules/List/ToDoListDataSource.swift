@@ -116,16 +116,17 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
     }
 }
 
+// MARK: Redux Actions
 private extension ToDoListDataSourceImpl {
 
     func dispatchDeleteTaskAction(with identifier: String) {
-        replaceDeleteTaskReducer()
+        replaceReducerByDeleteTaskReducer()
         let store = AppDelegateUtils.appDelegate?.store
         let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier)
         store?.dispatch(action: deleteTaskAction)
     }
 
-    func replaceDeleteTaskReducer() {
+    func replaceReducerByDeleteTaskReducer() {
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: deleteTaskReducer)
     }

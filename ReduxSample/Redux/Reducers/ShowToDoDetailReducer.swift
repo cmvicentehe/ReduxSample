@@ -24,8 +24,14 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
     let newState = AppStateImpl(taskList: currentState.taskList,
                                 selectedTask: selectedTask,
                                 navigationState: navigationState,
-                                taskSelectionState: .editing)
+                                taskSelectionState: .editingTask)
 
+    showToDoDetailOnMainOrBackground(with: newState)
+
+    return newState
+}
+
+private func showToDoDetailOnMainOrBackground(with newState: AppState) {
     if Thread.isMainThread {
         showToDoDetailVC(for: newState)
     } else {
@@ -33,8 +39,6 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
             showToDoDetailVC(for: newState)
         }
     }
-
-    return newState
 }
 
 private func showToDoDetailVC(for state: AppState) {

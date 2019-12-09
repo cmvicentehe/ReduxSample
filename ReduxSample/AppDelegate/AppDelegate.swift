@@ -73,7 +73,6 @@ private extension AppDelegate {
         window?.rootViewController = navigationController
 
         initializeNavigationState()
-
     }
 
     func initializeNavigationState() {
