@@ -30,7 +30,7 @@ enum FormatterType: String {
         }
 
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en")
+        dateFormatter.locale = Locale.current
         dateFormatter.dateFormat = format.rawValue
         let date = dateFormatter.date(from: dateStringNotNil)
         return date
