@@ -73,6 +73,7 @@ private extension ToDoCell {
         completeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         completeButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
         completeButton.heightAnchor.constraint(equalToConstant: ToDoCellVisualConstants.buttonHeight).isActive = true
+        completeButton.widthAnchor.constraint(equalToConstant: ToDoCellVisualConstants.buttonWidth).isActive = true
 
         title.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
         title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: ToDoCellVisualConstants.margin12).isActive = true
@@ -113,6 +114,7 @@ private struct ToDoCellVisualConstants {
     static let margin12: CGFloat = 12.0
     static let margin6: CGFloat = 6.0
     static let buttonHeight: CGFloat = 44.0
+    static let buttonWidth: CGFloat = 44.0
 }
 
 private struct ToDoCellFontConstants {
