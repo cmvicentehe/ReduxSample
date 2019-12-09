@@ -22,8 +22,9 @@ class TitleView: UIView {
         return titleTextfield
     }()
 
-    lazy var titleTextView: UITextView = {
+    lazy var titleTextView: UITextView = { [weak self] in
         let titleTextView = UITextView(frame: .zero)
+        titleTextView.delegate = self
         titleTextView.translatesAutoresizingMaskIntoConstraints = false
         titleTextView.isSelectable = true
         titleTextView.isEditable = true
@@ -79,6 +80,7 @@ extension TitleView {
     }
 }
 
+// MARK: Private methods
 private extension TitleView {
 
     func setUpTitleView() {
@@ -118,5 +120,34 @@ private extension TitleView {
 
         let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.taskIdentifier)
         store.dispatch(action: action)
+    }
+}
+
+// MARK: Redux methods
+private extension TitleView {
+
+    func replaceReducerByChangeSelectedTaskTitleReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: changeSelectedTaskTitleReducer)
+    }
+
+    func dispatchChangeSelectedTaskTitleAction() {
+        let store = AppDelegateUtils.appDelegate?.store
+        guard let taskIdentifier = viewModel?.taskIdentifier else {
+            fatalError("Invalid task identifier")
+        }
+        let changeSelectedTaskAction = ChangeSelectedTaskTitleAction(taskIdentifier: taskIdentifier,
+                                                                     taskTitle: title)
+        store?.dispatch(action: changeSelectedTaskAction)
+    }
+}
+
+// MARK: UITextview methods
+extension TitleView: UITextViewDelegate {
+
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        replaceReducerByChangeSelectedTaskTitleReducer()
+        dispatchChangeSelectedTaskTitleAction()
+        return true
     }
 }

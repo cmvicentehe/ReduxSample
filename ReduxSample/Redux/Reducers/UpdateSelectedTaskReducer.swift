@@ -23,5 +23,5 @@ func updateSelectedTaskReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: currentState.taskList,
                         selectedTask: task,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .updatingSelectedTask)
+                        taskSelectionState: .editingTask)
 }

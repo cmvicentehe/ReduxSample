@@ -18,7 +18,6 @@ protocol AppState: State {
 enum TaskSelectionState {
     case notSelected
     case editingTask
-    case updatingSelectedTask
     case addingTask
     case deletingTask
     case savingTask

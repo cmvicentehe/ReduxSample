@@ -22,8 +22,9 @@ class NotesView: UIView {
         return notesTextfield
     }()
 
-    lazy var notesTextView: UITextView = {
+    lazy var notesTextView: UITextView = { [weak self] in
         let notesTextView = UITextView(frame: .zero)
+        notesTextView.delegate = self
         notesTextView.translatesAutoresizingMaskIntoConstraints = false
         notesTextView.isSelectable = true
         notesTextView.isEditable = true
@@ -65,6 +66,36 @@ extension NotesView {
     }
 }
 
+// MARK: Redux methods
+private extension NotesView {
+
+    func replaceReducerByChangeSelectedTaskNotesReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: changeSelectedTaskNotesReducer)
+    }
+
+    func dispatchChangeSelectedTaskNotesAction() {
+        let store = AppDelegateUtils.appDelegate?.store
+        guard let taskIdentifier = viewModel?.taskIdentifier else {
+            fatalError("Invalid task identifier")
+        }
+        let changeSelectedTaskNotesAction = ChangeSelectedTaskNotesAction(taskIdentifier: taskIdentifier,
+                                                                          taskNotes: notes)
+        store?.dispatch(action: changeSelectedTaskNotesAction)
+    }
+}
+
+// MARK: UITextview methods
+extension NotesView: UITextViewDelegate {
+
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        replaceReducerByChangeSelectedTaskNotesReducer()
+        dispatchChangeSelectedTaskNotesAction()
+        return true
+    }
+}
+
+// MARK: Private methods
 private extension NotesView {
 
     func setUpNotesView() {

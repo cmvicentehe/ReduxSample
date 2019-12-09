@@ -128,14 +128,9 @@ private extension ToDoDetailVC {
         dateView.update(viewModel: viewModelNotNil)
     }
 
-    func showDateView() {
+    @objc func userDidTapDateView() {
         replaceReducerByShowDateSelectorReducer()
         dispatchShowDateSelectorAction()
-    }
-
-    @objc func userDidTapDateView() {
-        replaceReducerByUpdateSelectedTaskReducer()
-        dispatchUpdateSelectedTaskAction()
     }
 
     func replaceReducerByShowDateSelectorReducer() {
@@ -227,9 +222,6 @@ private extension ToDoDetailVC {
         switch state.taskSelectionState {
         case .notSelected: break
         case .editingTask:
-            refreshDetailInfo()
-        case .updatingSelectedTask:
-            showDateView()
             refreshDetailInfo()
         case .addingTask: break
         case .deletingTask, .savingTask:
