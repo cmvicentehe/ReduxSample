@@ -11,11 +11,13 @@ import UIKit
 protocol ToDoListDataSource {
     func setUp(tableView: UITableView)
     func resetTableView()
+    func addTask()
 }
 
 class ToDoListDataSourceImpl: NSObject {
     var state: AppState
     var tableView: UITableView?
+    var hasToShowDetail: Bool = false
 
     init(state: AppState) {
         self.state = state
@@ -23,6 +25,7 @@ class ToDoListDataSourceImpl: NSObject {
     }
 }
 
+// MARK: UITableViewDataSource methods
 extension ToDoListDataSourceImpl: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -52,13 +55,12 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
     }
 }
 
+// MARK: UITableViewDelegate methods
 extension ToDoListDataSourceImpl: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: showToDoDetailReducer)
         let task = state.taskList[indexPath.row]
-        let showToDoDetailAction = ShowToDoDetailAction(task: task)
-        store?.dispatch(action: showToDoDetailAction)
+        replaceReducerByShowToDoDetailReducer()
+        dispatchShowToDoDetailAction(with: task)
     }
 }
 
@@ -77,8 +79,15 @@ extension ToDoListDataSourceImpl: ToDoListDataSource {
         self.tableView = tableView
         resetTableView()
     }
+
+    func addTask() {
+        hasToShowDetail = true
+        replaceReducerByAddTaskReducer()
+        dispatchAddTaskAction()
+    }
 }
 
+// MARK: Suscriber methods
 extension ToDoListDataSourceImpl: Suscriber {
     func suscribe() {
         guard let appDelegate = AppDelegateUtils.appDelegate else {
@@ -97,6 +106,7 @@ extension ToDoListDataSourceImpl: Suscriber {
     }
 }
 
+// MARK: StoreSuscriptor methods
 extension ToDoListDataSourceImpl: StoreSuscriptor {
     var identifier: String {
         let type = ToDoListDataSourceImpl.self
@@ -113,11 +123,28 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
         DispatchQueue.main.async { [unowned self] in
             self.tableView?.reloadData()
         }
+
+        showToDoDetailViewIfNeeded(for: self.state)
     }
 }
 
 // MARK: Redux Actions
 private extension ToDoListDataSourceImpl {
+
+    func replaceReducerByShowToDoDetailReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: showToDoDetailReducer)
+    }
+
+    func replaceReducerByDeleteTaskReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: deleteTaskReducer)
+    }
+
+    func replaceReducerByAddTaskReducer() {
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: addTaskReducer)
+    }
 
     func dispatchDeleteTaskAction(with identifier: String) {
         replaceReducerByDeleteTaskReducer()
@@ -126,8 +153,31 @@ private extension ToDoListDataSourceImpl {
         store?.dispatch(action: deleteTaskAction)
     }
 
-    func replaceReducerByDeleteTaskReducer() {
+    func dispatchShowToDoDetailAction(with task: ToDoTask) {
         let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: deleteTaskReducer)
+        let showToDoDetailAction = ShowToDoDetailAction(task: task)
+        store?.dispatch(action: showToDoDetailAction)
+    }
+
+    func dispatchAddTaskAction() {
+        let store = AppDelegateUtils.appDelegate?.store
+        let addTaskAction = AddTaskAction()
+        store?.dispatch(action: addTaskAction)
+    }
+}
+
+// MARK: Private methods
+private extension ToDoListDataSourceImpl {
+
+    func showToDoDetailViewIfNeeded(for state: AppState) {
+        if state.taskSelectionState == .addingTask &&
+            hasToShowDetail {
+            guard let task = state.selectedTask else {
+                fatalError("Invalid selected task")
+            }
+            replaceReducerByShowToDoDetailReducer()
+            dispatchShowToDoDetailAction(with: task)
+            hasToShowDetail = false
+        }
     }
 }

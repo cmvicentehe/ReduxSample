@@ -51,6 +51,8 @@
 		D488FC7023950F59009785F3 /* ToDoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D488FC6E23950F59009785F3 /* ToDoViewModel.swift */; };
 		D491FFC823315730003C4BA8 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D491FFC723315730003C4BA8 /* TitleView.swift */; };
 		D491FFCA23315B11003C4BA8 /* NotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D491FFC923315B11003C4BA8 /* NotesView.swift */; };
+		D4A6961D23A579B700ABAFC6 /* AddTaskAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6961C23A579B700ABAFC6 /* AddTaskAction.swift */; };
+		D4A6961F23A579F800ABAFC6 /* AddTaskReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A6961E23A579F800ABAFC6 /* AddTaskReducer.swift */; };
 		D4F0D4EA22B5023200DB136F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4F0D4E422B5023200DB136F /* Assets.xcassets */; };
 		D4F0D4EB22B5023200DB136F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4F0D4E522B5023200DB136F /* LaunchScreen.storyboard */; };
 		D4F0D4F022B502DE00DB136F /* ToDoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F0D4EE22B502DE00DB136F /* ToDoListVC.swift */; };
@@ -107,6 +109,8 @@
 		D488FC6E23950F59009785F3 /* ToDoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoViewModel.swift; sourceTree = "<group>"; };
 		D491FFC723315730003C4BA8 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		D491FFC923315B11003C4BA8 /* NotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesView.swift; sourceTree = "<group>"; };
+		D4A6961C23A579B700ABAFC6 /* AddTaskAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskAction.swift; sourceTree = "<group>"; };
+		D4A6961E23A579F800ABAFC6 /* AddTaskReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskReducer.swift; sourceTree = "<group>"; };
 		D4F0D4CE22B4FCF900DB136F /* ReduxSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReduxSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F0D4E422B5023200DB136F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D4F0D4E922B5023200DB136F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 		D488FC3723950F21009785F3 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				D4A6961C23A579B700ABAFC6 /* AddTaskAction.swift */,
 				D465F63E239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift */,
 				D465F646239EA90D00AAC29D /* ChangeSelectedTaskStateAction.swift */,
 				D465F63C239E9D6F00AAC29D /* ChangeSelectedTaskTitleAction.swift */,
@@ -216,6 +221,7 @@
 		D488FC4B23950F21009785F3 /* Reducers */ = {
 			isa = PBXGroup;
 			children = (
+				D4A6961E23A579F800ABAFC6 /* AddTaskReducer.swift */,
 				D465F642239E9F0800AAC29D /* ChangeSelectedTaskNotesReducer.swift */,
 				D465F644239EA88C00AAC29D /* ChangeSelectedTaskStateReducer.swift */,
 				D465F640239E9EEC00AAC29D /* ChangeSelectedTaskTitleReducer.swift */,
@@ -403,6 +409,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4A6961F23A579F800ABAFC6 /* AddTaskReducer.swift in Sources */,
 				D4782C102340CBD300A1DD79 /* DateFormatter.swift in Sources */,
 				D465F643239E9F0800AAC29D /* ChangeSelectedTaskNotesReducer.swift in Sources */,
 				D488FC5A23950F21009785F3 /* DeleteTaskAction.swift in Sources */,
@@ -425,6 +432,7 @@
 				D4F0D4F122B502DE00DB136F /* AppDelegate.swift in Sources */,
 				D4FE273B22D11F2900C51EBF /* ToDoTask.swift in Sources */,
 				D488FC6923950F21009785F3 /* UpdateNavigationStateReducer.swift in Sources */,
+				D4A6961D23A579B700ABAFC6 /* AddTaskAction.swift in Sources */,
 				D488FC5423950F21009785F3 /* ShowToDoListAction.swift in Sources */,
 				D488FC6423950F21009785F3 /* Suscriber.swift in Sources */,
 				D465F645239EA88C00AAC29D /* ChangeSelectedTaskStateReducer.swift in Sources */,

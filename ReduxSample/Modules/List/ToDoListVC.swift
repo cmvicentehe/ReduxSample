@@ -26,7 +26,7 @@ class ToDoListVC: ReduxSampleVC {
 extension ToDoListVC {
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpToDoList()
+        setUpViews()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -37,6 +37,11 @@ extension ToDoListVC {
 
 private extension ToDoListVC {
 
+    func setUpViews() {
+        setUpNavigationRightButton()
+        setUpToDoList()
+    }
+
     func setUpToDoList() {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,10 +50,23 @@ private extension ToDoListVC {
         toDoListDataSource.setUp(tableView: tableView)
     }
 
+    func setUpNavigationRightButton() {
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(userDidTapAddButton))
+        navigationItem.setRightBarButton(addButton, animated: true)
+    }
+
     func setUpConstraints(to tableView: UITableView) {
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+}
+
+// MARK: Action methods
+extension ToDoListVC {
+
+    @objc func userDidTapAddButton() {
+        toDoListDataSource.addTask()
     }
 }

@@ -20,11 +20,12 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
 
     let selectedTask = showToDoDetailAction.task
     let navigationState = currentState.navigationState
+    let taskSelectionState: TaskSelectionState = (currentState.taskSelectionState == .addingTask) ? .addingTask : .editingTask
 
     let newState = AppStateImpl(taskList: currentState.taskList,
                                 selectedTask: selectedTask,
                                 navigationState: navigationState,
-                                taskSelectionState: .editingTask)
+                                taskSelectionState: taskSelectionState)
 
     showToDoDetailOnMainOrBackground(with: newState)
 

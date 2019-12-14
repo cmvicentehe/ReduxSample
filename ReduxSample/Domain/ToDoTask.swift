@@ -21,3 +21,5 @@ struct ToDoTask {
     let notes: String?
     let state: TaskState
 }
+
+extension ToDoTask: Equatable {}

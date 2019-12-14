@@ -61,9 +61,13 @@ class ToDoDetailVC: ReduxSampleVC {
     lazy var deleteButton: UIButton = { [weak self] in
         let deleteButton = UIButton.init(type: .custom)
         let buttonTitle = NSLocalizedString("delete", comment: "")
+        let taskSelectionState = self?.state.taskSelectionState
+        deleteButton.isEnabled = (taskSelectionState != .addingTask) ? true : false
+        deleteButton.alpha = (taskSelectionState != .addingTask) ? 1.0 : 0.2
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.setTitle(buttonTitle, for: .normal)
         deleteButton.setTitleColor(.systemRed, for: .normal)
+
         deleteButton.addTarget(self, action: #selector(userDidTapDeleteButton), for: .touchUpInside)
         
         return deleteButton
@@ -197,10 +201,9 @@ private extension ToDoDetailVC {
 
     func updateTaskInfo() {
         switch state.taskSelectionState {
-        case .notSelected: break
+        case .addingTask, .notSelected: break
         case .editingTask:
             refreshDetailInfo()
-        case .addingTask: break
         case .deletingTask, .savingTask:
             replaceReducerByPopViewControllerReducer()
             dispatchPopViewControllerAction()

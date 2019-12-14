@@ -19,10 +19,20 @@ func updateTaskReducer(_ action: Action, _ state: State?) -> State {
     }
 
     let task = updateTaskAction.task
-    let updatedTaskList = currentState.taskList.compactMap { $0.identifier == task.identifier ? task : $0}
+    let updatedTaskList = update(taskList: currentState.taskList, task: task, taskSelectionState: currentState.taskSelectionState)
 
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .savingTask)
+}
+
+private func update(taskList: [ToDoTask], task: ToDoTask, taskSelectionState: TaskSelectionState) -> [ToDoTask] {
+    var updatedTaskList = taskList.compactMap { $0.identifier == task.identifier ? task : $0}
+
+    if !updatedTaskList.contains(task) {
+        updatedTaskList.append(task)
+    }
+
+    return updatedTaskList
 }
