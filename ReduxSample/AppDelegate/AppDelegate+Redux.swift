@@ -9,6 +9,7 @@
 import Foundation
 
 protocol Redux {
+    
     func createReducer() -> Reducer
     func createState() -> State
     func createSuscriptors() -> [StoreSuscriptor]
@@ -23,6 +24,7 @@ extension AppDelegate: Redux {
     }
 
     func createState() -> State {
+        
         let taskList = [ToDoTask]()
         return AppStateImpl(taskList: taskList, selectedTask: nil, navigationState: nil)
     }

@@ -9,6 +9,7 @@
 import Foundation
 
 struct DeleteTaskAction {
+    
     let taskIdentifier: String
 }
 

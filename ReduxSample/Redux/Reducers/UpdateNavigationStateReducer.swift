@@ -28,6 +28,7 @@ func updateNavigationStateReducer(_ action: Action, _ state: State?) -> State {
 }
 
 private func rootViewController(appDelegate: AppDelegate) -> UIViewController? {
+    
     var rootViewController: UIViewController?
     if Thread.isMainThread {
         rootViewController = appDelegate.window?.rootViewController

@@ -9,6 +9,7 @@
 import Foundation
 
 func showDateSelectorReducer(_ action: Action, _ state: State?) -> State {
+
     guard let appDelegate = AppDelegateUtils.appDelegate,
         let currentState = appDelegate.store?.getState() as? AppState else {
             fatalError("Invalid AppDelegate or State")
@@ -31,6 +32,7 @@ func showDateSelectorReducer(_ action: Action, _ state: State?) -> State {
 }
 
 private func showDateSelectorVC(for state: AppState) {
+    
     let navigationState = state.navigationState
     let dateSelectorVC = DateSelectorVC(state: state)
     dateSelectorVC.modalPresentationStyle = .overCurrentContext

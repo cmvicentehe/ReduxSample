@@ -9,12 +9,14 @@
 import UIKit
 
 enum NavigationStyle {
+
     case push
     case modal
     case updateWindow
 }
 
 protocol NavigationState {
+
     var rootViewController: UIViewController { get }
     var window: UIWindow { get }
     func show(viewController: UIViewController, navigationStyle: NavigationStyle)
@@ -22,6 +24,7 @@ protocol NavigationState {
 }
 
 class NavigationStateImpl {
+
     private(set) var rootViewController: UIViewController
     private(set) var window: UIWindow
 
@@ -32,7 +35,9 @@ class NavigationStateImpl {
 }
 
 extension NavigationStateImpl: NavigationState {
+
     func show(viewController: UIViewController, navigationStyle: NavigationStyle) {
+
         switch navigationStyle {
         case .push:
             push(viewController: viewController)
@@ -49,17 +54,21 @@ extension NavigationStateImpl: NavigationState {
 }
 
 private extension NavigationStateImpl {
+
     func push(viewController: UIViewController) {
+
         rootViewController.show(viewController, sender: self)
         updateRootViewController(with: viewController)
     }
 
     func present(viewController: UIViewController) {
+
         rootViewController.present(viewController, animated: true)
         updateRootViewController(with: viewController)
     }
 
     func updateWindow(with viewController: UIViewController) {
+        
         window.rootViewController = viewController
         updateRootViewController(with: viewController)
     }

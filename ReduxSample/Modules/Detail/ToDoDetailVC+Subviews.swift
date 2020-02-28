@@ -11,6 +11,7 @@ import UIKit
 extension ToDoDetailVC {
     
     func setUpViews() {
+
         view.backgroundColor = .white
         setUpNavigationRightButton()
         setUpScrollView()
@@ -26,6 +27,7 @@ extension ToDoDetailVC {
     }
 
     func createContainerView() -> UIView {
+
        let containerView = UIView(frame: .zero)
        containerView.translatesAutoresizingMaskIntoConstraints = false
        containerView.backgroundColor = .white
@@ -42,6 +44,7 @@ private extension ToDoDetailVC {
     }
 
     func setUpScrollView() {
+
         view.addSubview(scrollView)
 
         scrollView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
@@ -59,6 +62,7 @@ private extension ToDoDetailVC {
     }
 
     func setUpContentView() {
+
         scrollView.addSubview(contentView)
 
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
@@ -70,6 +74,7 @@ private extension ToDoDetailVC {
     }
 
     func setUpDeleteButtonView() {
+
         let deleteButtonView = createContainerView()
 
         deleteButtonView.addSubview(deleteButton)
@@ -82,6 +87,7 @@ private extension ToDoDetailVC {
     }
 
     func setUpConstraints() {
+
            let margin12 = ToDoDetailVCVisualConstants.margin12
            let views = ["titleView": titleView,
                         "dateView": dateView,
@@ -131,6 +137,7 @@ private extension ToDoDetailVC {
 }
 
 struct ToDoDetailVCVisualConstants {
+    
     static let margin12: CGFloat = 12.0
     static let margin6: CGFloat = 6.0
     static let buttonHeight: CGFloat = 44.0

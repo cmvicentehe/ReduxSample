@@ -9,6 +9,7 @@
 import Foundation
 
 class AppStore {
+
     var suscriptors: [StoreSuscriptor]
     let queue: DispatchQueue
     private(set) var reducer: Reducer
@@ -19,6 +20,7 @@ class AppStore {
     }
 
     init(reducer: @escaping Reducer, state: State, suscriptors: [StoreSuscriptor], queue: DispatchQueue) {
+
         self.reducer = reducer
         self.state = state
         self.suscriptors = suscriptors
@@ -33,6 +35,7 @@ class AppStore {
 extension AppStore: Store {
 
     func suscribe(_ suscriptor: StoreSuscriptor) {
+
         queue.async { [unowned self] in
             let result = self.suscriptors.filter { $0.identifier == suscriptor.identifier }
             let alreadyAdded = result.count > 0 ? true : false
@@ -42,12 +45,14 @@ extension AppStore: Store {
     }
 
     func unsuscribe(_ suscriptor: StoreSuscriptor) {
+
         queue.async { [unowned self] in
             self.suscriptors = self.suscriptors.filter { $0.identifier != suscriptor.identifier }
         }
     }
 
     func getState() -> State {
+
         var state: State?
         DispatchQueue.global().sync { [unowned self] in
             state = self.state
@@ -61,6 +66,7 @@ extension AppStore: Store {
     }
 
     func dispatch(action: Action) {
+
         queue.async { [unowned self] in
             let newState = action.execute(for: self.reducer)
             self.state = newState
@@ -68,6 +74,7 @@ extension AppStore: Store {
     }
 
     func replaceReducer(reducer: @escaping Reducer) {
+
         queue.async { [unowned self] in
             self.reducer = reducer
         }
@@ -75,6 +82,7 @@ extension AppStore: Store {
 }
 
 private extension AppStore {
+    
     func notify(newState: State) {
         queue.async { [unowned self] in
             self.suscriptors.forEach { $0.update(state: newState)}

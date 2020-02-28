@@ -9,6 +9,7 @@
 import Foundation
 
 func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
+
     guard let appDelegate = AppDelegateUtils.appDelegate,
         let currentState = appDelegate.store?.getState() as? AppState else {
             fatalError("Invalid AppDelegate or State")
@@ -33,6 +34,7 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
 }
 
 private func showToDoDetailOnMainOrBackground(with newState: AppState) {
+
     if Thread.isMainThread {
         showToDoDetailVC(for: newState)
     } else {
@@ -43,6 +45,7 @@ private func showToDoDetailOnMainOrBackground(with newState: AppState) {
 }
 
 private func showToDoDetailVC(for state: AppState) {
+
     let navigationState = state.navigationState
     let viewModel = toDoViewModel(for: state)
     let toDoDetailVC = ToDoDetailVC(state: state, viewModel: viewModel, suscriber: viewModel)
@@ -50,6 +53,7 @@ private func showToDoDetailVC(for state: AppState) {
 }
 
 private func toDoViewModel(for state: AppState) -> ToDoViewModel? {
+    
     guard let selectedTask = state.selectedTask else {
         print("There is no seleceted task. Adding task state")
         return nil

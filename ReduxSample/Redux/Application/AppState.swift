@@ -9,6 +9,7 @@
 import Foundation
 
 protocol AppState: State {
+
     var taskList: [ToDoTask] { get }
     var selectedTask: ToDoTask? { get }
     var navigationState: NavigationState? { get }
@@ -16,6 +17,7 @@ protocol AppState: State {
 }
 
 enum TaskSelectionState {
+
     case notSelected
     case editingTask
     case addingTask
@@ -24,6 +26,7 @@ enum TaskSelectionState {
 }
 
 struct AppStateImpl {
+    
     private(set) var taskList: [ToDoTask]
     private(set) var selectedTask: ToDoTask?
     private(set) var navigationState: NavigationState?

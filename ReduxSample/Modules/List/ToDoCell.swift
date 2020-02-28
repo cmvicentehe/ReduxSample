@@ -91,11 +91,13 @@ private extension ToDoCell {
     @objc func completeButtonTapped() {
 
         guard let viewModelNotNil = viewModel else {
-            fatalError("View model is nil")
+            print("View model is nil")
+            return
         }
 
         guard let store = AppDelegateUtils.appDelegate?.store else {
-            fatalError("Store is nil")
+            print("Store is nil")
+            return
         }
 
         store.replaceReducer(reducer: changeTaskStateReducer)

@@ -39,5 +39,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>SCHEME</key>
+	<string>${SCHEME}</string>
+	<key>HOST_URL</key>
+	<string>${HOST_URL}</string>
+	<key>PORT</key>
+	<string>${PORT}</string>
 </dict>
 </plist>

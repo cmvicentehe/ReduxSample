@@ -44,6 +44,7 @@ private func task(for identifier: String, currentState: AppState) -> ToDoTask? {
 }
 
 private func changeTaskState(for task: ToDoTask) -> ToDoTask {
+    
     var newState: TaskState = .unknown
 
     switch task.state {

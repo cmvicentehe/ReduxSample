@@ -9,12 +9,14 @@
 import UIKit
 
 protocol ToDoListDataSource {
+
     func setUp(tableView: UITableView)
     func resetTableView()
     func addTask()
 }
 
 class ToDoListDataSourceImpl: NSObject {
+
     var state: AppState
     var tableView: UITableView?
     var hasToShowDetail: Bool = false
@@ -33,6 +35,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let cellIdentifier = ToDoCellConstants.cellIdentifier
         let cell = (tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? ToDoCell) ?? ToDoCell(style: .default, reuseIdentifier: cellIdentifier)
 
@@ -47,6 +50,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+
         if editingStyle == .delete {
             let task = state.taskList[indexPath.row]
             let taskIdentifier = task.identifier
@@ -58,6 +62,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
 // MARK: UITableViewDelegate methods
 extension ToDoListDataSourceImpl: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
         let task = state.taskList[indexPath.row]
         replaceReducerByShowToDoDetailReducer()
         dispatchShowToDoDetailAction(with: task)
@@ -68,6 +73,7 @@ extension ToDoListDataSourceImpl: UITableViewDelegate {
 extension ToDoListDataSourceImpl: ToDoListDataSource {
 
     func resetTableView() {
+
         tableView?.dataSource = self
         tableView?.delegate = self
         tableView?.register(ToDoCell.self, forCellReuseIdentifier: ToDoCellConstants.cellIdentifier)
@@ -76,11 +82,13 @@ extension ToDoListDataSourceImpl: ToDoListDataSource {
     }
 
     func setUp(tableView: UITableView) {
+
         self.tableView = tableView
         resetTableView()
     }
 
     func addTask() {
+
         hasToShowDetail = true
         replaceReducerByAddTaskReducer()
         dispatchAddTaskAction()
@@ -89,7 +97,9 @@ extension ToDoListDataSourceImpl: ToDoListDataSource {
 
 // MARK: Suscriber methods
 extension ToDoListDataSourceImpl: Suscriber {
+
     func suscribe() {
+
         guard let appDelegate = AppDelegateUtils.appDelegate else {
             return
         }
@@ -98,6 +108,7 @@ extension ToDoListDataSourceImpl: Suscriber {
     }
 
     func unsuscribe() {
+
         guard let appDelegate = AppDelegateUtils.appDelegate else {
             return
         }
@@ -108,12 +119,15 @@ extension ToDoListDataSourceImpl: Suscriber {
 
 // MARK: StoreSuscriptor methods
 extension ToDoListDataSourceImpl: StoreSuscriptor {
+
     var identifier: String {
+
         let type = ToDoListDataSourceImpl.self
         return String(describing: type)
     }
 
     func update(state: State) {
+
         guard let newState = state as? AppState else {
             fatalError("There is no a valid state")
         }
@@ -132,21 +146,25 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
 private extension ToDoListDataSourceImpl {
 
     func replaceReducerByShowToDoDetailReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: showToDoDetailReducer)
     }
 
     func replaceReducerByDeleteTaskReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: deleteTaskReducer)
     }
 
     func replaceReducerByAddTaskReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: addTaskReducer)
     }
 
     func dispatchDeleteTaskAction(with identifier: String) {
+
         replaceReducerByDeleteTaskReducer()
         let store = AppDelegateUtils.appDelegate?.store
         let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier)
@@ -154,12 +172,14 @@ private extension ToDoListDataSourceImpl {
     }
 
     func dispatchShowToDoDetailAction(with task: ToDoTask) {
+
         let store = AppDelegateUtils.appDelegate?.store
         let showToDoDetailAction = ShowToDoDetailAction(task: task)
         store?.dispatch(action: showToDoDetailAction)
     }
 
     func dispatchAddTaskAction() {
+
         let store = AppDelegateUtils.appDelegate?.store
         let addTaskAction = AddTaskAction()
         store?.dispatch(action: addTaskAction)
@@ -170,10 +190,12 @@ private extension ToDoListDataSourceImpl {
 private extension ToDoListDataSourceImpl {
 
     func showToDoDetailViewIfNeeded(for state: AppState) {
+        
         if state.taskSelectionState == .addingTask &&
             hasToShowDetail {
             guard let task = state.selectedTask else {
-                fatalError("Invalid selected task")
+                print("Invalid selected task")
+                return
             }
             replaceReducerByShowToDoDetailReducer()
             dispatchShowToDoDetailAction(with: task)

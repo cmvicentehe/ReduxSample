@@ -1,0 +1,14 @@
+//
+//  AppDelegate.swift
+//  ReduxSample
+//
+//  Created by Carlos Manuel Vicente Herrero on 25/02/2020.
+//  Copyright © 2020 Carlos Manuel Vicente Herrero. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+SCHEME = http
+HOST_URL = localhost
+PORT = 8080

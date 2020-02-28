@@ -9,6 +9,7 @@
 import Foundation
 
 func updateTaskReducer(_ action: Action, _ state: State?) -> State {
+
     guard let appDelegate = AppDelegateUtils.appDelegate,
         let currentState = appDelegate.store?.getState() as? AppState else {
             fatalError("Invalid AppDelegate or State")
@@ -19,20 +20,64 @@ func updateTaskReducer(_ action: Action, _ state: State?) -> State {
     }
 
     let task = updateTaskAction.task
-    let updatedTaskList = update(taskList: currentState.taskList, task: task, taskSelectionState: currentState.taskSelectionState)
+    let networkClient = updateTaskAction.networkClient
+    update(taskList: currentState.taskList,
+           task: task,
+           networkClient: networkClient)
 
-    return AppStateImpl(taskList: updatedTaskList,
+    return AppStateImpl(taskList: currentState.taskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .savingTask)
 }
 
-private func update(taskList: [ToDoTask], task: ToDoTask, taskSelectionState: TaskSelectionState) -> [ToDoTask] {
-    var updatedTaskList = taskList.compactMap { $0.identifier == task.identifier ? task : $0}
+private func update(taskList: [ToDoTask],
+                    task: ToDoTask,
+                    networkClient: NetworkClient) {
 
-    if !updatedTaskList.contains(task) {
-        updatedTaskList.append(task)
+    let taskListWithTaskToBeUpdated = taskList.compactMap { $0.identifier == task.identifier ? task : nil }
+    if taskListWithTaskToBeUpdated.count > 0 {
+        update(task: task,
+               networkClient: networkClient)
+    } else {
+        create(task: task,
+               networkClient: networkClient)
+    }
+}
+
+private func create(task: ToDoTask, networkClient: NetworkClient) {
+    let resource = AddTaskResource(identifier: task.identifier,
+                                   name: task.name,
+                                   dueDate: task.dueDate,
+                                   notes: task.notes,
+                                   state: task.state.rawValue,
+                                   endPoint: Constants.Services.Endpoints.newTask)
+
+    let dispatchGroup = DispatchGroup()
+    dispatchGroup.enter()
+    let toDo: ToDoTask.Type? = nil // TODO: Improve this code to avoid declaring var to infer the type
+    networkClient.performRequest(for: resource, type: toDo) { _ in
+        dispatchGroup.leave()
     }
 
-    return updatedTaskList
+    dispatchGroup.wait()
+}
+
+private func update(task: ToDoTask, networkClient: NetworkClient) {
+
+    let resource = UpdateTaskResource(identifier: task.identifier,
+                                      name: task.name,
+                                      dueDate: task.dueDate,
+                                      notes: task.notes,
+                                      state: task.state.rawValue,
+                                      endPoint: Constants.Services.Endpoints.updateTask)
+
+    let dispatchGroup = DispatchGroup()
+    dispatchGroup.enter()
+    let toDo: ToDoTask.Type? = nil
+    networkClient.performRequest(for: resource, type: toDo) { _ in
+        dispatchGroup.leave()
+    }
+
+    dispatchGroup.wait()
 }

@@ -13,6 +13,7 @@ class NotesView: UIView {
     var viewModel: ToDoViewModel?
 
     lazy var notesTextfield: UITextField = {
+        
         let notesTextfield = UITextField(frame: .zero)
         notesTextfield.translatesAutoresizingMaskIntoConstraints = false
         notesTextfield.textAlignment = .left
@@ -23,6 +24,7 @@ class NotesView: UIView {
     }()
 
     lazy var notesTextView: UITextView = { [weak self] in
+
         let notesTextView = UITextView(frame: .zero)
         notesTextView.delegate = self
         notesTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,6 +48,7 @@ class NotesView: UIView {
     }
 
     init(frame: CGRect, viewModel: ToDoViewModel? = nil) {
+
         super.init(frame: .zero)
         self.viewModel = viewModel
         setUpNotesView()
@@ -58,7 +61,9 @@ class NotesView: UIView {
 
 // MARK: NotesView update methods
 extension NotesView {
+
     func update(viewModel: ToDoViewModel) {
+
         self.viewModel = viewModel
         DispatchQueue.main.async { [weak self] in
             self?.notesTextView.text = self?.viewModel?.notes ?? "--"
@@ -70,14 +75,17 @@ extension NotesView {
 private extension NotesView {
 
     func replaceReducerByChangeSelectedTaskNotesReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: changeSelectedTaskNotesReducer)
     }
 
     func dispatchChangeSelectedTaskNotesAction() {
+
         let store = AppDelegateUtils.appDelegate?.store
         guard let taskIdentifier = viewModel?.taskIdentifier else {
-            fatalError("Invalid task identifier")
+            print("Invalid task identifier")
+            return
         }
         let changeSelectedTaskNotesAction = ChangeSelectedTaskNotesAction(taskIdentifier: taskIdentifier,
                                                                           taskNotes: notes)
@@ -88,6 +96,12 @@ private extension NotesView {
 // MARK: UITextview methods
 extension NotesView: UITextViewDelegate {
 
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "--" {
+             textView.text = nil
+        }
+    }
+    
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         replaceReducerByChangeSelectedTaskNotesReducer()
         dispatchChangeSelectedTaskNotesAction()
@@ -99,6 +113,7 @@ extension NotesView: UITextViewDelegate {
 private extension NotesView {
 
     func setUpNotesView() {
+
         addSubview(notesTextfield)
         addSubview(notesTextView)
 

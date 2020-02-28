@@ -9,6 +9,7 @@
 import UIKit
 
 struct AppDelegateUtils {
+
     static var appDelegate: AppDelegate? {
 
         if Thread.isMainThread {
@@ -26,6 +27,7 @@ struct AppDelegateUtils {
 }
 
 private extension AppDelegateUtils {
+    
     static func getAppDelegate() -> AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
     }
