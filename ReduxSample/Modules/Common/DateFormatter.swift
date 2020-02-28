@@ -11,6 +11,7 @@ import Foundation
 enum FormatterType: String {
 
     case `default` = "dd/MM/yyyy"
+    case server = "yyyy-MM-dd'T'HH:mm:ssZ"
 }
 
  struct CustomDateFormatter {

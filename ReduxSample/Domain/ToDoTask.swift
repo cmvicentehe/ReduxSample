@@ -48,7 +48,7 @@ struct ToDoTask {
         name = try values.decode(String.self, forKey: .name)
         let dueDate = try values.decode(String.self, forKey: .dueDate)
         self.dueDate = CustomDateFormatter.convertDateStringToDate(dateString: dueDate,
-                                                                   with: .default)
+                                                                   with: .server)
         notes = try values.decode(String.self, forKey: .notes)
         let state = try values.decode(Int.self, forKey: .state)
         self.state = TaskState(rawValue: state) ?? .unknown
@@ -57,7 +57,7 @@ struct ToDoTask {
 
   func encode(to encoder: Encoder) throws {
     let dueDate = CustomDateFormatter.convertDateToString(date: self.dueDate,
-                                                          with: .default)
+                                                          with: .server)
     let state = self.state.rawValue
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(identifier, forKey: .identifier)
