@@ -10,11 +10,11 @@ import Foundation
 
 enum Method: String {
 
-    case get = "GET"
-    case post = "POST"
-    case put = "PUT"
+    case get    = "GET"
+    case post   = "POST"
+    case put    = "PUT"
     case delete = "DELETE"
-    case patch = "PATCH"
+    case patch  = "PATCH"
 }
 
 protocol ApiResource {

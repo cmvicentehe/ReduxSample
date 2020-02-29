@@ -167,7 +167,9 @@ private extension ToDoListDataSourceImpl {
 
         replaceReducerByDeleteTaskReducer()
         let store = AppDelegateUtils.appDelegate?.store
-        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier)
+        let networkClient = NetworkClientImpl()
+        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier,
+                                                networkClient: networkClient)
         store?.dispatch(action: deleteTaskAction)
     }
 

@@ -20,7 +20,31 @@ func deleteTaskReducer(_ action: Action, _ state: State?) -> State {
     }
 
     let taskIdentifier = deleteTaskAction.taskIdentifier
-    let updatedTaskList = currentState.taskList.filter { $0.identifier != taskIdentifier }
+    let networkClient = deleteTaskAction.networkClient
+    let updatedTaskList = deleteTask(with: taskIdentifier,
+                                     in: currentState.taskList,
+                                     networkClient: networkClient)
 
-    return AppStateImpl(taskList: updatedTaskList, selectedTask: nil, navigationState: currentState.navigationState, taskSelectionState: .deletingTask)
+    return AppStateImpl(taskList: updatedTaskList,
+                        selectedTask: nil,
+                        navigationState: currentState.navigationState,
+                        taskSelectionState: .deletingTask)
+}
+
+private func deleteTask(with identifier: String, in taskList: [ToDoTask], networkClient: NetworkClient) -> [ToDoTask] {
+
+    let endpoint = Constants.Services.Endpoints.deleteTask.replacingOccurrences(of: Constants.Services.Endpoints.taskIdPlaceholder, with: identifier)
+    let resource = DeleteTaskResource(endPoint: endpoint)
+    let dispatchGroup = DispatchGroup()
+    var updatedTaskList = taskList
+
+    dispatchGroup.enter()
+    let toDo: ToDoTask.Type? = nil
+    networkClient.performRequest(for: resource, type: toDo) { _ in
+        dispatchGroup.leave()
+        updatedTaskList = taskList.filter { $0.identifier != identifier }
+    }
+
+    dispatchGroup.wait()
+    return updatedTaskList
 }

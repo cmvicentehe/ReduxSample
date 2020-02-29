@@ -9,12 +9,11 @@
 import Foundation
 
 struct DeleteTaskResource {
-
     var endPoint: String
 }
 
 extension DeleteTaskResource: ApiResource {
-    
+
     var method: Method {
         return .delete
     }

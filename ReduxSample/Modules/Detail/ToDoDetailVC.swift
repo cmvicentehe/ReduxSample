@@ -188,7 +188,10 @@ private extension ToDoDetailVC {
             print("Invalid task identifier to be deleted")
             return
         }
-        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier)
+
+        let networkClient = NetworkClientImpl()
+        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier,
+                                                networkClient: networkClient)
         dispatch(action: deleteTaskAction)
     }
 
