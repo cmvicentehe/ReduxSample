@@ -35,11 +35,8 @@ extension UpdateTaskResource: ApiResource {
             bodyParameters[Constants.Keys.notes] = notesNotNil
         }
 
-        if let dueDateNotNil = dueDate {
-            let date = CustomDateFormatter.convertDateToString(date: dueDateNotNil,
-                                                               with: .default)
-            bodyParameters[Constants.Keys.dueDate] = date
-        }
+        let date = CustomDateFormatter.convertDateToString(date: dueDate, with: .default)
+        bodyParameters[Constants.Keys.dueDate] = date ?? "--"
 
         return bodyParameters
     }

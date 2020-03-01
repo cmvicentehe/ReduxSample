@@ -45,5 +45,10 @@
 	<string>${HOST_URL}</string>
 	<key>PORT</key>
 	<string>${PORT}</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

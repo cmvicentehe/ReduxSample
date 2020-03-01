@@ -28,7 +28,8 @@ func updateTaskReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: currentState.taskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .savingTask)
+                        taskSelectionState: .savingTask,
+                        networkClient: currentState.networkClient)
 }
 
 private func update(taskList: [ToDoTask],
@@ -51,7 +52,7 @@ private func create(task: ToDoTask, networkClient: NetworkClient) {
                                    dueDate: task.dueDate,
                                    notes: task.notes,
                                    state: task.state.rawValue,
-                                   endPoint: Constants.Services.Endpoints.newTask)
+                                   endPoint: Constants.Services.Endpoints.task)
 
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
@@ -70,10 +71,11 @@ private func update(task: ToDoTask, networkClient: NetworkClient) {
                                       dueDate: task.dueDate,
                                       notes: task.notes,
                                       state: task.state.rawValue,
-                                      endPoint: Constants.Services.Endpoints.updateTask)
+                                      endPoint: Constants.Services.Endpoints.task)
 
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
+    // TODO: Improve this code to avoid declaring var to infer the type
     let toDo: ToDoTask.Type? = nil
     networkClient.performRequest(for: resource, type: toDo) { _ in
         dispatchGroup.leave()

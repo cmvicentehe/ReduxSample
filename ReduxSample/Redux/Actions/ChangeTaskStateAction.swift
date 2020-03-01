@@ -11,6 +11,7 @@ import Foundation
 struct ChangeTaskStateAction {
     
     let taskIdentifier: String
+    let networkClient: NetworkClient
 }
 
 extension ChangeTaskStateAction: Action {}

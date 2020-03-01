@@ -28,7 +28,8 @@ func deleteTaskReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .deletingTask)
+                        taskSelectionState: .deletingTask,
+                        networkClient: currentState.networkClient)
 }
 
 private func deleteTask(with identifier: String, in taskList: [ToDoTask], networkClient: NetworkClient) -> [ToDoTask] {

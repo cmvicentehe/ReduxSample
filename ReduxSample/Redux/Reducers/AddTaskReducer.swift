@@ -27,5 +27,6 @@ func addTaskReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: taskList,
                         selectedTask: task,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .addingTask)
+                        taskSelectionState: .addingTask,
+                        networkClient: currentState.networkClient)
 }

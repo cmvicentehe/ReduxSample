@@ -18,7 +18,8 @@ func showDateSelectorReducer(_ action: Action, _ state: State?) -> State {
     let newState = AppStateImpl(taskList: currentState.taskList,
                                 selectedTask: currentState.selectedTask,
                                 navigationState: currentState.navigationState,
-                                taskSelectionState: .editingTask)
+                                taskSelectionState: .editingTask,
+                                networkClient: currentState.networkClient)
     
     if Thread.isMainThread {
         showDateSelectorVC(for: newState)

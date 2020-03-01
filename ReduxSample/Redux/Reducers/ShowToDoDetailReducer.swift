@@ -26,7 +26,8 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
     let newState = AppStateImpl(taskList: currentState.taskList,
                                 selectedTask: selectedTask,
                                 navigationState: navigationState,
-                                taskSelectionState: taskSelectionState)
+                                taskSelectionState: taskSelectionState,
+                                networkClient: currentState.networkClient)
 
     showToDoDetailOnMainOrBackground(with: newState)
 
@@ -60,8 +61,8 @@ private func toDoViewModel(for state: AppState) -> ToDoViewModel? {
     }
 
     let isCompleted = (selectedTask.state == .done) ? true : false
-    let formatterType = FormatterType.default
-    let date = CustomDateFormatter.convertDateToString(date: selectedTask.dueDate, with: formatterType)
+    let date = CustomDateFormatter.convertDateToString(date: selectedTask.dueDate,
+                                                       with: .default)
 
     return ToDoViewModel(taskIdentifier: selectedTask.identifier,
                          title: selectedTask.name,

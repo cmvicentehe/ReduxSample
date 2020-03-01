@@ -31,5 +31,9 @@ func popViewControllerReducer(_ action: Action, _ state: State?) -> State {
         }
     }
 
-    return AppStateImpl(taskList: currentState.taskList, selectedTask: nil, navigationState: navigationState, taskSelectionState: .notSelected)
+    return AppStateImpl(taskList: currentState.taskList,
+                        selectedTask: nil,
+                        navigationState: navigationState,
+                        taskSelectionState: .notSelected,
+                        networkClient: currentState.networkClient)
 }

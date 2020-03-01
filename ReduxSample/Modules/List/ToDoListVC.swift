@@ -83,7 +83,7 @@ private extension ToDoListVC {
 
     func dispatchGetTasksAction() {
 
-        let networkClient = NetworkClientImpl()
+        let networkClient = state.networkClient
         let getTasksAction = GetTasksAction(networkClient: networkClient)
         dispatch(action: getTasksAction)
     }

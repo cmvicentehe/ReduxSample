@@ -26,7 +26,11 @@ extension AppDelegate: Redux {
     func createState() -> State {
         
         let taskList = [ToDoTask]()
-        return AppStateImpl(taskList: taskList, selectedTask: nil, navigationState: nil)
+        let networkClient = NetworkClientImpl()
+        return AppStateImpl(taskList: taskList,
+                            selectedTask: nil,
+                            navigationState: nil,
+                            networkClient: networkClient)
     }
 
     func createSuscriptors() -> [StoreSuscriptor] {

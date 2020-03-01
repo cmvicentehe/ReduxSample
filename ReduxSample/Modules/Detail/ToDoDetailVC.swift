@@ -189,7 +189,7 @@ private extension ToDoDetailVC {
             return
         }
 
-        let networkClient = NetworkClientImpl()
+        let networkClient = state.networkClient
         let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier,
                                                 networkClient: networkClient)
         dispatch(action: deleteTaskAction)
@@ -217,7 +217,7 @@ private extension ToDoDetailVC {
                                    dueDate: date,
                                    notes: notesView.notesTextView.text,
                                    state: taskState)
-        let networkClient = NetworkClientImpl()
+        let networkClient = state.networkClient
         let updateTaskAction = UpdateTaskAction(task: updatedTask, networkClient: networkClient)
         store?.dispatch(action: updateTaskAction)
     }

@@ -17,5 +17,6 @@ func showToDoListReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: currentState.taskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .notSelected)
+                        taskSelectionState: .notSelected,
+                        networkClient: currentState.networkClient)
 }

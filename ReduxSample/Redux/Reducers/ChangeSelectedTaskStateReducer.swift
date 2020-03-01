@@ -35,5 +35,6 @@ func changeSelectedTaskStateReducer(_ action: Action, _ state: State?) -> State 
     return AppStateImpl(taskList: currentState.taskList,
                         selectedTask: updatedTask,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .editingTask)
+                        taskSelectionState: .editingTask,
+                        networkClient: currentState.networkClient)
 }

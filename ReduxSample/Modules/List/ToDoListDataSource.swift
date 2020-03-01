@@ -41,8 +41,8 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
 
         let task = state.taskList[indexPath.row]
         let isSelected = task.state == .done ? true : false
-        let formatterType = FormatterType.default
-        let date = CustomDateFormatter.convertDateToString(date: task.dueDate, with: formatterType)
+        let date = CustomDateFormatter.convertDateToString(date: task.dueDate,
+                                                           with: .default)
         let viewModel = ToDoViewModel(taskIdentifier: task.identifier, title: task.name, date: date, notes: "--", isSelected: isSelected)
         cell.bind(viewModel: viewModel)
         
@@ -54,6 +54,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
         if editingStyle == .delete {
             let task = state.taskList[indexPath.row]
             let taskIdentifier = task.identifier
+            replaceReducerByDeleteTaskReducer()
             dispatchDeleteTaskAction(with: taskIdentifier)
         }
     }
@@ -134,8 +135,8 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
         
         self.state = newState
 
-        DispatchQueue.main.async { [unowned self] in
-            self.tableView?.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView?.reloadData()
         }
 
         showToDoDetailViewIfNeeded(for: self.state)
@@ -165,9 +166,8 @@ private extension ToDoListDataSourceImpl {
 
     func dispatchDeleteTaskAction(with identifier: String) {
 
-        replaceReducerByDeleteTaskReducer()
         let store = AppDelegateUtils.appDelegate?.store
-        let networkClient = NetworkClientImpl()
+        let networkClient = state.networkClient
         let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier,
                                                 networkClient: networkClient)
         store?.dispatch(action: deleteTaskAction)

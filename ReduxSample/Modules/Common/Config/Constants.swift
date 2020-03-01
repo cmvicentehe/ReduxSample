@@ -15,9 +15,8 @@ struct Constants {
         struct Endpoints {
 
             static let tasks = "/tasks"
-            static let newTask = "/send"
-            static let updateTask = "/update"
-            static let deleteTask = "/delete/{{taskId}}"
+            static let task = "/task"
+            static let deleteTask = "/task/{{taskId}}"
             static let taskIdPlaceholder = "{{taskId}}"
         }
     }

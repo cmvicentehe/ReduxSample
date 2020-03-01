@@ -24,7 +24,8 @@ func getTasksReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: toDoTaskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .notSelected)
+                        taskSelectionState: .notSelected,
+                        networkClient: currentState.networkClient)
 }
 
 private func getTasks(from networkClient: NetworkClient) -> [ToDoTask] {
