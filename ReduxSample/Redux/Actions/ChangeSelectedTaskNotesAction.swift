@@ -9,6 +9,7 @@
 import Foundation
 
 struct ChangeSelectedTaskNotesAction {
+    
     let taskIdentifier: String
     let taskNotes: String
 }

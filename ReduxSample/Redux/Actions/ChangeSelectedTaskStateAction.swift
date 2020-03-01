@@ -9,6 +9,7 @@
 import Foundation
 
 struct ChangeSelectedTaskStateAction {
+    
     let taskIdentifier: String
     let taskState: TaskState
 }

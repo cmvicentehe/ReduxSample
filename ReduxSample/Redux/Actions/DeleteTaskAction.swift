@@ -9,7 +9,9 @@
 import Foundation
 
 struct DeleteTaskAction {
+    
     let taskIdentifier: String
+    let networkClient: NetworkClient
 }
 
 extension DeleteTaskAction: Action {}

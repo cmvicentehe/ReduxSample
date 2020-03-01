@@ -30,10 +30,12 @@ func changeTaskDateReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: task,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .editingTask)
+                        taskSelectionState: .editingTask,
+                        networkClient: currentState.networkClient)
 }
 
 private func task(for identifier: String, currentState: AppState) -> ToDoTask? {
+
     let task = currentState.taskList
         .filter { $0.identifier == identifier }
         .reduce(nil) { _, task in
@@ -43,6 +45,7 @@ private func task(for identifier: String, currentState: AppState) -> ToDoTask? {
 }
 
 private func changeTaskDate(for taskToBeModified: ToDoTask, date: Date) -> ToDoTask {
+    
     return ToDoTask(identifier: taskToBeModified.identifier,
                     name: taskToBeModified.name,
                     dueDate: date,

@@ -9,7 +9,9 @@
 import Foundation
 
 struct UpdateTaskAction {
+
     let task: ToDoTask
+    let networkClient: NetworkClient
 }
 
 extension UpdateTaskAction: Action {}

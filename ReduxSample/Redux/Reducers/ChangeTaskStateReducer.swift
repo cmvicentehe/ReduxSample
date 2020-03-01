@@ -25,12 +25,17 @@ func changeTaskStateReducer(_ action: Action, _ state: State?) -> State {
     }
 
     let task = changeTaskState(for: taskToBeModified)
+    let networkClient = changeTaskAction.networkClient
     let updatedTaskList = currentState.taskList.compactMap { $0.identifier == task.identifier ? task : $0}
+
+    update(task: task,
+           networkClient: networkClient)
 
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: task,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .editingTask)
+                        taskSelectionState: .editingTask,
+                        networkClient: currentState.networkClient)
 }
 
 private func task(for identifier: String, currentState: AppState) -> ToDoTask? {
@@ -44,6 +49,7 @@ private func task(for identifier: String, currentState: AppState) -> ToDoTask? {
 }
 
 private func changeTaskState(for task: ToDoTask) -> ToDoTask {
+    
     var newState: TaskState = .unknown
 
     switch task.state {
@@ -60,4 +66,24 @@ private func changeTaskState(for task: ToDoTask) -> ToDoTask {
                     dueDate: task.dueDate,
                     notes: task.notes,
                     state: newState)
+}
+
+private func update(task: ToDoTask, networkClient: NetworkClient) {
+
+    let resource = UpdateTaskResource(identifier: task.identifier,
+                                      name: task.name,
+                                      dueDate: task.dueDate,
+                                      notes: task.notes,
+                                      state: task.state.rawValue,
+                                      endPoint: Constants.Services.Endpoints.task)
+
+    let dispatchGroup = DispatchGroup()
+    dispatchGroup.enter()
+    let toDo: ToDoTask.Type? = nil
+    // TODO: Improve this code to avoid declaring var to infer the type
+    networkClient.performRequest(for: resource, type: toDo) { _ in
+        dispatchGroup.leave()
+    }
+
+    dispatchGroup.wait()
 }

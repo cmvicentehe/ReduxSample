@@ -18,6 +18,7 @@ class ToDoDetailVC: ReduxSampleVC {
     var scrollViewBottomConstraint: NSLayoutConstraint?
     
     lazy var scrollView: UIScrollView = {
+
         let scrollView = UIScrollView(frame: .zero)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.backgroundColor = .white
@@ -25,11 +26,13 @@ class ToDoDetailVC: ReduxSampleVC {
     }()
     
     lazy var contentView: UIView = {
+
         let contentView = createContainerView()
         return contentView
     }()
     
     lazy var titleView: TitleView = {
+
         let titleView = TitleView(frame: .zero, viewModel: viewModel)
         titleView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -37,6 +40,7 @@ class ToDoDetailVC: ReduxSampleVC {
     }()
 
     lazy var dateView: DateView = { [weak self] in
+
         let dateView = DateView(frame: .zero, viewModel: viewModel)
         dateView.translatesAutoresizingMaskIntoConstraints = false
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(userDidTapDateView))
@@ -47,6 +51,7 @@ class ToDoDetailVC: ReduxSampleVC {
         }()
     
     lazy var notesView: NotesView = {
+
         let notesView = NotesView(frame: .zero, viewModel: viewModel)
         notesView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -54,11 +59,13 @@ class ToDoDetailVC: ReduxSampleVC {
     }()
 
     lazy var deleteButtonView: UIView = {
+
         let deleteButtonView = createContainerView()
         return deleteButtonView
     }()
     
     lazy var deleteButton: UIButton = { [weak self] in
+
         let deleteButton = UIButton.init(type: .custom)
         let buttonTitle = NSLocalizedString("delete", comment: "")
         let taskSelectionState = self?.state.taskSelectionState
@@ -74,6 +81,7 @@ class ToDoDetailVC: ReduxSampleVC {
         }()
     
     init(state: AppState, viewModel: ToDoViewModel?, suscriber: Suscriber? = nil) {
+
         self.viewModel = viewModel
         super.init(state: state, suscriber: suscriber)
     }
@@ -87,18 +95,21 @@ class ToDoDetailVC: ReduxSampleVC {
 extension ToDoDetailVC {
     
     override func viewDidLoad() {
+
         super.viewDidLoad()
         setUpViews()
         viewModel?.detailUpdater = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
+
         super.viewWillAppear(animated)
         hideKeyboardWhenTappedAround()
         registerToKeyboardEvents()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+
         super.viewWillDisappear(animated)
         unregisterToKeyboardEvents()
     }
@@ -108,6 +119,7 @@ extension ToDoDetailVC {
 private extension ToDoDetailVC {
     
     func bindViewModelIfNeeded() {
+
         guard let selectedTask = state.selectedTask else {
             print("There is no seleceted task. Adding task state")
             return
@@ -124,6 +136,7 @@ private extension ToDoDetailVC {
     }
 
     func reloadDetailView() {
+
         guard let viewModelNotNil = viewModel else {
             return
         }
@@ -133,54 +146,68 @@ private extension ToDoDetailVC {
     }
 
     @objc func userDidTapDateView() {
+
         replaceReducerByShowDateSelectorReducer()
         dispatchShowDateSelectorAction()
     }
 
     func replaceReducerByShowDateSelectorReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: showDateSelectorReducer)
     }
 
     func replaceReducerByDeleteTaskReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: deleteTaskReducer)
     }
 
     func replaceReducerByPopViewControllerReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: popViewControllerReducer)
     }
 
     func replaceReducerByUpdateTaskReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: updateTaskReducer)
     }
 
     func dispatchShowDateSelectorAction() {
+
         dismissKeyboard()
         let showDateSelectorAction = ShowDateSelectorAction()
         dispatch(action: showDateSelectorAction)
     }
 
-    func dispatchDeleteTaskActionAction() {
+    func dispatchDeleteTaskAction() {
+
         guard let identifier = state.selectedTask?.identifier else {
-            fatalError("Invalid task identifier to be deleted")
+            print("Invalid task identifier to be deleted")
+            return
         }
-        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier)
+
+        let networkClient = state.networkClient
+        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier,
+                                                networkClient: networkClient)
         dispatch(action: deleteTaskAction)
     }
 
     func dispatchPopViewControllerAction() {
+
         let popViewControllerAction = PopViewControllerAction()
         dispatch(action: popViewControllerAction)
     }
 
     func dispatchUpdateTaskAction() {
+
         let store = AppDelegateUtils.appDelegate?.store
 
         guard let selectedTask = state.selectedTask else {
-            fatalError("Invalid selected task")
+            print("Invalid selected task")
+            return
         }
 
         let date = CustomDateFormatter.convertDateStringToDate(dateString: dateView.dateString, with: FormatterType.default)
@@ -190,16 +217,19 @@ private extension ToDoDetailVC {
                                    dueDate: date,
                                    notes: notesView.notesTextView.text,
                                    state: taskState)
-        let updateTaskAction = UpdateTaskAction(task: updatedTask)
+        let networkClient = state.networkClient
+        let updateTaskAction = UpdateTaskAction(task: updatedTask, networkClient: networkClient)
         store?.dispatch(action: updateTaskAction)
     }
 
     func refreshDetailInfo() {
+
         bindViewModelIfNeeded()
         reloadDetailView()
     }
 
     func updateTaskInfo() {
+
         switch state.taskSelectionState {
         case .addingTask, .notSelected: break
         case .editingTask:
@@ -215,6 +245,7 @@ private extension ToDoDetailVC {
 extension ToDoDetailVC: DetailUpdater {
     
     func update(with state: AppState) {
+
         self.state = state
         updateTaskInfo()
     }
@@ -224,18 +255,39 @@ extension ToDoDetailVC: DetailUpdater {
 private extension ToDoDetailVC {
 
     func registerToKeyboardEvents() {
+
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     func unregisterToKeyboardEvents() {
+
         let notificationCenter = NotificationCenter.default
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    func manageKeyboardAppearing(_ keyboardHeight: CGFloat) {
+
+        UIView.animate(withDuration: 0.3) { [weak self] in
+
+            guard let viewHeight = self?.view.frame.height,
+                let contentViewHeight = self?.contentView.frame.height else {
+                    print("View or scroll content view height is nil")
+                    return
+            }
+
+            let availableSpace = viewHeight - keyboardHeight
+            let yposition = contentViewHeight - availableSpace
+            self?.scrollView.setContentOffset(CGPoint(x: 0, y: yposition), animated: false)
+            self?.scrollViewBottomConstraint?.constant = -keyboardHeight
+            self?.view.layoutIfNeeded()
+        }
+    }
+
     @objc func keyboardWillShow(notification: Notification) {
+
         guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
 
         let keyboardScreenEndFrame = keyboardValue.cgRectValue
@@ -245,25 +297,14 @@ private extension ToDoDetailVC {
         if keyboardScreenEndFrame.intersects(titleView.frame) ||
             keyboardScreenEndFrame.intersects(notesView.frame) {
 
-            UIView.animate(withDuration: 0.3) { [weak self] in
-
-                guard let viewHeight = self?.view.frame.height,
-                    let contentViewHeight = self?.contentView.frame.height else {
-                        print("View or scroll content view height is nil")
-                        return
-                }
-                
-                let availableSpace = viewHeight - keyboardHeight
-                let yposition = contentViewHeight - availableSpace
-                self?.scrollView.setContentOffset(CGPoint(x: 0, y: yposition), animated: false)
-                self?.scrollViewBottomConstraint?.constant = -keyboardHeight
-                self?.view.layoutIfNeeded()
-            }
+            manageKeyboardAppearing(keyboardHeight)
         }
     }
 
     @objc func keyboardWillHide(notification: Notification) {
+
         UIView.animate(withDuration: 0.3) { [weak self] in
+
             self?.scrollView.setContentOffset(.zero, animated: false)
             self?.scrollViewBottomConstraint?.constant = 0
             self?.view.layoutIfNeeded()
@@ -271,12 +312,14 @@ private extension ToDoDetailVC {
     }
 
     @objc func dismissKeyboard() {
+
         DispatchQueue.main.async { [weak self] in
             self?.view.endEditing(true)
         }
     }
 
     func hideKeyboardWhenTappedAround() {
+
         let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -285,12 +328,15 @@ private extension ToDoDetailVC {
 
 // MARK: User interaction
 extension ToDoDetailVC {
+
     @objc func userDidTapDeleteButton() {
+
         replaceReducerByDeleteTaskReducer()
-        dispatchDeleteTaskActionAction()
+        dispatchDeleteTaskAction()
     }
 
     @objc func userDidTapSaveButton() {
+        
         replaceReducerByUpdateTaskReducer()
         dispatchUpdateTaskAction()
     }

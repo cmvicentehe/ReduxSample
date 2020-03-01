@@ -16,8 +16,7 @@ func addTaskReducer(_ action: Action, _ state: State?) -> State {
     }
 
     let taskList = currentState.taskList
-    let numberOfElements = taskList.count
-    let identifier = numberOfElements + 1
+    let identifier = UUID().uuidString
 
     let task = ToDoTask(identifier: String(identifier),
                         name: "",
@@ -28,5 +27,6 @@ func addTaskReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: taskList,
                         selectedTask: task,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .addingTask)
+                        taskSelectionState: .addingTask,
+                        networkClient: currentState.networkClient)
 }

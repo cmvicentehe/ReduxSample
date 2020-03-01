@@ -13,6 +13,7 @@ class ToDoCell: UITableViewCell {
     var viewModel: ToDoViewModel?
 
     lazy var completeButton: UIButton = { [unowned self] in
+
         let completeButton = UIButton(type: .custom)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         let notSelectedImage = #imageLiteral(resourceName: "unchecked")
@@ -25,6 +26,7 @@ class ToDoCell: UITableViewCell {
         }()
 
     lazy var title: UILabel = {
+
         let title = UILabel(frame: .zero)
         title.translatesAutoresizingMaskIntoConstraints = false
         title.numberOfLines = 0
@@ -34,6 +36,7 @@ class ToDoCell: UITableViewCell {
     }()
 
     lazy var subtitle: UILabel = {
+
         let subtitle = UILabel(frame: .zero)
         subtitle.translatesAutoresizingMaskIntoConstraints = false
         subtitle.numberOfLines = 0
@@ -44,6 +47,7 @@ class ToDoCell: UITableViewCell {
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setUpViews()
     }
@@ -55,7 +59,9 @@ class ToDoCell: UITableViewCell {
 
 // MARK: Bindable protocol
 extension ToDoCell {
+
     func bind(viewModel: ToDoViewModel) {
+
         self.viewModel = viewModel
         title.text = viewModel.title
         subtitle.text = viewModel.date ?? "--"
@@ -65,7 +71,9 @@ extension ToDoCell {
 
 // MARK: Private extension
 private extension ToDoCell {
+
     func setUpViews() {
+
         contentView.addSubview(title)
         contentView.addSubview(subtitle)
         contentView.addSubview(completeButton)
@@ -84,6 +92,22 @@ private extension ToDoCell {
         subtitle.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -ToDoCellVisualConstants.margin12).isActive = true
         subtitle.leadingAnchor.constraint(equalTo: title.leadingAnchor).isActive = true
     }
+
+    func replaceReducerByChangeTaskState(store: Store) {
+        store.replaceReducer(reducer: changeTaskStateReducer)
+    }
+
+    func dispatchUpdateTaskAction(store: Store, viewModel: ToDoViewModel) {
+        guard let state = store.getState() as? AppState else {
+            print("Invalid state type")
+            return
+        }
+
+        let networkClient = state.networkClient
+        let action = ChangeTaskStateAction(taskIdentifier: viewModel.taskIdentifier,
+                                           networkClient: networkClient)
+        store.dispatch(action: action)
+    }
 }
 
 // MARK: Action methods
@@ -91,26 +115,29 @@ private extension ToDoCell {
     @objc func completeButtonTapped() {
 
         guard let viewModelNotNil = viewModel else {
-            fatalError("View model is nil")
+            print("View model is nil")
+            return
         }
 
         guard let store = AppDelegateUtils.appDelegate?.store else {
-            fatalError("Store is nil")
+            print("Store is nil")
+            return
         }
 
-        store.replaceReducer(reducer: changeTaskStateReducer)
-
-        let action = ChangeTaskStateAction(taskIdentifier: viewModelNotNil.taskIdentifier)
-        store.dispatch(action: action)
+        replaceReducerByChangeTaskState(store: store)
+        dispatchUpdateTaskAction(store: store,
+                                 viewModel: viewModelNotNil)
     }
 }
 
 struct ToDoCellConstants {
+
     static let cellIdentifier = "ToDoCell"
     static let estimatedRowHeight = 44.0
 }
 
 private struct ToDoCellVisualConstants {
+
     static let margin12: CGFloat = 12.0
     static let margin6: CGFloat = 6.0
     static let buttonHeight: CGFloat = 44.0
@@ -118,6 +145,7 @@ private struct ToDoCellVisualConstants {
 }
 
 private struct ToDoCellFontConstants {
+    
     static let titleSize: CGFloat = 16.0
     static let subtitleSize: CGFloat = 12.0
 }

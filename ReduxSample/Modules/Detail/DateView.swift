@@ -13,6 +13,7 @@ class DateView: UIView {
     var viewModel: ToDoViewModel?
 
     lazy var dateLabel: UILabel = {
+
         let dateLabel = createLabel()
         let text = NSLocalizedString("due_date", comment: "")
         dateLabel.text = "\(text) :"
@@ -21,6 +22,7 @@ class DateView: UIView {
     }()
 
     lazy var date: UILabel = {
+
         let date = createLabel()
         date.text = viewModel?.date ?? "--"
         date.textColor = .lightGray
@@ -33,6 +35,7 @@ class DateView: UIView {
     }
 
     init(frame: CGRect, viewModel: ToDoViewModel? = nil) {
+
         super.init(frame: frame)
         self.viewModel = viewModel
         setUpView()
@@ -45,6 +48,7 @@ class DateView: UIView {
 
 // MARK: DateView update methods
 extension DateView {
+
     func update(viewModel: ToDoViewModel) {
         self.viewModel = viewModel
         DispatchQueue.main.async { [weak self] in
@@ -56,6 +60,7 @@ extension DateView {
 private extension DateView {
 
     func createLabel() -> UILabel {
+
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -64,6 +69,7 @@ private extension DateView {
     }
 
     func setUpView() {
+
         addSubview(dateLabel)
         addSubview(date)
 
@@ -84,6 +90,7 @@ private extension DateView {
 }
 
 private struct DateViewVisualConstants {
+    
     static let margin12: CGFloat = 12.0
     static let margin6: CGFloat = 6.0
 }

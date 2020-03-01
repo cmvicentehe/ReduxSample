@@ -124,7 +124,8 @@ private extension TitleView {
     func dispatchChangeSelectedTaskTitleAction() {
         let store = AppDelegateUtils.appDelegate?.store
         guard let taskIdentifier = viewModel?.taskIdentifier else {
-            fatalError("Invalid task identifier")
+            print("Invalid task identifier")
+            return
         }
         let changeSelectedTaskAction = ChangeSelectedTaskTitleAction(taskIdentifier: taskIdentifier,
                                                                      taskTitle: title)
@@ -139,7 +140,8 @@ private extension TitleView {
     func dispatchChangeSelectedTaskStateAction() {
         let store = AppDelegateUtils.appDelegate?.store
         guard let taskIdentifier = viewModel?.taskIdentifier else {
-            fatalError("Invalid task identifier")
+            print("Invalid task identifier")
+            return
         }
         let taskState: TaskState = completeButton.isSelected ? .toDo : .done
         let changeSelectedTaskStateAction = ChangeSelectedTaskStateAction(taskIdentifier: taskIdentifier,

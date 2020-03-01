@@ -9,6 +9,7 @@
 import UIKit
 
 protocol ReduxStore {
+
     func initializeRedux()
     func suscribe(_ suscriptor: StoreSuscriptor)
     func unsuscribe(_ suscriptor: StoreSuscriptor)
@@ -19,6 +20,7 @@ protocol ReduxStore {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var window: UIWindow? = {
+        
         let bounds = UIScreen.main.bounds
         let window = UIWindow(frame: bounds)
         window.makeKeyAndVisible()
@@ -39,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
 
     func initializeRedux() {
+
         let reducer = createReducer()
         let state = createState()
         let suscriptors = createSuscriptors()
@@ -63,6 +66,7 @@ extension AppDelegate {
 private extension AppDelegate {
 
     func showInitialVC() {
+
         guard let state = store?.getState() as? AppState else {
             print("There is no state created")
             return
@@ -76,12 +80,14 @@ private extension AppDelegate {
     }
 
     func initializeNavigationState() {
+
         suscribe(self)
         let updateNavigationStateAction = UpdateNavigationStateAction()
         dispatch(action: updateNavigationStateAction)
     }
 
     func showList() {
+
         store?.replaceReducer(reducer: showToDoListReducer)
         let showListAction = ShowToDoListAction()
         dispatch(action: showListAction)
@@ -89,12 +95,15 @@ private extension AppDelegate {
 }
 
 extension AppDelegate: StoreSuscriptor {
+
     var identifier: String {
+
         let type = AppDelegate.self
         return String(describing: type)
     }
 
     func update(state: State) {
+
         unsuscribe(self)
         showList()
     }
