@@ -42,8 +42,8 @@ private func deleteTask(with identifier: String, in taskList: [ToDoTask], networ
     dispatchGroup.enter()
     let toDo: ToDoTask.Type? = nil
     networkClient.performRequest(for: resource, type: toDo) { _ in
-        dispatchGroup.leave()
         updatedTaskList = taskList.filter { $0.identifier != identifier }
+        dispatchGroup.leave()
     }
 
     dispatchGroup.wait()

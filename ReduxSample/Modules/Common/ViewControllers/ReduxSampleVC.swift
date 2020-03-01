@@ -56,6 +56,7 @@ extension ReduxSampleVC {
 extension ReduxSampleVC {
 
     func updateNavigationStack() {
+
         view.endEditing(true)
         replaceReducerByUpdateNavigationStateReducer()
         dispatchUpdateNavigationStateAction()
