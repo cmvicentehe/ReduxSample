@@ -35,6 +35,7 @@ func changeTaskStateReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: task,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .editingTask,
+                        viewState: .fetched,
                         networkClient: currentState.networkClient)
 }
 

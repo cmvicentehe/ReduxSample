@@ -31,6 +31,7 @@ func changeTaskDateReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: task,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .editingTask,
+                        viewState: .notManaged,
                         networkClient: currentState.networkClient)
 }
 

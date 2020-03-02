@@ -13,6 +13,30 @@ class ReduxSampleVC: UIViewController {
     var state: AppState
     let suscriber: Suscriber?
 
+    lazy var activityIndicatorView: UIView = {
+
+        let activityIndicatorView = UIView(frame: .zero)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.backgroundColor = .clear
+        activityIndicatorView.isOpaque = false
+        activityIndicatorView.isHidden = true
+        activityIndicatorView.isUserInteractionEnabled = false
+        activityIndicatorView.alpha = 0.35
+
+        return activityIndicatorView
+    }()
+
+    lazy var activityIndicator: UIActivityIndicatorView = {
+
+        let activityIndicator = UIActivityIndicatorView(frame: .zero)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.style = .whiteLarge
+        activityIndicator.tintColor = .systemBlue
+        activityIndicator.color = .systemBlue
+
+        return activityIndicator
+    }()
+
     init(state: AppState, suscriber: Suscriber? = nil) {
 
         self.state = state
@@ -38,6 +62,12 @@ extension ReduxSampleVC {
         suscriber?.suscribe()
     }
 
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        setUpActivityIndicator()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
 
         super.viewWillDisappear(animated)
@@ -48,7 +78,7 @@ extension ReduxSampleVC {
     override func didReceiveMemoryWarning() {
 
         super.didReceiveMemoryWarning()
-         suscriber?.unsuscribe()
+        suscriber?.unsuscribe()
     }
 }
 

@@ -36,5 +36,6 @@ func changeSelectedTaskNotesReducer(_ action: Action, _ state: State?) -> State 
                         selectedTask: updatedTask,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .editingTask,
+                        viewState: .notManaged,
                         networkClient: currentState.networkClient)
 }

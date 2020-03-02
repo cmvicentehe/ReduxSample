@@ -25,10 +25,11 @@ class ToDoListVC: ReduxSampleVC {
 
 // MARK: ViewController life cycle
 extension ToDoListVC {
+
     override func viewDidLoad() {
 
-        super.viewDidLoad()
         setUpViews()
+        super.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,21 +72,21 @@ private extension ToDoListVC {
     }
 
     func getTasks() {
-        replaceReducerByGetTasksReducer()
-        dispatchGetTasksAction()
+
+        replaceReducerByShowActivityIndicatorReducer()
+        dispatchShowActivityIndicatorAction()
     }
 
-    func replaceReducerByGetTasksReducer() {
+    func replaceReducerByShowActivityIndicatorReducer() {
 
-         let store = AppDelegateUtils.appDelegate?.store
-         store?.replaceReducer(reducer: getTasksReducer)
+        let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: showActivityIndicatorReducer)
     }
 
-    func dispatchGetTasksAction() {
+    func dispatchShowActivityIndicatorAction() {
 
-        let networkClient = state.networkClient
-        let getTasksAction = GetTasksAction(networkClient: networkClient)
-        dispatch(action: getTasksAction)
+        let showActivityIndicatorAction = ShowActivityIndicatorAction()
+        dispatch(action: showActivityIndicatorAction)
     }
 
 }

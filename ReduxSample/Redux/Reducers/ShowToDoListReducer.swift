@@ -18,5 +18,6 @@ func showToDoListReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .notSelected,
+                        viewState: .notManaged,
                         networkClient: currentState.networkClient)
 }

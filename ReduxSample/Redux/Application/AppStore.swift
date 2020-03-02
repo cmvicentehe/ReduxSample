@@ -68,6 +68,7 @@ extension AppStore: Store {
     func dispatch(action: Action) {
 
         queue.async { [unowned self] in
+            
             let newState = action.execute(for: self.reducer)
             self.state = newState
         }

@@ -28,6 +28,7 @@ func updateNavigationStateReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: currentState.selectedTask,
                         navigationState: navigationState,
                         taskSelectionState: currentState.taskSelectionState,
+                        viewState: .notManaged,
                         networkClient: currentState.networkClient)
 }
 
