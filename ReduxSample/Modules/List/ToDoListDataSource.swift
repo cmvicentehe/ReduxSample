@@ -225,7 +225,7 @@ private extension ToDoListDataSourceImpl {
         case .fetched:
             replaceReducerByHideActivityIndicatorReducer()
             dispatchHideActivityIndicatorAction()
-        case .notManaged:
+        case .notHandled, .activityIndicatorRequired, .finish:
             break
         }
     }

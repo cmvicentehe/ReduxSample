@@ -23,7 +23,7 @@ func hideActivityIndicatorReducer(_ action: Action, _ state: State?) -> State {
     return AppStateImpl(taskList: currentState.taskList,
                         selectedTask: currentState.selectedTask,
                         navigationState: currentState.navigationState,
-                        taskSelectionState: .notSelected,
-                        viewState: .notManaged,
+                        taskSelectionState: currentState.taskSelectionState,
+                        viewState: .finish,
                         networkClient: currentState.networkClient)
 }

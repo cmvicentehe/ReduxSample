@@ -28,6 +28,6 @@ func addTaskReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: task,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .addingTask,
-                        viewState: .notManaged,
+                        viewState: .notHandled,
                         networkClient: currentState.networkClient)
 }

@@ -30,7 +30,7 @@ extension AppDelegate: Redux {
         return AppStateImpl(taskList: taskList,
                             selectedTask: nil,
                             navigationState: nil,
-                            viewState: .notManaged,
+                            viewState: .notHandled,
                             networkClient: networkClient)
     }
 

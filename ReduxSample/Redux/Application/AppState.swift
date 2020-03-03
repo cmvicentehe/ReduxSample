@@ -20,9 +20,11 @@ protocol AppState: State {
 
 enum ViewState {
 
+    case activityIndicatorRequired
     case fetching
     case fetched
-    case notManaged
+    case finish
+    case notHandled
 }
 
 enum TaskSelectionState {

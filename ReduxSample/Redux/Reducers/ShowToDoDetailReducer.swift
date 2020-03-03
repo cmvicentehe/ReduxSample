@@ -27,7 +27,7 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
                                 selectedTask: selectedTask,
                                 navigationState: navigationState,
                                 taskSelectionState: taskSelectionState,
-                                viewState: .notManaged,
+                                viewState: .notHandled,
                                 networkClient: currentState.networkClient)
 
     showToDoDetailOnMainOrBackground(with: newState)

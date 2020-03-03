@@ -29,7 +29,7 @@ func updateTaskReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .savingTask,
-                        viewState: .notManaged,
+                        viewState: .notHandled,
                         networkClient: currentState.networkClient)
 }
 
