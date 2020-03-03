@@ -204,11 +204,13 @@ extension ToDoDetailVC {
     }
 
     @objc func userDidTapDeleteButton() {
+
         replaceReducerByUpdateTaskSelectionStateReducer()
         dispatchUpdateTaskSelectionStateAction(.deletingTask)
     }
 
     @objc func userDidTapSaveButton() {
+        
         replaceReducerByUpdateTaskSelectionStateReducer()
         dispatchUpdateTaskSelectionStateAction(.savingTask)
     }

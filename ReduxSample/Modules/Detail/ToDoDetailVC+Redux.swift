@@ -89,16 +89,25 @@ extension ToDoDetailVC {
 
         var taskState: TaskState = .toDo
         var notes = "--"
-        DispatchQueue.main.async { [weak self] in
+        var title = "--"
+        var dateString = "--"
 
+        let group = DispatchGroup()
+        group.enter()
+        DispatchQueue.main.async { [weak self] in
+            
             let isSelected = self?.titleView.completeButton.isSelected ?? false
+            title = self?.titleView.title ?? "--"
             taskState = isSelected ? TaskState.done : .toDo
+            dateString = self?.dateView.dateString ?? "--"
             notes = self?.notesView.notesTextView.text ?? "--"
+            group.leave()
         }
 
-        let date = CustomDateFormatter.convertDateStringToDate(dateString: dateView.dateString, with: FormatterType.default)
+        group.wait()
+        let date = CustomDateFormatter.convertDateStringToDate(dateString: dateString, with: FormatterType.default)
         let updatedTask = ToDoTask(identifier: selectedTask.identifier,
-                                   name: titleView.title,
+                                   name: title,
                                    dueDate: date,
                                    notes: notes,
                                    state: taskState)
