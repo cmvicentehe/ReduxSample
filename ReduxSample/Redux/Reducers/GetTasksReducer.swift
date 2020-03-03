@@ -25,6 +25,7 @@ func getTasksReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .notSelected,
+                        viewState: .fetched,
                         networkClient: currentState.networkClient)
 }
 

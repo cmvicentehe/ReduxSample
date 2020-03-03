@@ -29,6 +29,7 @@ func deleteTaskReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .deletingTask,
+                        viewState: .fetched,
                         networkClient: currentState.networkClient)
 }
 

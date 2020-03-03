@@ -77,7 +77,7 @@ private extension DateView {
         dateLabel.trailingAnchor.constraint(equalTo: date.leadingAnchor, constant: DateViewVisualConstants.margin6).isActive = true
         dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: DateViewVisualConstants.margin12).isActive = true
         dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DateViewVisualConstants.margin12).isActive = true
-
+        
         date.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DateViewVisualConstants.margin12).isActive = true
         date.topAnchor.constraint(equalTo: topAnchor, constant: DateViewVisualConstants.margin12).isActive = true
         date.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -DateViewVisualConstants.margin12).isActive = true

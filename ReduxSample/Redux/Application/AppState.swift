@@ -14,7 +14,17 @@ protocol AppState: State {
     var selectedTask: ToDoTask? { get }
     var navigationState: NavigationState? { get }
     var taskSelectionState: TaskSelectionState { get }
+    var viewState: ViewState { get }
     var networkClient: NetworkClient { get }
+}
+
+enum ViewState {
+
+    case activityIndicatorRequired
+    case fetching
+    case fetched
+    case finish
+    case notHandled
 }
 
 enum TaskSelectionState {
@@ -32,6 +42,7 @@ struct AppStateImpl {
     private(set) var selectedTask: ToDoTask?
     private(set) var navigationState: NavigationState?
     private(set) var taskSelectionState: TaskSelectionState = .notSelected
+    private(set) var viewState: ViewState
     private(set) var networkClient: NetworkClient
 }
 

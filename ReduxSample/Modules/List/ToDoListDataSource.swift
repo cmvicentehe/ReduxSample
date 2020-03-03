@@ -52,6 +52,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
         if editingStyle == .delete {
+
             let task = state.taskList[indexPath.row]
             let taskIdentifier = task.identifier
             replaceReducerByDeleteTaskReducer()
@@ -62,6 +63,7 @@ extension ToDoListDataSourceImpl: UITableViewDataSource {
 
 // MARK: UITableViewDelegate methods
 extension ToDoListDataSourceImpl: UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let task = state.taskList[indexPath.row]
@@ -135,6 +137,8 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
         
         self.state = newState
 
+        getTasksIfNeeded()
+
         DispatchQueue.main.async { [weak self] in
             self?.tableView?.reloadData()
         }
@@ -142,6 +146,9 @@ extension ToDoListDataSourceImpl: StoreSuscriptor {
         showToDoDetailViewIfNeeded(for: self.state)
     }
 }
+
+// MARK: Action Dispatcher
+extension ToDoListDataSourceImpl: ActionDispatcher {}
 
 // MARK: Redux Actions
 private extension ToDoListDataSourceImpl {
@@ -164,27 +171,63 @@ private extension ToDoListDataSourceImpl {
         store?.replaceReducer(reducer: addTaskReducer)
     }
 
-    func dispatchDeleteTaskAction(with identifier: String) {
+    func replaceReducerByHideActivityIndicatorReducer() {
 
         let store = AppDelegateUtils.appDelegate?.store
+        store?.replaceReducer(reducer: hideActivityIndicatorReducer)
+    }
+
+    func replaceReducerByGetTasksReducer() {
+
+         let store = AppDelegateUtils.appDelegate?.store
+         store?.replaceReducer(reducer: getTasksReducer)
+    }
+
+    func dispatchDeleteTaskAction(with identifier: String) {
+
         let networkClient = state.networkClient
         let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier,
                                                 networkClient: networkClient)
-        store?.dispatch(action: deleteTaskAction)
+        dispatch(action: deleteTaskAction)
     }
 
     func dispatchShowToDoDetailAction(with task: ToDoTask) {
 
-        let store = AppDelegateUtils.appDelegate?.store
         let showToDoDetailAction = ShowToDoDetailAction(task: task)
-        store?.dispatch(action: showToDoDetailAction)
+        dispatch(action: showToDoDetailAction)
     }
 
     func dispatchAddTaskAction() {
 
-        let store = AppDelegateUtils.appDelegate?.store
         let addTaskAction = AddTaskAction()
-        store?.dispatch(action: addTaskAction)
+        dispatch(action: addTaskAction)
+    }
+
+    func dispatchHideActivityIndicatorAction() {
+
+        let hideActivityIndicatorAction = HideActivityIndicatorAction()
+        dispatch(action: hideActivityIndicatorAction)
+    }
+
+    func dispatchGetTasksAction() {
+
+        let networkClient = state.networkClient
+        let getTasksAction = GetTasksAction(networkClient: networkClient)
+        dispatch(action: getTasksAction)
+    }
+
+    func getTasksIfNeeded() {
+
+        switch state.viewState {
+        case .fetching:
+            replaceReducerByGetTasksReducer()
+            dispatchGetTasksAction()
+        case .fetched:
+            replaceReducerByHideActivityIndicatorReducer()
+            dispatchHideActivityIndicatorAction()
+        case .notHandled, .activityIndicatorRequired, .finish:
+            break
+        }
     }
 }
 
@@ -195,10 +238,12 @@ private extension ToDoListDataSourceImpl {
         
         if state.taskSelectionState == .addingTask &&
             hasToShowDetail {
+
             guard let task = state.selectedTask else {
                 print("Invalid selected task")
                 return
             }
+            
             replaceReducerByShowToDoDetailReducer()
             dispatchShowToDoDetailAction(with: task)
             hasToShowDetail = false

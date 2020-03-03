@@ -115,144 +115,8 @@ extension ToDoDetailVC {
     }
 }
 
-// MARK: Private methods
-private extension ToDoDetailVC {
-    
-    func bindViewModelIfNeeded() {
-
-        guard let selectedTask = state.selectedTask else {
-            print("There is no seleceted task. Adding task state")
-            return
-        }
-
-        let isCompleted = (selectedTask.state == .done) ? true : false
-        let formatterType = FormatterType.default
-        let date = CustomDateFormatter.convertDateToString(date: selectedTask.dueDate, with: formatterType)
-        viewModel = ToDoViewModel(taskIdentifier: selectedTask.identifier,
-                                  title: selectedTask.name,
-                                  date: date,
-                                  notes: selectedTask.notes ?? "--",
-                                  isSelected: isCompleted)
-    }
-
-    func reloadDetailView() {
-
-        guard let viewModelNotNil = viewModel else {
-            return
-        }
-        titleView.update(viewModel: viewModelNotNil)
-        notesView.update(viewModel: viewModelNotNil)
-        dateView.update(viewModel: viewModelNotNil)
-    }
-
-    @objc func userDidTapDateView() {
-
-        replaceReducerByShowDateSelectorReducer()
-        dispatchShowDateSelectorAction()
-    }
-
-    func replaceReducerByShowDateSelectorReducer() {
-
-        let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: showDateSelectorReducer)
-    }
-
-    func replaceReducerByDeleteTaskReducer() {
-
-        let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: deleteTaskReducer)
-    }
-
-    func replaceReducerByPopViewControllerReducer() {
-
-        let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: popViewControllerReducer)
-    }
-
-    func replaceReducerByUpdateTaskReducer() {
-
-        let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: updateTaskReducer)
-    }
-
-    func dispatchShowDateSelectorAction() {
-
-        dismissKeyboard()
-        let showDateSelectorAction = ShowDateSelectorAction()
-        dispatch(action: showDateSelectorAction)
-    }
-
-    func dispatchDeleteTaskAction() {
-
-        guard let identifier = state.selectedTask?.identifier else {
-            print("Invalid task identifier to be deleted")
-            return
-        }
-
-        let networkClient = state.networkClient
-        let deleteTaskAction = DeleteTaskAction(taskIdentifier: identifier,
-                                                networkClient: networkClient)
-        dispatch(action: deleteTaskAction)
-    }
-
-    func dispatchPopViewControllerAction() {
-
-        let popViewControllerAction = PopViewControllerAction()
-        dispatch(action: popViewControllerAction)
-    }
-
-    func dispatchUpdateTaskAction() {
-
-        let store = AppDelegateUtils.appDelegate?.store
-
-        guard let selectedTask = state.selectedTask else {
-            print("Invalid selected task")
-            return
-        }
-
-        let date = CustomDateFormatter.convertDateStringToDate(dateString: dateView.dateString, with: FormatterType.default)
-        let taskState = titleView.completeButton.isSelected ? TaskState.done : .toDo
-        let updatedTask = ToDoTask(identifier: selectedTask.identifier,
-                                   name: titleView.title,
-                                   dueDate: date,
-                                   notes: notesView.notesTextView.text,
-                                   state: taskState)
-        let networkClient = state.networkClient
-        let updateTaskAction = UpdateTaskAction(task: updatedTask, networkClient: networkClient)
-        store?.dispatch(action: updateTaskAction)
-    }
-
-    func refreshDetailInfo() {
-
-        bindViewModelIfNeeded()
-        reloadDetailView()
-    }
-
-    func updateTaskInfo() {
-
-        switch state.taskSelectionState {
-        case .addingTask, .notSelected: break
-        case .editingTask:
-            refreshDetailInfo()
-        case .deletingTask, .savingTask:
-            replaceReducerByPopViewControllerReducer()
-            dispatchPopViewControllerAction()
-        }
-    }
-}
-
-// MARK: Detail Updater
-extension ToDoDetailVC: DetailUpdater {
-    
-    func update(with state: AppState) {
-
-        self.state = state
-        updateTaskInfo()
-    }
-}
-
-// MARK: Keyboard methods
-private extension ToDoDetailVC {
+// MARK: Private Keyboard methods
+ private extension ToDoDetailVC {
 
     func registerToKeyboardEvents() {
 
@@ -311,13 +175,6 @@ private extension ToDoDetailVC {
         }
     }
 
-    @objc func dismissKeyboard() {
-
-        DispatchQueue.main.async { [weak self] in
-            self?.view.endEditing(true)
-        }
-    }
-
     func hideKeyboardWhenTappedAround() {
 
         let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -326,18 +183,35 @@ private extension ToDoDetailVC {
     }
 }
 
+// MARK: Internal Keyboard methods
+extension ToDoDetailVC {
+
+    @objc func dismissKeyboard() {
+
+           DispatchQueue.main.async { [weak self] in
+               self?.view.endEditing(true)
+           }
+       }
+}
+
 // MARK: User interaction
 extension ToDoDetailVC {
 
+    @objc func userDidTapDateView() {
+
+          replaceReducerByShowDateSelectorReducer()
+          dispatchShowDateSelectorAction()
+    }
+
     @objc func userDidTapDeleteButton() {
 
-        replaceReducerByDeleteTaskReducer()
-        dispatchDeleteTaskAction()
+        replaceReducerByUpdateTaskSelectionStateReducer()
+        dispatchUpdateTaskSelectionStateAction(.deletingTask)
     }
 
     @objc func userDidTapSaveButton() {
         
-        replaceReducerByUpdateTaskReducer()
-        dispatchUpdateTaskAction()
+        replaceReducerByUpdateTaskSelectionStateReducer()
+        dispatchUpdateTaskSelectionStateAction(.savingTask)
     }
 }

@@ -13,6 +13,7 @@ class TitleView: UIView {
     var viewModel: ToDoViewModel?
 
     lazy var titleTextfield: UITextField = {
+
         let titleTextfield = UITextField(frame: .zero)
         titleTextfield.translatesAutoresizingMaskIntoConstraints = false
         titleTextfield.textAlignment = .left
@@ -23,6 +24,7 @@ class TitleView: UIView {
     }()
 
     lazy var titleTextView: UITextView = { [weak self] in
+
         let titleTextView = UITextView(frame: .zero)
         titleTextView.delegate = self
         titleTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -42,6 +44,7 @@ class TitleView: UIView {
         }()
 
     lazy var completeButton: UIButton = { [unowned self] in
+
         let completeButton = UIButton(type: .custom)
         completeButton.translatesAutoresizingMaskIntoConstraints = false
         let notSelectedImage = #imageLiteral(resourceName: "unchecked")
@@ -59,6 +62,7 @@ class TitleView: UIView {
     }
 
     init(frame: CGRect, viewModel: ToDoViewModel? = nil) {
+
         super.init(frame: .zero)
         self.viewModel = viewModel
         setUpTitleView()
@@ -71,9 +75,12 @@ class TitleView: UIView {
 
 // MARK: TitleView update methods
 extension TitleView {
+
     func update(viewModel: ToDoViewModel) {
+
         self.viewModel = viewModel
         DispatchQueue.main.async { [weak self] in
+
             self?.titleTextView.text = self?.viewModel?.title
             self?.completeButton.isSelected = self?.viewModel?.isSelected ?? false
         }
@@ -84,6 +91,7 @@ extension TitleView {
 private extension TitleView {
 
     func setUpTitleView() {
+
         addSubview(titleTextfield)
         addSubview(titleTextView)
         addSubview(completeButton)
@@ -108,6 +116,7 @@ private extension TitleView {
     }
 
     @objc func completeButtonTapped() {
+
         replaceReducerByChangeSelectedTaskStateReducer()
         dispatchChangeSelectedTaskStateAction()
     }
@@ -117,11 +126,13 @@ private extension TitleView {
 private extension TitleView {
 
     func replaceReducerByChangeSelectedTaskTitleReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: changeSelectedTaskTitleReducer)
     }
 
     func dispatchChangeSelectedTaskTitleAction() {
+
         let store = AppDelegateUtils.appDelegate?.store
         guard let taskIdentifier = viewModel?.taskIdentifier else {
             print("Invalid task identifier")
@@ -133,11 +144,13 @@ private extension TitleView {
     }
 
     func replaceReducerByChangeSelectedTaskStateReducer() {
+
         let store = AppDelegateUtils.appDelegate?.store
         store?.replaceReducer(reducer: changeSelectedTaskStateReducer)
     }
 
     func dispatchChangeSelectedTaskStateAction() {
+
         let store = AppDelegateUtils.appDelegate?.store
         guard let taskIdentifier = viewModel?.taskIdentifier else {
             print("Invalid task identifier")
@@ -154,8 +167,10 @@ private extension TitleView {
 extension TitleView: UITextViewDelegate {
 
     func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+
         replaceReducerByChangeSelectedTaskTitleReducer()
         dispatchChangeSelectedTaskTitleAction()
+        
         return true
     }
 }
