@@ -92,19 +92,15 @@ extension ToDoDetailVC {
         var title = "--"
         var dateString = "--"
 
-        let group = DispatchGroup()
-        group.enter()
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.sync { [weak self] in
             
             let isSelected = self?.titleView.completeButton.isSelected ?? false
             title = self?.titleView.title ?? "--"
             taskState = isSelected ? TaskState.done : .toDo
             dateString = self?.dateView.dateString ?? "--"
             notes = self?.notesView.notesTextView.text ?? "--"
-            group.leave()
         }
 
-        group.wait()
         let date = CustomDateFormatter.convertDateStringToDate(dateString: dateString, with: FormatterType.default)
         let updatedTask = ToDoTask(identifier: selectedTask.identifier,
                                    name: title,
@@ -186,8 +182,9 @@ extension ToDoDetailVC {
     func handleViewState() {
 
         let viewState = state.viewState
+        print("STATE: --> \(viewState)")
         switch viewState {
-        case .activityIndicatorRequired:
+        case .displayActivityIndicatorRequired:
             replaceReducerByShowActivityIndicatorReducer()
             dispatchShowActivityIndicatorAction()
         case .fetching:
@@ -196,13 +193,21 @@ extension ToDoDetailVC {
             updateTaskInfo()
         case .finish:
            replaceReducerByPopViewControllerReducer()
-           dispatchHideActivityIndicatorAction()
+           dispatchPopViewControllerAction()
+        case .error(let error):
+            if let errorNotNil = error {
+                print("Error: \(errorNotNil)")
+            }
+        case .updatedNavigationState:
+            break
         }
     }
 
     func handleTaskSelectionState() {
 
-        switch state.taskSelectionState {
+        let taskSelectionState = state.taskSelectionState
+        print("TASK SELECTION STATE: --> \(taskSelectionState)")
+        switch taskSelectionState {
         case .addingTask, .notSelected, .editingTask: break
         case .deletingTask:
             replaceReducerByDeleteTaskReducer()

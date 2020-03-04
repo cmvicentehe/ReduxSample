@@ -25,6 +25,6 @@ func updateTaskSelectionStateReducer(_ action: Action, _ state: State?) -> State
                         selectedTask: currentState.selectedTask,
                         navigationState: currentState.navigationState,
                         taskSelectionState: taskSelectionState,
-                        viewState: .activityIndicatorRequired,
+                        viewState: .displayActivityIndicatorRequired,
                         networkClient: currentState.networkClient)
 }

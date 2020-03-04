@@ -11,3 +11,8 @@
 "due_date" = "Due date";
 "accept" = "Accept";
 "cancel" = "Cancel";
+"error_title" = "Error";
+"error_adding_message" = "There was an error creating the task, please check it out the form fields";
+"error_editing_message" = "There was an error editing the task, please check it out the form fields";
+"error_getting_tasks_message" = "There was an error getting to do task list";
+"error_deleting_task_message" = "There was an error deleting the task";

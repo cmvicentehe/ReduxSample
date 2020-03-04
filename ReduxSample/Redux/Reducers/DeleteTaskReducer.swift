@@ -14,39 +14,54 @@ func deleteTaskReducer(_ action: Action, _ state: State?) -> State {
         let currentState = appDelegate.store?.getState() as? AppState else {
             fatalError("Invalid AppDelegate or State")
     }
-
+    
     guard let deleteTaskAction = action as? DeleteTaskAction else {
         fatalError("Invalid associated action")
     }
 
     let taskIdentifier = deleteTaskAction.taskIdentifier
     let networkClient = deleteTaskAction.networkClient
-    let updatedTaskList = deleteTask(with: taskIdentifier,
-                                     in: currentState.taskList,
-                                     networkClient: networkClient)
+    let taskResult = deleteTask(with: taskIdentifier,
+                                in: currentState.taskList,
+                                networkClient: networkClient)
+
+    let viewState = taskResult.0
+    let updatedTaskList = taskResult.1
 
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .deletingTask,
-                        viewState: .fetched,
+                        viewState: viewState,
                         networkClient: currentState.networkClient)
 }
 
-private func deleteTask(with identifier: String, in taskList: [ToDoTask], networkClient: NetworkClient) -> [ToDoTask] {
+private func deleteTask(with identifier: String, in taskList: [ToDoTask], networkClient: NetworkClient) -> (ViewState, [ToDoTask]) {
 
     let endpoint = Constants.Services.Endpoints.deleteTask.replacingOccurrences(of: Constants.Services.Endpoints.taskIdPlaceholder, with: identifier)
     let resource = DeleteTaskResource(endPoint: endpoint)
     let dispatchGroup = DispatchGroup()
     var updatedTaskList = taskList
-
+    var tasksResult: (ViewState, [ToDoTask]) = (.fetched, updatedTaskList)
     dispatchGroup.enter()
     let toDo: ToDoTask.Type? = nil
-    networkClient.performRequest(for: resource, type: toDo) { _ in
+    networkClient.performRequest(for: resource, type: toDo) { result in
         updatedTaskList = taskList.filter { $0.identifier != identifier }
+        let viewState = process(result: result)
+        tasksResult = (viewState, updatedTaskList)
         dispatchGroup.leave()
     }
 
     dispatchGroup.wait()
-    return updatedTaskList
+    return tasksResult
+}
+
+private func process(result: Result<ToDoTask?, Error>) -> ViewState {
+
+    switch result {
+    case .success:
+        return .fetched
+    case .failure(let error):
+        return .error(error: error)
+    }
 }

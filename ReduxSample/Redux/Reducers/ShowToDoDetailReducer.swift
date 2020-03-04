@@ -30,20 +30,9 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
                                 viewState: .notHandled,
                                 networkClient: currentState.networkClient)
 
-    showToDoDetailOnMainOrBackground(with: newState)
+    showToDoDetailVC(for: newState)
 
     return newState
-}
-
-private func showToDoDetailOnMainOrBackground(with newState: AppState) {
-
-    if Thread.isMainThread {
-        showToDoDetailVC(for: newState)
-    } else {
-        DispatchQueue.main.async {
-            showToDoDetailVC(for: newState)
-        }
-    }
 }
 
 private func showToDoDetailVC(for state: AppState) {

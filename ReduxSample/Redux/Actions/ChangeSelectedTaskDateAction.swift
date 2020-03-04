@@ -1,5 +1,5 @@
 //
-//  ChangeTaskDateAction.swift
+//  ChangeSelectedTaskDateAction.swift
 //  ReduxSample
 //
 //  Created by Carlos Manuel Vicente Herrero on 09/11/2019.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct ChangeTaskDateAction {
+struct ChangeSelectedTaskDateAction {
     
     let date: Date
 }
 
-extension ChangeTaskDateAction: Action {}
+extension ChangeSelectedTaskDateAction: Action {}

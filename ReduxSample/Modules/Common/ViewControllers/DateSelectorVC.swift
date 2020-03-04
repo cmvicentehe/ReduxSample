@@ -97,13 +97,13 @@ private extension DateSelectorVC {
     func replaceReducer() {
 
         let store = AppDelegateUtils.appDelegate?.store
-        store?.replaceReducer(reducer: changeTaskDateReducer)
+        store?.replaceReducer(reducer: changeSelectedTaskDateReducer)
     }
 
     func dispatchChangeTaskDateAction() {
 
         let date = picker.date
-        let changeTaskDateAction = ChangeTaskDateAction(date: date)
+        let changeTaskDateAction = ChangeSelectedTaskDateAction(date: date)
         dispatch(action: changeTaskDateAction)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ChangeTaskDateReducer.swift
+//  ChangeSelectedTaskDateReducer.swift
 //  ReduxSample
 //
 //  Created by Carlos Manuel Vicente Herrero on 09/11/2019.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-func changeTaskDateReducer(_ action: Action, _ state: State?) -> State {
+func changeSelectedTaskDateReducer(_ action: Action, _ state: State?) -> State {
     
     guard let appDelegate = AppDelegateUtils.appDelegate,
         let currentState = appDelegate.store?.getState() as? AppState else {
             fatalError("Invalid AppDelegate or State")
     }
     
-    guard let changeTaskAction = action as? ChangeTaskDateAction else {
+    guard let changeTaskAction = action as? ChangeSelectedTaskDateAction else {
         fatalError("Invalid associated action")
     }
     

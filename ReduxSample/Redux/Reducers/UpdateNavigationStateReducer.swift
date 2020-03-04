@@ -28,19 +28,15 @@ func updateNavigationStateReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: currentState.selectedTask,
                         navigationState: navigationState,
                         taskSelectionState: currentState.taskSelectionState,
-                        viewState: .notHandled,
+                        viewState: .updatedNavigationState,
                         networkClient: currentState.networkClient)
 }
 
 private func rootViewController(appDelegate: AppDelegate) -> UIViewController? {
     
     var rootViewController: UIViewController?
-    if Thread.isMainThread {
+    DispatchQueue.main.sync {
         rootViewController = appDelegate.window?.rootViewController
-    } else {
-        DispatchQueue.main.sync {
-            rootViewController = appDelegate.window?.rootViewController
-        }
     }
 
     return rootViewController

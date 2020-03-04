@@ -21,15 +21,11 @@ func showDateSelectorReducer(_ action: Action, _ state: State?) -> State {
                                 taskSelectionState: .editingTask,
                                 viewState: .notHandled,
                                 networkClient: currentState.networkClient)
-    
-    if Thread.isMainThread {
+
+    DispatchQueue.main.async {
         showDateSelectorVC(for: newState)
-    } else {
-        DispatchQueue.main.async {
-            showDateSelectorVC(for: newState)
-        }
     }
-    
+
     return newState
 }
 

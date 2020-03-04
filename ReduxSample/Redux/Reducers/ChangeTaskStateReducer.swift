@@ -28,14 +28,14 @@ func changeTaskStateReducer(_ action: Action, _ state: State?) -> State {
     let networkClient = changeTaskAction.networkClient
     let updatedTaskList = currentState.taskList.compactMap { $0.identifier == task.identifier ? task : $0}
 
-    update(task: task,
+    let viewState = update(task: task,
            networkClient: networkClient)
 
     return AppStateImpl(taskList: updatedTaskList,
                         selectedTask: task,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .editingTask,
-                        viewState: .fetched,
+                        viewState: viewState,
                         networkClient: currentState.networkClient)
 }
 
@@ -69,7 +69,7 @@ private func changeTaskState(for task: ToDoTask) -> ToDoTask {
                     state: newState)
 }
 
-private func update(task: ToDoTask, networkClient: NetworkClient) {
+private func update(task: ToDoTask, networkClient: NetworkClient) -> ViewState {
 
     let resource = UpdateTaskResource(identifier: task.identifier,
                                       name: task.name,
@@ -78,13 +78,25 @@ private func update(task: ToDoTask, networkClient: NetworkClient) {
                                       state: task.state.rawValue,
                                       endPoint: Constants.Services.Endpoints.task)
 
+    var viewState: ViewState = .fetched
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
     let toDo: ToDoTask.Type? = nil
     // TODO: Improve this code to avoid declaring var to infer the type
-    networkClient.performRequest(for: resource, type: toDo) { _ in
+    networkClient.performRequest(for: resource, type: toDo) { result in
+        viewState = manage(result: result)
         dispatchGroup.leave()
     }
 
     dispatchGroup.wait()
+    return viewState
+}
+
+private func manage(result: Result<ToDoTask?, Error>) -> ViewState {
+    switch result {
+    case .success:
+        return .notHandled
+    case .failure(let error):
+        return .error(error: error)
+    }
 }

@@ -21,7 +21,7 @@ func updateTaskReducer(_ action: Action, _ state: State?) -> State {
 
     let task = updateTaskAction.task
     let networkClient = updateTaskAction.networkClient
-    update(taskList: currentState.taskList,
+    let viewState = update(taskList: currentState.taskList,
            task: task,
            networkClient: networkClient)
 
@@ -29,25 +29,26 @@ func updateTaskReducer(_ action: Action, _ state: State?) -> State {
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .savingTask,
-                        viewState: .notHandled,
+                        viewState: viewState,
                         networkClient: currentState.networkClient)
 }
 
 private func update(taskList: [ToDoTask],
                     task: ToDoTask,
-                    networkClient: NetworkClient) {
+                    networkClient: NetworkClient) -> ViewState {
 
     let taskListWithTaskToBeUpdated = taskList.compactMap { $0.identifier == task.identifier ? task : nil }
     if taskListWithTaskToBeUpdated.count > 0 {
-        update(task: task,
+        return update(task: task,
                networkClient: networkClient)
     } else {
-        create(task: task,
+       return create(task: task,
                networkClient: networkClient)
     }
 }
 
-private func create(task: ToDoTask, networkClient: NetworkClient) {
+private func create(task: ToDoTask, networkClient: NetworkClient) -> ViewState {
+
     let resource = AddTaskResource(identifier: task.identifier,
                                    name: task.name,
                                    dueDate: task.dueDate,
@@ -55,17 +56,20 @@ private func create(task: ToDoTask, networkClient: NetworkClient) {
                                    state: task.state.rawValue,
                                    endPoint: Constants.Services.Endpoints.task)
 
+    var viewState: ViewState = .notHandled
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
     let toDo: ToDoTask.Type? = nil // TODO: Improve this code to avoid declaring var to infer the type
-    networkClient.performRequest(for: resource, type: toDo) { _ in
+    networkClient.performRequest(for: resource, type: toDo) { result in
+        viewState = manage(result: result)
         dispatchGroup.leave()
     }
 
     dispatchGroup.wait()
+    return viewState
 }
 
-private func update(task: ToDoTask, networkClient: NetworkClient) {
+private func update(task: ToDoTask, networkClient: NetworkClient) -> ViewState {
 
     let resource = UpdateTaskResource(identifier: task.identifier,
                                       name: task.name,
@@ -74,13 +78,26 @@ private func update(task: ToDoTask, networkClient: NetworkClient) {
                                       state: task.state.rawValue,
                                       endPoint: Constants.Services.Endpoints.task)
 
+    var viewState: ViewState = .notHandled
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
     // TODO: Improve this code to avoid declaring var to infer the type
     let toDo: ToDoTask.Type? = nil
-    networkClient.performRequest(for: resource, type: toDo) { _ in
+    networkClient.performRequest(for: resource, type: toDo) { result in
+        
+        viewState = manage(result: result)
         dispatchGroup.leave()
     }
 
     dispatchGroup.wait()
+    return viewState
+}
+
+private func manage(result: Result<ToDoTask?, Error>) -> ViewState {
+    switch result {
+    case .success:
+        return .notHandled
+    case .failure(let error):
+        return .error(error: error)
+    }
 }

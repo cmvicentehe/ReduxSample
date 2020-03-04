@@ -19,7 +19,7 @@ func popViewControllerReducer(_ action: Action, _ state: State?) -> State {
     let navigationState = currentState.navigationState
     let rootViewController = navigationState?.rootViewController
 
-    DispatchQueue.main.async {
+    DispatchQueue.main.sync {
         if let navigationController = rootViewController as? UINavigationController {
             navigationController.popViewController(animated: true)
         } else {

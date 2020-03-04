@@ -57,19 +57,28 @@ private extension NavigationStateImpl {
 
     func push(viewController: UIViewController) {
 
-        rootViewController.show(viewController, sender: self)
-        updateRootViewController(with: viewController)
+        DispatchQueue.main.async { [weak self] in
+
+            self?.rootViewController.show(viewController, sender: self)
+            self?.updateRootViewController(with: viewController)
+        }
     }
 
     func present(viewController: UIViewController) {
 
-        rootViewController.present(viewController, animated: true)
-        updateRootViewController(with: viewController)
+        DispatchQueue.main.async { [weak self] in
+
+            self?.rootViewController.present(viewController, animated: true)
+            self?.updateRootViewController(with: viewController)
+        }
     }
 
     func updateWindow(with viewController: UIViewController) {
-        
-        window.rootViewController = viewController
-        updateRootViewController(with: viewController)
+
+        DispatchQueue.main.async { [weak self] in
+
+            self?.window.rootViewController = viewController
+            self?.updateRootViewController(with: viewController)
+        }
     }
 }

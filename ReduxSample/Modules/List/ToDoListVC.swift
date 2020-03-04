@@ -88,7 +88,6 @@ private extension ToDoListVC {
         let showActivityIndicatorAction = ShowActivityIndicatorAction()
         dispatch(action: showActivityIndicatorAction)
     }
-
 }
 
 // MARK: Action methods

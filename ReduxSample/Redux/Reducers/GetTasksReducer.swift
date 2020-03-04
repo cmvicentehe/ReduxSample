@@ -19,40 +19,44 @@ func getTasksReducer(_ action: Action, _ state: State?) -> State {
     }
 
     let networkClient = getTasksAction.networkClient
-    let toDoTaskList = getTasks(from: networkClient)
+    let tasksResult = getTasks(from: networkClient)
+    let viewState = tasksResult.0
+    let toDoTaskList = tasksResult.1
 
     return AppStateImpl(taskList: toDoTaskList,
                         selectedTask: nil,
                         navigationState: currentState.navigationState,
                         taskSelectionState: .notSelected,
-                        viewState: .fetched,
+                        viewState: viewState,
                         networkClient: currentState.networkClient)
 }
 
-private func getTasks(from networkClient: NetworkClient) -> [ToDoTask] {
+private func getTasks(from networkClient: NetworkClient) -> (ViewState, [ToDoTask]) {
 
     let resource = GetTasksResource(endPoint: Constants.Services.Endpoints.tasks)
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
-    var taskList = [ToDoTask]()
+    var tasksResult: (ViewState, [ToDoTask]) = (.fetched, [ToDoTask]())
+
     networkClient.performRequest(for: resource, type: [ToDoTask].self) { result in
+        
         let resultTyped: Result<[ToDoTask]?, Error> = result as Result<[ToDoTask]?, Error>
-        taskList = process(result: resultTyped)
+        tasksResult = process(result: resultTyped)
         dispatchGroup.leave()
     }
 
     dispatchGroup.wait()
-    return taskList
+    return tasksResult
 }
 
-private func process(result: Result<[ToDoTask]?, Error>) -> [ToDoTask] {
+private func process(result: Result<[ToDoTask]?, Error>) -> (ViewState, [ToDoTask]) {
 
     switch result {
+
     case .success(let taskList):
-        return taskList ?? []
+        let toDoTaskList = taskList ?? []
+        return (.fetched, toDoTaskList)
     case .failure(let error):
-        print("Error \(error)")
-        // TODO: Error Handling
-        return []
+       return (.error(error: error), [])
     }
 }

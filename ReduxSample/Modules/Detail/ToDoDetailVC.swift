@@ -116,7 +116,7 @@ extension ToDoDetailVC {
 }
 
 // MARK: Private Keyboard methods
- private extension ToDoDetailVC {
+private extension ToDoDetailVC {
 
     func registerToKeyboardEvents() {
 
@@ -188,10 +188,10 @@ extension ToDoDetailVC {
 
     @objc func dismissKeyboard() {
 
-           DispatchQueue.main.async { [weak self] in
-               self?.view.endEditing(true)
-           }
-       }
+        DispatchQueue.main.async { [weak self] in
+            self?.view.endEditing(true)
+        }
+    }
 }
 
 // MARK: User interaction
@@ -199,8 +199,8 @@ extension ToDoDetailVC {
 
     @objc func userDidTapDateView() {
 
-          replaceReducerByShowDateSelectorReducer()
-          dispatchShowDateSelectorAction()
+        replaceReducerByShowDateSelectorReducer()
+        dispatchShowDateSelectorAction()
     }
 
     @objc func userDidTapDeleteButton() {
@@ -210,7 +210,8 @@ extension ToDoDetailVC {
     }
 
     @objc func userDidTapSaveButton() {
-        
+
+        view.endEditing(true)
         replaceReducerByUpdateTaskSelectionStateReducer()
         dispatchUpdateTaskSelectionStateAction(.savingTask)
     }
