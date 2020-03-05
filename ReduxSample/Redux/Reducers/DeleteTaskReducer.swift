@@ -44,8 +44,7 @@ private func deleteTask(with identifier: String, in taskList: [ToDoTask], networ
     var updatedTaskList = taskList
     var tasksResult: (ViewState, [ToDoTask]) = (.fetched, updatedTaskList)
     dispatchGroup.enter()
-    let toDo: ToDoTask.Type? = nil
-    networkClient.performRequest(for: resource, type: toDo) { result in
+    networkClient.performRequest(for: resource, type: EmptyResponse.self) { result in
         updatedTaskList = taskList.filter { $0.identifier != identifier }
         let viewState = process(result: result)
         tasksResult = (viewState, updatedTaskList)
@@ -56,7 +55,7 @@ private func deleteTask(with identifier: String, in taskList: [ToDoTask], networ
     return tasksResult
 }
 
-private func process(result: Result<ToDoTask?, Error>) -> ViewState {
+private func process(result: Result<EmptyResponse, Error>) -> ViewState {
 
     switch result {
     case .success:

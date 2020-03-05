@@ -59,8 +59,7 @@ private func create(task: ToDoTask, networkClient: NetworkClient) -> ViewState {
     var viewState: ViewState = .notHandled
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
-    let toDo: ToDoTask.Type? = nil // TODO: Improve this code to avoid declaring var to infer the type
-    networkClient.performRequest(for: resource, type: toDo) { result in
+    networkClient.performRequest(for: resource, type: EmptyResponse.self) { result in
         viewState = manage(result: result)
         dispatchGroup.leave()
     }
@@ -81,9 +80,7 @@ private func update(task: ToDoTask, networkClient: NetworkClient) -> ViewState {
     var viewState: ViewState = .notHandled
     let dispatchGroup = DispatchGroup()
     dispatchGroup.enter()
-    // TODO: Improve this code to avoid declaring var to infer the type
-    let toDo: ToDoTask.Type? = nil
-    networkClient.performRequest(for: resource, type: toDo) { result in
+    networkClient.performRequest(for: resource, type: EmptyResponse.self) { result in
         
         viewState = manage(result: result)
         dispatchGroup.leave()
@@ -93,7 +90,7 @@ private func update(task: ToDoTask, networkClient: NetworkClient) -> ViewState {
     return viewState
 }
 
-private func manage(result: Result<ToDoTask?, Error>) -> ViewState {
+private func manage(result: Result<EmptyResponse, Error>) -> ViewState {
     switch result {
     case .success:
         return .notHandled

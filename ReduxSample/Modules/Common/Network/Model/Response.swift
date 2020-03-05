@@ -25,3 +25,6 @@ struct Response {
     let data: Data?
     let error: Error?
 }
+
+struct EmptyResponse {}
+extension EmptyResponse: Codable {}

@@ -8,8 +8,13 @@
 
 import Foundation
 
+enum ResponseError: Error {
+    case serverUnknownError
+    case castingError
+}
+
 protocol NetworkClient {
-    func performRequest<T: Decodable>(for resource: ApiResource, type: T.Type?, completion: @escaping (Result<T?, Error>) -> Void)
+    func performRequest<T: Decodable>(for resource: ApiResource, type: T.Type, completion: @escaping (Result<T, Error>) -> Void)
 }
 
 struct NetworkClientImpl {
@@ -22,7 +27,7 @@ struct NetworkClientImpl {
 
 extension NetworkClientImpl: NetworkClient {
 
-    func performRequest<T: Decodable>(for resource: ApiResource, type: T.Type?, completion: @escaping (Result<T?, Error>) -> Void) {
+    func performRequest<T: Decodable>(for resource: ApiResource, type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
 
         guard let urlRequest = buildURLRequest(from: resource) else {
             print("Invalid url Request")
@@ -100,7 +105,7 @@ private extension NetworkClientImpl {
         return status
     }
 
-    func process<T: Decodable>(response: Response, type: T.Type?) -> Result<T?, Error> {
+    func process<T: Decodable>(response: Response, type: T.Type) -> Result<T, Error> {
 
         let status = response.status
         print("Http status -->\(status)")
@@ -110,9 +115,7 @@ private extension NetworkClientImpl {
         case .info, .redirection:
             return buildSuccessResult(type: type, data: response.data)
         case .clientError, .serverError:
-            let error = response.error ?? NSError(domain: "ReduxSample",
-                                                  code: -1,
-                                                  userInfo: [:])
+            let error = response.error ?? ResponseError.serverUnknownError
 
             if let dataNotNil = response.data {
                 let responseString = String(data: dataNotNil,
@@ -122,27 +125,38 @@ private extension NetworkClientImpl {
             }
             return .failure(error)
         default:
-            return .success(nil)
+            return handleEmptyResponse()
         }
     }
 
-    func buildSuccessResult<T: Decodable>(type: T.Type?, data: Data?) -> Result<T?, Error> {
+    func buildSuccessResult<T: Decodable>(type: T.Type, data: Data?) -> Result<T, Error> {
 
-        guard let typeNotNil = type,
-            let dataNotNil = data else {
-            return .success(nil)
+        guard let dataNotNil = data,
+            (try? JSONSerialization.jsonObject(with: dataNotNil,
+                                                options: .allowFragments)) != nil,
+            let responseString = String(data: dataNotNil,
+                                        encoding: .utf8) else {
+                                            return handleEmptyResponse()
         }
 
-        let responseString = String(data: dataNotNil,
-                                    encoding: .utf8) ?? ""
         print("Response --> \(responseString)")
 
         do {
-            let value = try JSONDecoder().decode(typeNotNil, from: dataNotNil)
+            let value = try JSONDecoder().decode(type,
+                                                 from: dataNotNil)
             return .success(value)
         } catch let error {
             return .failure(error)
         }
     }
 
+    func handleEmptyResponse<T: Decodable>() -> Result<T, Error> {
+
+        guard let emptyResponse = EmptyResponse() as? T else {
+
+            print("Error casting EmptyResponse to Decodable 'T'")
+            return .failure(ResponseError.castingError)
+        }
+        return .success(emptyResponse)
+    }
 }

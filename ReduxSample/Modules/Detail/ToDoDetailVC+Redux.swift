@@ -182,7 +182,6 @@ extension ToDoDetailVC {
     func handleViewState() {
 
         let viewState = state.viewState
-        print("STATE: --> \(viewState)")
         switch viewState {
         case .displayActivityIndicatorRequired:
             replaceReducerByShowActivityIndicatorReducer()
@@ -206,7 +205,6 @@ extension ToDoDetailVC {
     func handleTaskSelectionState() {
 
         let taskSelectionState = state.taskSelectionState
-        print("TASK SELECTION STATE: --> \(taskSelectionState)")
         switch taskSelectionState {
         case .addingTask, .notSelected, .editingTask: break
         case .deletingTask:

@@ -40,7 +40,7 @@ private func getTasks(from networkClient: NetworkClient) -> (ViewState, [ToDoTas
 
     networkClient.performRequest(for: resource, type: [ToDoTask].self) { result in
         
-        let resultTyped: Result<[ToDoTask]?, Error> = result as Result<[ToDoTask]?, Error>
+        let resultTyped: Result<[ToDoTask], Error> = result as Result<[ToDoTask], Error>
         tasksResult = process(result: resultTyped)
         dispatchGroup.leave()
     }
@@ -49,12 +49,12 @@ private func getTasks(from networkClient: NetworkClient) -> (ViewState, [ToDoTas
     return tasksResult
 }
 
-private func process(result: Result<[ToDoTask]?, Error>) -> (ViewState, [ToDoTask]) {
+private func process(result: Result<[ToDoTask], Error>) -> (ViewState, [ToDoTask]) {
 
     switch result {
 
     case .success(let taskList):
-        let toDoTaskList = taskList ?? []
+        let toDoTaskList = taskList
         return (.fetched, toDoTaskList)
     case .failure(let error):
        return (.error(error: error), [])
