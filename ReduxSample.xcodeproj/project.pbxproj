@@ -66,6 +66,8 @@
 		D4D9D4B0240D26750092068F /* HideActivityIndicatorAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9D4AF240D26750092068F /* HideActivityIndicatorAction.swift */; };
 		D4D9D4B2240D276D0092068F /* ShowActivityIndicatorReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9D4B1240D276D0092068F /* ShowActivityIndicatorReducer.swift */; };
 		D4D9D4B4240D27980092068F /* HideActivityIndicatorReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D9D4B3240D27980092068F /* HideActivityIndicatorReducer.swift */; };
+		D4E3324E2411082400F18DED /* Decoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E3324D2411082400F18DED /* Decoder.swift */; };
+		D4E332502411099C00F18DED /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E3324F2411099C00F18DED /* JSONDecoder.swift */; };
 		D4EB8ACC240697CA00116D00 /* AddTaskResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EB8ACB240697CA00116D00 /* AddTaskResource.swift */; };
 		D4EB8D002406988200116D00 /* DeleteTaskResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EB8CFF2406988200116D00 /* DeleteTaskResource.swift */; };
 		D4EB8D02240698DB00116D00 /* UpdateTaskResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EB8D01240698DB00116D00 /* UpdateTaskResource.swift */; };
@@ -147,6 +149,8 @@
 		D4D9D4AF240D26750092068F /* HideActivityIndicatorAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideActivityIndicatorAction.swift; sourceTree = "<group>"; };
 		D4D9D4B1240D276D0092068F /* ShowActivityIndicatorReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowActivityIndicatorReducer.swift; sourceTree = "<group>"; };
 		D4D9D4B3240D27980092068F /* HideActivityIndicatorReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideActivityIndicatorReducer.swift; sourceTree = "<group>"; };
+		D4E3324D2411082400F18DED /* Decoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decoder.swift; sourceTree = "<group>"; };
+		D4E3324F2411099C00F18DED /* JSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecoder.swift; sourceTree = "<group>"; };
 		D4EB8ACB240697CA00116D00 /* AddTaskResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskResource.swift; sourceTree = "<group>"; };
 		D4EB8CFF2406988200116D00 /* DeleteTaskResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTaskResource.swift; sourceTree = "<group>"; };
 		D4EB8D01240698DB00116D00 /* UpdateTaskResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTaskResource.swift; sourceTree = "<group>"; };
@@ -238,6 +242,7 @@
 			children = (
 				D47DE1592405487D004B3274 /* Response.swift */,
 				D42EDCC9240571E8000AB7B5 /* ApiResource.swift */,
+				D4E33251241109A300F18DED /* Decoders */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -334,6 +339,15 @@
 				D4F9FB34240E444400480AF5 /* UpdateTaskSelectionStateReducer.swift */,
 			);
 			path = Reducers;
+			sourceTree = "<group>";
+		};
+		D4E33251241109A300F18DED /* Decoders */ = {
+			isa = PBXGroup;
+			children = (
+				D4E3324D2411082400F18DED /* Decoder.swift */,
+				D4E3324F2411099C00F18DED /* JSONDecoder.swift */,
+			);
+			path = Decoders;
 			sourceTree = "<group>";
 		};
 		D4F0D4C522B4FCF900DB136F = {
@@ -548,11 +562,13 @@
 				D465F63F239E9DC600AAC29D /* ChangeSelectedTaskNotesAction.swift in Sources */,
 				D488FC6A23950F21009785F3 /* ShowDateSelectorReducer.swift in Sources */,
 				D42EDCCD24057786000AB7B5 /* GetTasksResource.swift in Sources */,
+				D4E3324E2411082400F18DED /* Decoder.swift in Sources */,
 				D42EDA8A2405534A000AB7B5 /* Config.swift in Sources */,
 				D488FC6123950F21009785F3 /* ActionDispatcher.swift in Sources */,
 				D4645470239D6459005E6DBE /* UpdateTaskAction.swift in Sources */,
 				D491FFC823315730003C4BA8 /* TitleView.swift in Sources */,
 				D4D9D4B0240D26750092068F /* HideActivityIndicatorAction.swift in Sources */,
+				D4E332502411099C00F18DED /* JSONDecoder.swift in Sources */,
 				D488FC5923950F21009785F3 /* UpdateNavigationStateAction.swift in Sources */,
 				D47DE15A2405487D004B3274 /* Response.swift in Sources */,
 				D465F641239E9EEC00AAC29D /* ChangeSelectedTaskTitleReducer.swift in Sources */,
