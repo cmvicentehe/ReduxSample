@@ -239,7 +239,17 @@ func addTaskReducer(_ action: Action, _ state: State?) -> State {
 
 To create one complete flow in one app you have to follow this steps: 
 
-1. Replace active ***Reducer*** stored in the ***Store*** by the required ***Reducer***.
+1. Subscribe your component to changes in app ***State***.
+
+```swift
+ guard let appDelegate = AppDelegateUtils.appDelegate else {
+            return
+        }
+        
+ appDelegate.suscribe(self)
+```
+
+2. Replace active ***Reducer*** stored in the ***Store*** by the required ***Reducer***.
 
 ```swift
  func replaceReducerByAddTaskReducer() {
@@ -249,19 +259,19 @@ To create one complete flow in one app you have to follow this steps:
     }
 ```
 
-2. Create a new ***Action***.
+3. Create a new ***Action***.
 
 ```swift
 let addTaskAction = AddTaskAction()
 ```
 
-3. Call ***ActionDispatcher*** `func dispatch(action: Action)` function with the new ***Action***.
+4. Call ***ActionDispatcher*** `func dispatch(action: Action)` function with the new ***Action***.
 
 ```swift
 dispatch(action: addTaskAction)
 ```
 
-4. React to this ***State*** change by implementing `func update(state: State)` from `StoreSuscriptor` protocol.
+5. React to this ***State*** change by implementing `func update(state: State)` from `StoreSuscriptor` protocol.
 
 ```swift
 extension <NameOfTheSuscriptor>: StoreSuscriptor {
