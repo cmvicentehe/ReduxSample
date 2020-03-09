@@ -16,7 +16,7 @@ Redux is composed by the following components (***State, Store, Action dispatche
 
 ### Redux Flow
 
-![](https://github.com/cmvicentehe/ReduxSample/documentation-assets/redux_flow.png?raw=true)
+![](https://github.com/cmvicentehe/ReduxSample/blob/develop/documentation-assets/redux_flow.png?raw=true)
 
 ### Principles
 
