@@ -40,7 +40,8 @@ extension AppStore: Store {
             let result = self.suscriptors.filter { $0.identifier == suscriptor.identifier }
             let alreadyAdded = result.count > 0 ? true : false
             if !alreadyAdded {
-                self.suscriptors.append(suscriptor) }
+                self.suscriptors.append(suscriptor)
+            }
         }
     }
 
