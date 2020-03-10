@@ -23,7 +23,7 @@ Redux is composed by the following components (***State, Store, Action dispatche
 * There is an only object that stores all of the app information (***Store***).
 * State is inmutable.
 * State can be modified through ***Reducers***. After an action has been emited.
-* Uses pure funcions called ***Reducers***.
+* Uses pure functions called ***Reducers***.
 * An ***Action*** is the intent to change the ***State***.
 
 # 2. Components
