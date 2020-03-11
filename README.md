@@ -12,7 +12,7 @@ Redux is a predictable state container. What does it mean? There is an only sour
 
 The main goal for this architecture is to allow graphic interface display the information with a right state handling.
 
-Redux is composed by the following components (***State, Store, Action dispatcher, Actions, Reducers***)
+Redux is composed by the following components (***State, Store, Action dispatcher, Actions, Reducers***).
 
 ### Redux Flow
 
@@ -21,8 +21,8 @@ Redux is composed by the following components (***State, Store, Action dispatche
 ### Principles
 
 * There is an only object that stores all of the app information (***Store***).
-* State is inmutable.
-* State can be modified through ***Reducers***. After an action has been emited.
+* State is immutable.
+* State can be modified through ***Reducers***. After an action has been emitted.
 * Uses pure functions called ***Reducers***.
 * An ***Action*** is the intent to change the ***State***.
 
@@ -30,7 +30,7 @@ Redux is composed by the following components (***State, Store, Action dispatche
 
 ### State
 
-The state is composed by all of the values stored by the application (information requested to web services, databases, cached information, state of the views (loading, displaying information, editting...etc)... etc). This information is inmutable. That means that each time we want to modify the state a new State with the required information must be created and stored.
+The state is composed by all of the values stored by the application (information requested to web services, databases, cached information, state of the views (loading, displaying information, editting...etc)... etc). This information is immutable. That means that each time we want to modify the state a new State with the required information must be created and stored.
 
 Our app must have an object that implements ***State protocol***.
 
@@ -57,10 +57,10 @@ extension AppStateImpl: State {}
 ### Store
 
 * It is an object that contains the ***State*** of the app. 
-* It has to be unique and inmutable. 
-* Offers one function `getState()` that returns one inmutable instance of the current state.
+* It has to be unique and immutable. 
+* Offers one function `getState()` that returns one immutable instance of the current state.
 * Offers one function `dispatch(action: Action)` that executes the action passed as a parameter.
-* Establishes the relation between te intententions to modify the ***State*** (***Action***) and the way to do it (***Reducers***).
+* Establishes the relation between the intentention to modify the ***State*** (***Action***) and the way to do it (***Reducers***).
 
 Our app store must have an object that implements ***Store*** protocol.
 
@@ -145,7 +145,7 @@ protocol StoreSuscriptor {
 
 ### Action dispatcher
 
-* It is an object that calls `func dispatch(action: Action)` function from ***Store***
+* It is an object that calls `func dispatch(action: Action)` function from ***Store***.
 * Our app must have an object that implements ***ActionDispatcher*** protocol.
 
 ```swift
@@ -158,7 +158,7 @@ protocol ActionDispatcher {
 
 * One ***Action*** expresses the intention to modify the ***State***.
 * One ***Action*** has to be a simple object.
-* Actions must implement ***Action*** protocol
+* Actions must implement ***Action*** protocol.
 
 ```swift
 protocol Action {
@@ -203,8 +203,8 @@ extension ChangeSelectedTaskNotesAction: Action {}
 
 ### Reducer
 
-* One ***Reducers*** is one pure function that defines how has to change the current ***State***
-* One ***Reducer*** is executed when an action is launched.
+* One ***Reducer*** is one pure function that defines how has to change the current ***State***.
+* One ***Reducer*** is executed when an ***Action*** is launched.
 * One ***Reducer*** has this sign `func <nameOfReducer>(state: State, action: Action) -> State`.
 
 For example:
