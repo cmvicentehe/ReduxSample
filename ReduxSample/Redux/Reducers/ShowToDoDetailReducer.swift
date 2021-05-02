@@ -36,11 +36,13 @@ func showToDoDetailReducer(_ action: Action, _ state: State?) -> State {
 }
 
 private func showToDoDetailVC(for state: AppState) {
-
-    let navigationState = state.navigationState
-    let viewModel = toDoViewModel(for: state)
-    let toDoDetailVC = ToDoDetailVC(state: state, viewModel: viewModel, suscriber: viewModel)
-    navigationState?.show(viewController: toDoDetailVC, navigationStyle: .push)
+    
+    DispatchQueue.main.async {
+        let navigationState = state.navigationState
+        let viewModel = toDoViewModel(for: state)
+        let toDoDetailVC = ToDoDetailVC(state: state, viewModel: viewModel, suscriber: viewModel)
+        navigationState?.show(viewController: toDoDetailVC, navigationStyle: .push)
+    }
 }
 
 private func toDoViewModel(for state: AppState) -> ToDoViewModel? {

@@ -15,9 +15,11 @@ func showActivityIndicatorReducer(_ action: Action, _ state: State?) -> State {
     }
 
     let navigationState = currentState.navigationState
-    if let navigationController = navigationState?.rootViewController as? UINavigationController,
-        let topViewController = navigationController.topViewController as? ReduxSampleVC {
-        topViewController.showActivityIndicator()
+    DispatchQueue.main.async {
+        if let navigationController = navigationState?.rootViewController as? UINavigationController,
+            let topViewController = navigationController.topViewController as? ReduxSampleVC {
+            topViewController.showActivityIndicator()
+        }
     }
 
     return AppStateImpl(taskList: currentState.taskList,

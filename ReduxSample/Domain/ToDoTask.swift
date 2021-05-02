@@ -44,27 +44,27 @@ struct ToDoTask {
 
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        identifier = try values.decode(String.self, forKey: .identifier)
-        name = try values.decode(String.self, forKey: .name)
-        let dueDate = try values.decode(String.self, forKey: .dueDate)
-        self.dueDate = CustomDateFormatter.convertDateStringToDate(dateString: dueDate,
-                                                                   with: .server)
-        notes = try values.decode(String.self, forKey: .notes)
+        self.identifier = try values.decode(String.self, forKey: .identifier)
+        self.name = try values.decode(String.self, forKey: .name)
+        let dueDate = try values.decodeIfPresent(String.self, forKey: .dueDate)
+        self.dueDate =  CustomDateFormatter.convertDateStringToDate(dateString: dueDate,
+                                                                    with: .server)
+        self.notes = try values.decode(String.self, forKey: .notes)
         let state = try values.decode(Int.self, forKey: .state)
         self.state = TaskState(rawValue: state) ?? .unknown
 
     }
 
-  func encode(to encoder: Encoder) throws {
-    let dueDate = CustomDateFormatter.convertDateToString(date: self.dueDate,
-                                                          with: .server)
-    let state = self.state.rawValue
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(identifier, forKey: .identifier)
-    try container.encode(name, forKey: .name)
-    try container.encode(dueDate, forKey: .dueDate)
-    try container.encode(notes, forKey: .notes)
-    try container.encode(state, forKey: .state)
+    func encode(to encoder: Encoder) throws {
+        let dueDate = CustomDateFormatter.convertDateToString(date: self.dueDate,
+                                                              with: .server)
+        let state = self.state.rawValue
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(identifier, forKey: .identifier)
+        try container.encode(name, forKey: .name)
+        try container.encode(dueDate, forKey: .dueDate)
+        try container.encode(notes, forKey: .notes)
+        try container.encode(state, forKey: .state)
     }
 }
 
