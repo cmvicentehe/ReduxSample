@@ -37,14 +37,15 @@ class NavigationStateImpl {
 extension NavigationStateImpl: NavigationState {
 
     func show(viewController: UIViewController, navigationStyle: NavigationStyle) {
-
-        switch navigationStyle {
-        case .push:
-            push(viewController: viewController)
-        case .modal:
-            present(viewController: viewController)
-        case .updateWindow:
-            updateWindow(with: viewController)
+        DispatchQueue.main.async { [weak self] in
+            switch navigationStyle {
+            case .push:
+                self?.push(viewController: viewController)
+            case .modal:
+                self?.present(viewController: viewController)
+            case .updateWindow:
+                self?.updateWindow(with: viewController)
+            }
         }
     }
 

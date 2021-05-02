@@ -41,7 +41,8 @@ class ReduxSampleVC: UIViewController {
 
         self.state = state
         self.suscriber = suscriber
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil,
+                   bundle: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
